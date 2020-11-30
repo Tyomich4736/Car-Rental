@@ -1,6 +1,5 @@
 package by.nosevich.carrental.model.entities;
 
-import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -35,8 +34,8 @@ public class Car {
 	private double fuelConsumption;
 	@Column
 	private FuelType fuelType;
-	@Column
-	private Image[] images;
+	@OneToMany(mappedBy = "car")
+	private List<CarImage> images = new ArrayList<CarImage>();
 	@Column
 	private int numberOfSeats;
 	@Column
