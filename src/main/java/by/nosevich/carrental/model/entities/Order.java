@@ -3,6 +3,8 @@ package by.nosevich.carrental.model.entities;
 import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -34,6 +36,7 @@ public class Order {
 	@Column
 	private int price;
 	@Column
+	@Enumerated(EnumType.STRING)
 	private Status status;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn

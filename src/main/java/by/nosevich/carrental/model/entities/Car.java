@@ -6,6 +6,8 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,12 +37,15 @@ public class Car {
 	@Column
 	private int year;
 	@Column
+	@Enumerated(EnumType.STRING)
 	private Transmission tranmission;
 	@Column
+	@Enumerated(EnumType.STRING)
 	private Color color;
 	@Column
 	private double fuelConsumption;
 	@Column
+	@Enumerated(EnumType.STRING)
 	private FuelType fuelType;
 	@OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private List<CarImage> images = new ArrayList<CarImage>();

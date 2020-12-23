@@ -6,8 +6,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Properties;
 import java.util.UUID;
 
@@ -33,31 +31,45 @@ public class FileSystemCarImageStoreService implements CarImageStoreService{
 	@Override
 	public void store(Car car, MultipartFile fileToUpload) throws IOException {
 		String name = UUID.randomUUID().toString();
-		//File file2 = new File(name);
 		
-		Properties props = new Properties();
-		props.load(new FileInputStream("src/main/resources/carrental.properties"));
-		String path = props.getProperty("carrental.storage.folder-with-images")
-				+ "\\" + car.getId();
-		new File(path).mkdir();		
-		path+="\\" + name + ".jpg";
-		File file = new File(path);
+		String folderPath = getStoragePath() + "\\" + car.getId();
+		new File(folderPath).mkdir();		
+		
+		String filePath = folderPath + "\\" + name + ".jpg";
+		File file = new File(filePath);
 
 		try (InputStream in = fileToUpload.getInputStream(); OutputStream out = new FileOutputStream(file)) {
 			IOUtils.copy(in, out);
 		}
 		
 		CarImage image = new CarImage();
-		image.setImageFilePath(path);
+		image.setImageFileName(name);
 		image.setCar(car);
 		carImageService.save(image);
 	}
 
 	@Override
-	public List<String> getImagePaths(Car car) throws IOException {
-		List<String> paths = new ArrayList<String>();
-		car.getImages().forEach(image -> paths.add(image.getImageFilePath()));
-		return paths;
+	public void deleteImageFile(CarImage image) throws IOException {
+		String filePath = getStoragePath() 
+				+ "\\" + image.getCar().getId()
+				+ "\\" + image.getImageFileName()
+				+ ".jpg";
+		File file = new File(filePath);
+		file.delete();
+	}
+
+	@Override
+	public void deleteImagesForCar(Car car) throws IOException {
+		String folderPath = getStoragePath()+"\\"+car.getId();
+		File folderWithImages = new File(folderPath);
+		folderWithImages.delete();
+	}
+	
+	private String getStoragePath() throws IOException {
+		Properties props = new Properties();
+		props.load(new FileInputStream("src/main/resources/application.properties"));
+		String path = props.getProperty("storage.folder-with-images");
+		return path;
 	}
 
 }

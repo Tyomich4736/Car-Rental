@@ -1,0 +1,26 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Sign in</title>
+
+<th:block th:insert="auth/head.html :: css"/>
+</head>
+<body>
+	<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    <!-- Login Form -->
+    <form th:action="@{/login}" method="post">
+      <input type="email" id="login" class="fadeIn second" name="username" placeholder="E-mail">
+      <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password">
+      <input type="submit" class="fadeIn fourth" value="Log In">
+    </form>
+
+    <!-- Remind Passowrd -->
+    <div id="formFooter">
+      <a class="underlineHover" th:href="@{/register}">Register</a>
+    </div>
+
+  </div>
+</div>
+</html>

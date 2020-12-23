@@ -24,7 +24,7 @@ public class CarImage {
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int id;
 	@Column
-	private String imageFilePath;
+	private String imageFileName;
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private Car car;
