@@ -14,7 +14,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
-import by.nosevich.carrental.model.entities.userproperties.Role;
+import com.sun.istack.NotNull;
+
+import by.nosevich.carrental.model.entities.userenums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,20 +30,23 @@ public class User {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Integer id;
-	
+	@NotNull
 	private String firstName;
-	
+	@NotNull
 	private String lastName;
 	
 	private String phoneNumber;
 	
 	private boolean active;
 	
+	private String activationCode;
+	
 	@Enumerated(EnumType.STRING)
 	private Role role;
 	@Column(unique = true)
+	@NotNull
 	private String email;
-
+	@NotNull
 	private String password;
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<Order> orders = new ArrayList<Order>();

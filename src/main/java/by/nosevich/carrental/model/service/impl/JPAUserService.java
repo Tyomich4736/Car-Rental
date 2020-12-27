@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,8 +17,6 @@ public class JPAUserService implements UserService{
 
 	@Autowired
 	private UserRepository repo;
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 	
 	@Override
 	public List<User> getAll() {
@@ -38,13 +35,17 @@ public class JPAUserService implements UserService{
 
 	@Override
 	public void save(User entity) {
-		//entity.setPassword(passwordEncoder.encode(entity.getPassword()));
 		repo.save(entity);
 	}
 
 	@Override
 	public Optional<User> getByEmail(String email) {
 		return repo.findByEmail(email);
+	}
+
+	@Override
+	public User getByActivationCode(String code) {
+		return repo.findByActivationCode(code);
 	}
 	
 }

@@ -1,12 +1,10 @@
 package by.nosevich.carrental.model.service.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.util.Properties;
 import java.util.UUID;
 
 import org.apache.commons.io.IOUtils;
@@ -15,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import by.nosevich.carrental.config.properties.StorageProperties;
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.CarImage;
 import by.nosevich.carrental.model.service.CarImageService;
@@ -27,6 +26,9 @@ public class FileSystemCarImageStoreService implements CarImageStoreService{
 	
 	@Autowired
 	private CarImageService carImageService;
+	@Autowired
+	private StorageProperties storageProperties;
+	
 	
 	@Override
 	public void store(Car car, MultipartFile fileToUpload) throws IOException {
@@ -66,10 +68,7 @@ public class FileSystemCarImageStoreService implements CarImageStoreService{
 	}
 	
 	private String getStoragePath() throws IOException {
-		Properties props = new Properties();
-		props.load(new FileInputStream("src/main/resources/application.properties"));
-		String path = props.getProperty("storage.folder-with-images");
-		return path;
+		return storageProperties.getFolderWithImages();
 	}
 
 }

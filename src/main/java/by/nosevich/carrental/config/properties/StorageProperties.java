@@ -1,4 +1,4 @@
-package by.nosevich.carrental.config;
+package by.nosevich.carrental.config.properties;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

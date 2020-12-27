@@ -1,0 +1,22 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Successful registration</title>
+<th:block th:insert="auth/head.html :: css"/>
+</head>
+<body>
+	<div class="wrapper fadeInDown">
+  <div id="formContent">
+
+    <!-- Login Form -->
+    <form th:action="@{/login}" method="get">
+    <p><img th:src="@{img/successful.png}" alt="" height="150" width="150"></p>
+      <div align="center">Successful registration!<br/>
+			We have sent you an email with instructions on how to activate your account. 
+			Thank you for choosing our service!</div>
+      <input type="submit" class="fadeIn fourth" value="OK">
+    </form>
+
+  </div>
+</div>
+</html>
