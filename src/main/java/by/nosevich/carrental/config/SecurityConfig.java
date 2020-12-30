@@ -15,7 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 
 import by.nosevich.carrental.model.entities.userenums.Role;
-import by.nosevich.carrental.security.service.UserAuthService;
+import by.nosevich.carrental.model.service.UserService;
 
 @Configuration
 @EnableWebSecurity
@@ -24,13 +24,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private UserDetailsService userDetailsService;
 	@Autowired
-	private UserAuthService userAuthService;
+	private UserService userService;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.
 			authorizeRequests().
 				antMatchers("/", "/home", "/register", "/activate/**","/successfulreg", "/img/**").permitAll().
+				antMatchers("/admin/**").hasAnyAuthority("ADMIN").
 				anyRequest().authenticated().
 			and().
 				formLogin().
@@ -43,7 +44,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				permitAll();
 		
 		//admin initialization
-		userAuthService.saveProtectedUser(new by.nosevich.carrental.model.entities.User(
+		if(userService.getAll().size()==0) {
+			userService.saveProtectedUser(new by.nosevich.carrental.model.entities.User(
 				null,
 				"admin",
 				"admin",
@@ -55,6 +57,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				"rentalpvt",
 				null
 				));
+		}
 	}
 
 	@Bean

@@ -25,8 +25,11 @@ public class Category {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int id;
-	@Column
+
 	private String name;
+	
 	@OneToMany(mappedBy = "category", cascade = CascadeType.REMOVE)
 	private List<Car> cars = new ArrayList<Car>();
+	
+	private String imageName;
 }

@@ -8,13 +8,12 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import by.nosevich.carrental.config.properties.EmailProperties;
-import by.nosevich.carrental.config.properties.StorageProperties;
 
 @SpringBootApplication
 @EnableAutoConfiguration
 @EnableTransactionManagement
 @ComponentScan
-@EnableConfigurationProperties({StorageProperties.class, EmailProperties.class})
+@EnableConfigurationProperties({EmailProperties.class})
 public class Starter {
 	
 	public static void main(String[] args) {

@@ -1,7 +1,8 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<title>Getting Started: Serving Web Content</title>
+<title>Categories</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
@@ -12,7 +13,10 @@
 
 <body>
 	<th:block th:insert="fragments/navBar.html"/>
-	<tr th:each="car : ${cars}">
+	<div sec:authorize="hasAuthority('ADMIN')">
+	<a th:href="@{/admin/addCategory}" class="w-100 btn btn-lg btn-primary">Add category</a>
+	</div>
+	<!--  <tr th:each="car : ${cars}">
 		<td>
 		id: <span th:text="${car.id}"/>
 		<br/>
@@ -30,6 +34,6 @@
 				</table>
 			</form>
 		</td>
-	</tr>
+	</tr> -->
 </body>
 </html>

@@ -78,7 +78,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 		<p class="h5 my-0 me-md-auto fw-normal">Rental</p>
 		<nav class="my-2 my-md-0 me-md-3">
 			<a class="p-2 text-dark" href="#">Home</a> <a class="p-2 text-dark"
-				href="#">Catalor</a> <a class="p-2 text-dark" href="#">My orders</a>
+				th:href="@{/catalog/}">Catalor</a> <a class="p-2 text-dark" href="#">My orders</a>
 			<a class="p-2 text-dark" href="#">About us</a>
 		</nav> &nbsp; &nbsp; &nbsp;
 			<a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary" th:href="@{/login}">Sign up</a>

@@ -9,14 +9,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.repo.CarRepository;
-import by.nosevich.carrental.model.service.CarImageStoreService;
 import by.nosevich.carrental.model.service.CarService;
+import by.nosevich.carrental.model.service.ImageStoreService;
 
 @Service
 @Transactional
 public class JPACarService implements CarService {
 
-	private CarImageStoreService imageStoreService;
+	private ImageStoreService imageStoreService;
 	
 	@Autowired
 	private CarRepository repo;
@@ -34,7 +34,7 @@ public class JPACarService implements CarService {
 	@Override
 	public void delete(Car entity) {
 		try {
-			imageStoreService.deleteImagesForCar(entity);
+			imageStoreService.deleteAllImagesForCar(entity);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

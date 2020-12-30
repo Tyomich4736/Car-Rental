@@ -6,5 +6,5 @@ import javax.mail.internet.AddressException;
 import by.nosevich.carrental.model.entities.User;
 
 public interface MailService {
-	void sendUserActivationMessage(User user) throws MessagingException;
+	void sendActivationMessage(User user) throws MessagingException;
 }

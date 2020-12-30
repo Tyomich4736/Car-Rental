@@ -47,8 +47,6 @@ public class Car {
 	@Column
 	@Enumerated(EnumType.STRING)
 	private FuelType fuelType;
-	@OneToMany(mappedBy = "car", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-	private List<CarImage> images = new ArrayList<CarImage>();
 	@Column
 	private int numberOfSeats;
 	@Column

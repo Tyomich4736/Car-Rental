@@ -26,21 +26,14 @@ public class MailServiceImpl implements MailService {
 
 	@Autowired
 	private EmailProperties emailProperties;
-
-	/*
-	 * @Override public void sendUserActivationMessage(User user) { String siteName
-	 * = emailProperties.getDomainHost().replaceAll("http://", "");
-	 * SimpleMailMessage message = new SimpleMailMessage();
-	 * message.setTo(user.getEmail()); message.setFrom("CarRental@service.com");
-	 * message.setSubject(siteName+" activasion link");
-	 * message.setText("Hello, "+user.getFirstName()+".\n" +
-	 * "We are glad to welcome you to our service "+siteName +".\n" +
-	 * "To activate your account follow the link below:\n" +
-	 * emailProperties.getDomainHost()+"/activate/"+user.getId()+"/"+user.
-	 * getActivationCode()); mailSender.send(message); }
-	 */
 	
-	public void sendUserActivationMessage(User user) throws MessagingException {
+	@Override
+	public void sendActivationMessage(User user) throws MessagingException {
+		sendMessage(user, getActivationMessage(user), getActivasionSubject());
+		
+	}
+	
+	private void sendMessage(User user, String message, String subject) throws MessagingException {
 		// sets SMTP server properties
 		Properties properties = new Properties();
 		properties.put("mail.smtp.host", emailProperties.getHost());
@@ -61,15 +54,15 @@ public class MailServiceImpl implements MailService {
 
 		// creates a new e-mail message
 		MimeMessage msg = new MimeMessage(session);
-		String siteName = emailProperties.getDomainHost().replaceAll("http://", "");
+		
 		msg.setFrom("CarRental@service.com");
 		InternetAddress[] toAddresses = { new InternetAddress(user.getEmail()) };
 		msg.setRecipients(Message.RecipientType.TO, toAddresses);
-		msg.setSubject(siteName+" activasion link");
+		msg.setSubject(subject);
 
 		// creates message part
 		MimeBodyPart messageBodyPart = new MimeBodyPart();
-		messageBodyPart.setContent(getMessage(user), "text/html");
+		messageBodyPart.setContent(message, "text/html");
 
 		// creates multi-part
 		Multipart multipart = new MimeMultipart();
@@ -82,11 +75,15 @@ public class MailServiceImpl implements MailService {
 		Transport.send(msg);
 	}
 	
-	private String getMessage(User user) {
+	private String getActivationMessage(User user) {
 		String siteName = emailProperties.getDomainHost().replaceAll("http://", "");
 		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\">Hello, "+user.getFirstName()+"!</font></h1><br/>" +
 				  "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >We are glad to welcome you to our service "+siteName +"!<br/>" +
 				  "To activate your account follow this link:</div> <br/>" +
 				  "<h2 align=\"center\"><a href="+emailProperties.getDomainHost()+"/activate/"+user.getActivationCode()+">Link</a></h2>";
+	}
+	private String getActivasionSubject() {
+		String siteName = emailProperties.getDomainHost().replaceAll("http://", "");
+		return siteName+" activasion link";
 	}
 }
