@@ -16,6 +16,17 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<div sec:authorize="hasAuthority('ADMIN')">
 	<a th:href="@{/admin/addCategory}" class="w-100 btn btn-lg btn-primary">Add category</a>
 	</div>
+	
+	<th:block th:each="category : ${categories}">
+	<div class="card mb-4 shadow-sm" align="center">
+      <div class="card-header">
+        <h4 class="my-0 fw-normal"><span th:text="${category.name}"/></h4>
+      </div>
+      <div class="card-body">
+        <img alt="" th:src="@{${'/categories/'+category.imageName}}" width="400" height="320">
+      </div>
+    </div>
+    </th:block>
 	<!--  <tr th:each="car : ${cars}">
 		<td>
 		id: <span th:text="${car.id}"/>

@@ -31,7 +31,7 @@ public class AdminController {
 	@PostMapping("/addCategory")
 	public String addCategory(@Param("name") String name, @Param("file") MultipartFile file) {
 		try {
-			if (isImageFile(file)) {
+			if (isImageFile(file) && !hasCategoryWithSameName(name)) {
 				ImageStoreService.storeCategoryImage(file);
 				Category category = new Category();
 				category.setName(name);
@@ -39,13 +39,18 @@ public class AdminController {
 				categoryService.save(category);
 			}
 		} catch (IOException e) {
-			return "catalog/categories";
+			return "redirect:/catalog";
 		}
-		return "catalog/categories";
+		return "redirect:/catalog";
 	}
 
 	private boolean isImageFile(MultipartFile file) {
 		String fileName = file.getOriginalFilename();
 		return fileName.endsWith(".png") || fileName.endsWith(".jpg") ? true : false;
+	}
+	private boolean hasCategoryWithSameName(String name) {
+		for(Category category : categoryService.getAll())
+			if (category.getImageName().equals(name)) return true;
+		return false;
 	}
 }
