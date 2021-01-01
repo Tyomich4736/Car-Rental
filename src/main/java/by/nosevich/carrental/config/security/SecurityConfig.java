@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.
 			authorizeRequests().
 				antMatchers("/", "/home", "/register", "/activate/**","/successfulreg", "/img/**",
-						"/catalog", "/catalog/**", "/categories/**").permitAll().
+						"/catalog", "/catalog/**", "/categories/**", "/cars/**").permitAll().
 				antMatchers("/admin/**").hasAnyAuthority("ADMIN").
 				anyRequest().authenticated().
 			and().

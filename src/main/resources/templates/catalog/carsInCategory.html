@@ -20,15 +20,15 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	<a th:href="@{/admin/{category}/addCar(category=${currentCategory})}" class="w-100 btn btn-lg btn-primary">Add car</a>
 	</div>
 	
-	<!--  <th:block th:each="category : ${categories}">
+	<th:block th:each="car : ${cars}">
 	<div class="card mb-4 shadow-sm" align="center">
       <div class="card-header">
-        <h4 class="my-0 fw-normal"><span th:text="${category.name}"/></h4>
+        <h4 class="my-0 fw-normal"><span th:text="${car.name}"/></h4>
       </div>
       <div class="card-body">
-        <img alt="" th:src="@{${'/categories/'+category.imageName}}" width="400" height="320">
+        <img alt="" th:src="@{${'/cars/'+car.id+'/'+car.previewImageName}}" width="500" height="320">
       </div>
     </div>
-    </th:block> -->
+    </th:block>
 </body>
 </html>

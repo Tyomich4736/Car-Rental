@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import by.nosevich.carrental.model.entities.Car;
+import by.nosevich.carrental.model.entities.Category;
 import by.nosevich.carrental.model.repo.CarRepository;
 import by.nosevich.carrental.model.service.CarService;
 import by.nosevich.carrental.model.service.ImageStoreService;
@@ -44,6 +45,11 @@ public class JPACarService implements CarService {
 	@Override
 	public void save(Car entity) {
 		repo.save(entity);
+	}
+
+	@Override
+	public List<Car> getByCategory(Category category) {
+		return repo.findByCategory(category);
 	}
 
 }
