@@ -1,4 +1,4 @@
-package by.nosevich.carrental.security;
+package by.nosevich.carrental.config.security;
 
 import java.util.Collection;
 import java.util.List;
@@ -12,7 +12,7 @@ import by.nosevich.carrental.model.entities.User;
 import lombok.Data;
 
 @Data
-public class SecurityUser implements UserDetails{
+public class UserDetailsImpl implements UserDetails{
 
 	private final String username;
 	private final String password;

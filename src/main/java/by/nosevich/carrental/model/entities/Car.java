@@ -32,33 +32,33 @@ public class Car {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private int id;
-	@Column
+	
 	private String name;
-	@Column
+	
 	private int year;
-	@Column
+	
 	@Enumerated(EnumType.STRING)
 	private Transmission tranmission;
-	@Column
-	@Enumerated(EnumType.STRING)
-	private Color color;
-	@Column
+
 	private double fuelConsumption;
-	@Column
+	
+	private String previewImageName;
+
 	@Enumerated(EnumType.STRING)
 	private FuelType fuelType;
-	@Column
+
 	private int numberOfSeats;
-	@Column
+
 	private double averageSpeed;
-	@Column
+
 	private int priceFrom1To3Days;
-	@Column
+
 	private int priceFrom4To7Days;
-	@Column
+
 	private int priceFrom8To15Days;
-	@Column
+
 	private int priceFrom16To30Days;
+	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private Category category;

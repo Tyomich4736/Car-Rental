@@ -36,5 +36,10 @@ public class JPACategoryService implements CategoryService{
 	public void save(Category entity) {
 		repo.save(entity);
 	}
+
+	@Override
+	public Category getByName(String name) {
+		return repo.findByName(name);
+	}
 	
 }
