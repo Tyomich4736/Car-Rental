@@ -26,7 +26,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
         <h4 class="my-0 fw-normal"><span th:text="${car.name}"/></h4>
       </div>
       <div class="card-body">
+      <a th:href="@{${'/catalog/car/'+car.id}}">
         <img alt="" th:src="@{${'/cars/'+car.id+'/'+car.previewImageName}}" width="500" height="320">
+        </a>
+        <br/>
+        <font color="Light Slate Blue" size="4"><th:block th:text="${car.year}"/></font>
       </div>
     </div>
     </th:block>
