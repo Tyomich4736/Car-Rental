@@ -26,27 +26,27 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
         
         <font size="5">
         <table>
-        	<tr>
+        	<tr th:if="${car.year!=null}">
         		<th>Year of issue:</th>
         		<th><th:block th:text="${car.year}"/></th>
         	</tr>
-	        <tr>
+	        <tr th:if="${car.numberOfSeats!=null}">
 	        	<th>Number of seats:</th>
 	        	<th><th:block th:text="${car.numberOfSeats}"/></th>
 	        </tr>
-	        <tr>
+	        <tr th:if="${car.averageSpeed!=null}">
 	        	<th>Average speed:</th>
 	        	<th><th:block th:text="${car.averageSpeed}"/></th>
 	        </tr>
-	        <tr>
+	        <tr th:if="${car.tranmission!=null}">
 	        	<th>Tranmission:</th>
 	        	<th><th:block th:text="${car.tranmission.name()}"/></th>
 	        </tr>
-	        <tr>
+	        <tr th:if="${car.fuelType!=null}">
 	        	<th>Fuel type:</th>
 	        	<th><th:block th:text="${car.fuelType.name()}"/></th>
 	        </tr>
-	        <tr>
+	        <tr th:if="${car.fuelConsumption!=null}">
 	        	<th>Fuel consumption:</th>
 	        	<th><th:block th:text="${car.fuelConsumption}"/></th>
 	        </tr>   
@@ -76,6 +76,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
  		</table>
  		</font>
       </div>
+       
+      <a sec:authorize="hasAuthority('ADMIN')" th:href="@{${'/admin/editCar/'+car.id}}">
+      <button type="button" class="w-100 btn btn-lg btn-outline-primary">Edit</button>
+      </a>
     </div>
 </body>
 </html>

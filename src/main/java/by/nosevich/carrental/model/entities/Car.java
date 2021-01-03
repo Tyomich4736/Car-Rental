@@ -31,33 +31,33 @@ import lombok.NoArgsConstructor;
 public class Car {
 	@Id
 	@GeneratedValue(strategy = GenerationType.SEQUENCE)
-	private int id;
+	private Integer id;
 	
 	private String name;
 	
-	private int year;
+	private Integer year;
 	
 	@Enumerated(EnumType.STRING)
 	private Transmission tranmission;
 
-	private double fuelConsumption;
+	private Double fuelConsumption;
 	
 	private String previewImageName;
 
 	@Enumerated(EnumType.STRING)
 	private FuelType fuelType;
 
-	private int numberOfSeats;
+	private Integer numberOfSeats;
 
-	private double averageSpeed;
+	private Double averageSpeed;
 
-	private int priceFrom1To3Days;
+	private Double priceFrom1To3Days;
 
-	private int priceFrom4To7Days;
+	private Double priceFrom4To7Days;
 
-	private int priceFrom8To15Days;
+	private Double priceFrom8To15Days;
 
-	private int priceFrom16To30Days;
+	private Double priceFrom16To30Days;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn

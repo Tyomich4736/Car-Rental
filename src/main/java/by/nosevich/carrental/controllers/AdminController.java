@@ -15,6 +15,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Category;
+import by.nosevich.carrental.model.entities.carenums.FuelType;
+import by.nosevich.carrental.model.entities.carenums.Transmission;
 import by.nosevich.carrental.model.service.CarService;
 import by.nosevich.carrental.model.service.CategoryService;
 import by.nosevich.carrental.model.service.ImageStoreService;
@@ -36,7 +38,7 @@ public class AdminController {
 	}
 
 	@PostMapping("/addCategory")
-	public String addCategory(@Param("name") String name, @Param("file") MultipartFile file) {
+	public String addCategory(@RequestParam("name") String name, @RequestParam("file") MultipartFile file) {
 		try {
 			if (isImageFile(file) && !hasCategoryWithSameName(name)) {
 				imageStoreService.storeCategoryImage(file);
@@ -59,10 +61,26 @@ public class AdminController {
 	
 	@PostMapping("/{currentCategory}/addCar")
 	public String addCar(@PathVariable("currentCategory") String currentCategory,
-			Car car,
+			
+			@Param("name") String name,
+			@Param("year") Integer year,
+			@Param("tranmission") Transmission tranmission,
+			@Param("fuelConsumption") Double fuelConsumption,
+			@Param("fuelType") FuelType fuelType,
+			@Param("numberOfSeats") Integer numberOfSeats,
+			@Param("averageSpeed") Double averageSpeed,
+			@Param("priceFrom1To3Days") Double priceFrom1To3Days,
+			@Param("priceFrom4To7Days") Double priceFrom4To7Days,
+			@Param("priceFrom8To15Days") Double priceFrom8To15Days,
+			@Param("priceFrom16To30Days") Double priceFrom16To30Days,
+			
 			@RequestParam("file") MultipartFile preview) {
+		Car car = new Car(null, name, year, tranmission, fuelConsumption, null, fuelType,
+				numberOfSeats, averageSpeed, priceFrom1To3Days, priceFrom4To7Days, priceFrom8To15Days,
+				priceFrom16To30Days, null, null, null);
+		
 		try {
-			if (isImageFile(preview)) {
+			if (isImageFile(preview) && carIsCorrectly(car)) {
 				carService.save(car);
 				imageStoreService.storeCarPreview(car, preview);
 				car.setCategory(categoryService.getByName(currentCategory));
@@ -76,6 +94,12 @@ public class AdminController {
 		return "redirect:/catalog/"+currentCategory;
 	}
 
+	@GetMapping("/editCar/{id}")
+	public String editCarForm(@PathVariable("id") String id, Model model) {
+		model.addAttribute("car", carService.getById(Integer.parseInt(id)));
+		return "forAdmin/editCar";
+	}
+	
 	private boolean isImageFile(MultipartFile file) {
 		String fileName = file.getOriginalFilename();
 		return fileName.endsWith(".png") || fileName.endsWith(".jpg") ? true : false;
@@ -83,6 +107,17 @@ public class AdminController {
 	private boolean hasCategoryWithSameName(String name) {
 		for(Category category : categoryService.getAll())
 			if (category.getImageName().equals(name)) return true;
+		return false;
+	}
+	
+	private boolean carIsCorrectly(Car car) {
+		if (car.getName()!=""
+				&& car.getPriceFrom1To3Days()!=null
+				&& car.getPriceFrom4To7Days()!=null
+				&& car.getPriceFrom8To15Days()!=null
+				&& car.getPriceFrom16To30Days()!=null) {
+			return true;
+		}
 		return false;
 	}
 }
