@@ -18,19 +18,19 @@
 	<h1 align="center">Add new car</h1>
 
 	<div align="center">
-	<form class="form-horizontal" th:action="@{${'/admin/editCar/'+car.id}}" method="post" enctype="multipart/form-data">
+	<form class="form-horizontal" th:action="@{/admin/editCar/{id}(id=${car.id})}" method="post" enctype="multipart/form-data">
 	
-    <div class="form-group"> <!--TODO Default values of car -->
+    <div class="form-group"> 
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Name:</font></label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="Car name" name="name">
+        <input type="text" class="form-control" placeholder="Car name" name="name" th:value="${car.name}"> 
       </div>
     </div>
     
     <div class="form-group">
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Year:</font></label>
       <div class="col-sm-10">
-        <input type="number" class="form-control" name="year" value="2010">
+        <input type="number" class="form-control" name="year" value="2010" th:value="${car.year}">
       </div>
     </div>
     
@@ -48,7 +48,7 @@
     <div class="form-group">
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Fuel consumption per 100 km:</font></label>
       <div class="col-sm-10">
-        <input type="number" class="form-control"  step="0.01" name="fuelConsumption"> 
+        <input type="number" class="form-control"  step="0.01" name="fuelConsumption" th:value="${car.fuelConsumption}"> 
       </div>
     </div>
     
@@ -64,33 +64,25 @@
     <div class="form-group">
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Number of seats:</font></label>
       <div class="col-sm-10">
-        <input type="number" class="form-control" name="numberOfSeats" value=2> 
+        <input type="number" class="form-control" name="numberOfSeats" th:value="${car.numberOfSeats}"> 
       </div>
     </div>
     
     <div class="form-group">
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Average speed:</font></label>
       <div class="col-sm-10">
-        <input type="number" class="form-control" step="0.01" name="averageSpeed"> 
+        <input type="number" class="form-control" step="0.01" name="averageSpeed" th:value="${car.averageSpeed}"> 
       </div>
     </div>
     
     <div class="form-group">
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Price:</font></label>
       <div class="col-sm-10"> 
-        1-3 days:<input type="number" class="form-control" step="0.01" name="priceFrom1To3Days"> 
-        4-7 days:<input type="number" class="form-control" step="0.01" name="priceFrom4To7Days"> 
-        8-15 days:<input type="number" class="form-control" step="0.01" name="priceFrom8To15Days"> 
-        16-30 days:<input type="number" class="form-control" step="0.01" name="priceFrom16To30Days"> 
+        1-3 days:<input type="number" class="form-control" step="0.01" name="priceFrom1To3Days" th:value="${car.priceFrom1To3Days}"> 
+        4-7 days:<input type="number" class="form-control" step="0.01" name="priceFrom4To7Days" th:value="${car.priceFrom4To7Days}"> 
+        8-15 days:<input type="number" class="form-control" step="0.01" name="priceFrom8To15Days" th:value="${car.priceFrom8To15Days}"> 
+        16-30 days:<input type="number" class="form-control" step="0.01" name="priceFrom16To30Days" th:value="${car.priceFrom16To30Days}"> 
       </div>
-    </div>
-    
-    <div class="form-group">
-      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Preview image:</font></label>
-      <div class="col-sm-10">          
-        <input type="file" name="file">
-      </div>
-       <label class="control-label col-sm-2" >The uploaded file must be in jpg or png format and have a size of no more than 1 mb</label>
     </div>
     
     <div class="form-group">        

@@ -100,6 +100,37 @@ public class AdminController {
 		return "forAdmin/editCar";
 	}
 	
+	@PostMapping("/editCar/{id}")
+	public String editCar(@PathVariable("id") String id, Model model,
+			@Param("name") String name,
+			@Param("year") Integer year,
+			@Param("tranmission") Transmission tranmission,
+			@Param("fuelConsumption") Double fuelConsumption,
+			@Param("fuelType") FuelType fuelType,
+			@Param("numberOfSeats") Integer numberOfSeats,
+			@Param("averageSpeed") Double averageSpeed,
+			@Param("priceFrom1To3Days") Double priceFrom1To3Days,
+			@Param("priceFrom4To7Days") Double priceFrom4To7Days,
+			@Param("priceFrom8To15Days") Double priceFrom8To15Days,
+			@Param("priceFrom16To30Days") Double priceFrom16To30Days) throws IOException {
+		
+		Car car = carService.getById(Integer.parseInt(id));
+		if (name!="") car.setName(name);
+		car.setYear(year);
+		if (tranmission!=null) car.setTranmission(tranmission);
+		car.setFuelConsumption(fuelConsumption);
+		if (fuelType!=null) car.setFuelType(fuelType);
+		car.setNumberOfSeats(numberOfSeats);
+		car.setAverageSpeed(averageSpeed);
+		if (priceFrom1To3Days!=null) car.setPriceFrom1To3Days(priceFrom1To3Days);
+		if (priceFrom4To7Days!=null) car.setPriceFrom4To7Days(priceFrom4To7Days);
+		if (priceFrom8To15Days!=null) car.setPriceFrom8To15Days(priceFrom8To15Days);
+		if (priceFrom16To30Days!=null) car.setPriceFrom16To30Days(priceFrom16To30Days);
+		carService.save(car);
+		return "redirect:/catalog";
+	}
+	
+	
 	private boolean isImageFile(MultipartFile file) {
 		String fileName = file.getOriginalFilename();
 		return fileName.endsWith(".png") || fileName.endsWith(".jpg") ? true : false;
