@@ -93,15 +93,27 @@ public class AdminController {
 		}
 		return "redirect:/catalog/"+currentCategory;
 	}
+	
+	@GetMapping("/category/{category}/delete")
+	public String deleteCategory(@PathVariable("category") String categoryName) throws IOException {
+		Category category = categoryService.getByName(categoryName);
+		for(Car car : carService.getByCategory(category)) {
+			imageStoreService.deleteAllImagesForCar(car);
+			carService.delete(car);
+		}
+		imageStoreService.deleteCategoryImage(category);
+		categoryService.delete(category);
+		return "redirect:/catalog";
+	}
 
-	@GetMapping("/{id}/edit")
-	public String editCarForm(@PathVariable("id") String id, Model model) {
+	@GetMapping("/{carId}/edit")
+	public String editCarForm(@PathVariable("carId") String id, Model model) {
 		model.addAttribute("car", carService.getById(Integer.parseInt(id)));
 		return "forAdmin/editCar";
 	}
 	
-	@PostMapping("/{id}/edit")
-	public String editCar(@PathVariable("id") String id, Model model,
+	@PostMapping("/{carId}/edit")
+	public String editCar(@PathVariable("carId") String id, Model model,
 			@Param("name") String name,
 			@Param("year") Integer year,
 			@Param("tranmission") Transmission tranmission,
@@ -130,29 +142,29 @@ public class AdminController {
 		return "redirect:/catalog";
 	}
 	
-	@GetMapping("/{id}/{imageName}/delete")
-	public String deleteCarImage(@PathVariable("id") String id, Model model,
+	@GetMapping("/{carId}/{imageName}/delete")
+	public String deleteCarImage(@PathVariable("carId") String id, Model model,
 			@PathVariable("imageName") String imageName) throws NumberFormatException, IOException {
 		imageStoreService.deleteCarImageFile(carService.getById(Integer.parseInt(id)), imageName);
 		return "redirect:/catalog/car/"+id;
 	}
 	
-	@GetMapping("/{id}/addImage")
-	public String addCarImageForm(@PathVariable("id") String id, Model model){
+	@GetMapping("/{carId}/addImage")
+	public String addCarImageForm(@PathVariable("carId") String id, Model model){
 		model.addAttribute("car", carService.getById(Integer.parseInt(id)));
 		return "forAdmin/addImage";
 	}
 	
-	@PostMapping("/{id}/addImage")
-	public String addCarImage(@PathVariable("id") String id, Model model,
+	@PostMapping("/{carId}/addImage")
+	public String addCarImage(@PathVariable("carId") String id, Model model,
 			@RequestParam("file") MultipartFile image) throws IOException{
 		Car car = carService.getById(Integer.parseInt(id));
 		imageStoreService.storeCarImage(car, image);
 		return "redirect:/catalog/car/"+id;
 	}
 	
-	@GetMapping("/{id}/delete")
-	public String deleteCar(@PathVariable("id") String id) throws IOException{
+	@GetMapping("/{carId}/delete")
+	public String deleteCar(@PathVariable("carId") String id) throws IOException{
 		Car car = carService.getById(Integer.parseInt(id));
 		imageStoreService.deleteAllImagesForCar(car);
 		carService.delete(car);

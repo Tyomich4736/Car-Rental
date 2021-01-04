@@ -27,6 +27,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
         <img alt="" th:src="@{${'/categories/'+category.imageName}}" width="500" height="320">
         </a>
       </div>
+      <br/><br/>
+      <div sec:authorize="hasAuthority('ADMIN')">
+	<a th:href="@{/admin/category/{category}/delete(category=${category.name})}" class="w-100 btn btn-lg btn-primary">Delete category</a>
+	<br/> <br/>
     </div>
     </th:block>
 </body>

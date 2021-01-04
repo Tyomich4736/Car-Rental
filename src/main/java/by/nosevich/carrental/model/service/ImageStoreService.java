@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.web.multipart.MultipartFile;
 
 import by.nosevich.carrental.model.entities.Car;
+import by.nosevich.carrental.model.entities.Category;
 
 public interface ImageStoreService{
 	void storeCarImage(Car car, MultipartFile file) throws IOException;
@@ -16,4 +17,5 @@ public interface ImageStoreService{
 	
 	void deleteCarImageFile(Car car, String imageName) throws IOException;
 	void deleteAllImagesForCar(Car car) throws IOException;
+	void deleteCategoryImage(Category category) throws IOException;
 }

@@ -65,8 +65,9 @@ public class ClasspathImageStoreService implements ImageStoreService{
 		folder.delete();
 	}
 	
-	private String getImageStoragePath() {
-		return "src/main/resources/static";
+	public void deleteCategoryImage(Category category) throws IOException {
+		String imagePath = getImageStoragePath()+"/categories/"+category.getImageName();
+		new File(imagePath).delete();
 	}
 
 	@Override
@@ -76,5 +77,8 @@ public class ClasspathImageStoreService implements ImageStoreService{
 		return List.of(file.list());
 	}
 
-
+	private String getImageStoragePath() {
+		return "src/main/resources/static";
+	}
+	
 }
