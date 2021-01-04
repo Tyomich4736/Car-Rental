@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -51,22 +52,21 @@ public class ClasspathImageStoreService implements ImageStoreService{
 	public void deleteCarImageFile(Car car, String imageName) throws IOException {
 		String filePath = getImageStoragePath() + "/cars/" + car.getId()
 				+ "/" + imageName;
-		delete(filePath);
+		new File(filePath).delete();
 	}
 
 	@Override
 	public void deleteAllImagesForCar(Car car) throws IOException {
 		String folderPath = getImageStoragePath() + "/cars/"+car.getId();
-		delete(folderPath);
+		File folder = new File(folderPath);
+		Arrays.stream(folder.list()).forEach(fileName -> {
+			new File(folderPath+"/"+fileName).delete();
+		});
+		folder.delete();
 	}
 	
 	private String getImageStoragePath() {
 		return "src/main/resources/static";
-	}
-	
-	private void delete(String filePath) {
-		File file = new File(filePath);
-		file.delete();
 	}
 
 	@Override

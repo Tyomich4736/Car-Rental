@@ -151,6 +151,14 @@ public class AdminController {
 		return "redirect:/catalog/car/"+id;
 	}
 	
+	@GetMapping("/{id}/delete")
+	public String deleteCar(@PathVariable("id") String id) throws IOException{
+		Car car = carService.getById(Integer.parseInt(id));
+		imageStoreService.deleteAllImagesForCar(car);
+		carService.delete(car);
+		return "redirect:/catalog";
+	}
+	
 	private boolean isImageFile(MultipartFile file) {
 		String fileName = file.getOriginalFilename();
 		return fileName.endsWith(".png") || fileName.endsWith(".jpg") ? true : false;

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<title>Categories</title>
+<title><th:block th:text="${currentCategory}"/></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
@@ -32,6 +32,10 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
         <br/>
         <font size="5"><th:block th:text="${car.year}"/></font>
       </div>
+      <div sec:authorize="hasAuthority('ADMIN')">
+	<a th:href="@{/admin/{car}/delete(car=${car.id})}" class="w-100 btn btn-lg btn-primary">Delete car</a>
+	<br/> <br/>
+	</div>
     </div>
     </th:block>
 </body>
