@@ -94,13 +94,13 @@ public class AdminController {
 		return "redirect:/catalog/"+currentCategory;
 	}
 
-	@GetMapping("/editCar/{id}")
+	@GetMapping("/{id}/edit")
 	public String editCarForm(@PathVariable("id") String id, Model model) {
 		model.addAttribute("car", carService.getById(Integer.parseInt(id)));
 		return "forAdmin/editCar";
 	}
 	
-	@PostMapping("/editCar/{id}")
+	@PostMapping("/{id}/edit")
 	public String editCar(@PathVariable("id") String id, Model model,
 			@Param("name") String name,
 			@Param("year") Integer year,
@@ -113,8 +113,8 @@ public class AdminController {
 			@Param("priceFrom4To7Days") Double priceFrom4To7Days,
 			@Param("priceFrom8To15Days") Double priceFrom8To15Days,
 			@Param("priceFrom16To30Days") Double priceFrom16To30Days) throws IOException {
-		
 		Car car = carService.getById(Integer.parseInt(id));
+		
 		if (name!="") car.setName(name);
 		car.setYear(year);
 		if (tranmission!=null) car.setTranmission(tranmission);
@@ -130,6 +130,12 @@ public class AdminController {
 		return "redirect:/catalog";
 	}
 	
+	@GetMapping("/{id}/{imageName}/delete")
+	public String deleteCarImage(@PathVariable("id") String id, Model model,
+			@PathVariable("imageName") String imageName) throws NumberFormatException, IOException {
+		imageStoreService.deleteCarImageFile(carService.getById(Integer.parseInt(id)), imageName);
+		return "redirect:/catalog/car/"+id;
+	}
 	
 	private boolean isImageFile(MultipartFile file) {
 		String fileName = file.getOriginalFilename();
