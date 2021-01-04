@@ -21,15 +21,22 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
       <div class="card-body" align="center">
       	<th:block th:each="imageName : ${images}">
         <img alt="" th:src="@{${'/cars/'+car.id+'/'+imageName}}" width="780" height="500">
-        <div th:if="${car.previewImageName!=imageName}"> <br/>
+        <div th:if="${car.previewImageName!=imageName}">
           <a sec:authorize="hasAuthority('ADMIN')" th:href="@{${'/admin/'+car.id+'/'+imageName+'/delete'}}">
            <button type="button" class="w-100 btn btn-lg btn-outline-primary">Delete Image</button>
           </a>
           </div>
+          <br/><br/>
         </th:block>
+        <a sec:authorize="hasAuthority('ADMIN')" th:href="@{${'/admin/'+car.id+'/addImage'}}">
+        <br/>
+        <br/>
+           <button type="button" class="w-100 btn btn-lg btn-outline-primary">Add Image</button>
+          </a>
         <br/>
         
         <font size="5">
+        Parameters:
         <table>
         	<tr th:if="${car.year!=null}">
         		<th>Year of issue:</th>

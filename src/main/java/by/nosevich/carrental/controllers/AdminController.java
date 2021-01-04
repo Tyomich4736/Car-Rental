@@ -137,6 +137,20 @@ public class AdminController {
 		return "redirect:/catalog/car/"+id;
 	}
 	
+	@GetMapping("/{id}/addImage")
+	public String addCarImageForm(@PathVariable("id") String id, Model model){
+		model.addAttribute("car", carService.getById(Integer.parseInt(id)));
+		return "forAdmin/addImage";
+	}
+	
+	@PostMapping("/{id}/addImage")
+	public String addCarImage(@PathVariable("id") String id, Model model,
+			@RequestParam("file") MultipartFile image) throws IOException{
+		Car car = carService.getById(Integer.parseInt(id));
+		imageStoreService.storeCarImage(car, image);
+		return "redirect:/catalog/car/"+id;
+	}
+	
 	private boolean isImageFile(MultipartFile file) {
 		String fileName = file.getOriginalFilename();
 		return fileName.endsWith(".png") || fileName.endsWith(".jpg") ? true : false;
