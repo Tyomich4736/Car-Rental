@@ -1,8 +1,8 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org"
-xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<title><th:block th:text="${currentCategory}"/></title>
+<title><th:block th:text="${currentCategory}" /></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
@@ -12,31 +12,49 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	crossorigin="anonymous">
 
 <body>
-	<th:block th:insert="fragments/navBar.html"/>
+	<th:block th:insert="fragments/navBar.html" />
 	<div align="center">
-		<h1><span th:text="${currentCategory}"></h1>
+		<h1>
+			<span th:text="${currentCategory}">
+		</h1>
 	</div>
 	<div sec:authorize="hasAuthority('ADMIN')">
-	<a th:href="@{/admin/{category}/addCar(category=${currentCategory})}" class="w-100 btn btn-lg btn-primary">Add car</a>
+		<a th:href="@{/admin/{category}/addCar(category=${currentCategory})}"
+			class="w-100 btn btn-lg btn-primary">Add car</a>
 	</div>
-	
+
 	<th:block th:each="car : ${cars}">
-	<div class="card mb-4 shadow-sm" align="center">
-      <div class="card-header">
-        <h4 class="my-0 fw-normal"><span th:text="${car.name}"/></h4>
-      </div>
-      <div class="card-body">
-      <a th:href="@{${'/catalog/car/'+car.id}}">
-        <img alt="" th:src="@{${'/cars/'+car.id+'/'+car.previewImageName}}" width="500" height="320">
-        </a>
-        <br/>
-        <font size="5"><th:block th:text="${car.year}"/></font>
-      </div>
-      <div sec:authorize="hasAuthority('ADMIN')">
-	<a th:href="@{/admin/{car}/delete(car=${car.id})}" class="w-100 btn btn-lg btn-primary">Delete car</a>
-	<br/> <br/>
-	</div>
-    </div>
-    </th:block>
+		<div class="card mb-4 shadow-sm" align="center">
+			<div class="card-header">
+				<h4 class="my-0 fw-normal">
+					<span th:text="${car.name}" />
+				</h4>
+			</div>
+			<div class="card-body">
+				<a th:href="@{${'/catalog/car/'+car.id}}"> <img alt=""
+					th:src="@{${'/cars/'+car.id+'/'+car.previewImageName}}" width="500"
+					height="320">
+				</a> <br /> <font size="5"><th:block th:text="${car.year}" /></font>
+			</div>
+			<div sec:authorize="hasAuthority('ADMIN')">
+				<a th:href="@{/admin/{car}/delete(car=${car.id})}"
+					class="w-100 btn btn-lg btn-primary">Delete car</a> <br /> <br />
+			</div>
+		</div>
+	</th:block>
+
+	<nav>
+		<ul class="pagination justify-content-center">
+		<th:block th:if="${currentPage!=0}">
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage-1})}">Previous</a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"></a></li>
+		</th:block>
+			<li class="page-item active"><a class="page-link" href="#"><th:block th:text="${currentPage+1}"></a></li>
+		<th:block th:if="${hasNextPage==true}">	
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage+1})}"><th:block th:text="${currentPage+2}"></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage+1})}">Next</a></li>
+		</th:block>	
+		</ul>
+	</nav>
 </body>
 </html>

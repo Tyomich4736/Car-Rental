@@ -3,6 +3,7 @@ package by.nosevich.carrental.model.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,7 +21,7 @@ public class JPACarService implements CarService {
 	
 	@Override
 	public List<Car> getAll() {
-		return repo.findAll();
+		return repo.findAllByOrderByName();
 	}
 
 	@Override
@@ -40,7 +41,12 @@ public class JPACarService implements CarService {
 
 	@Override
 	public List<Car> getByCategory(Category category) {
-		return repo.findByCategory(category);
+		return repo.findByCategoryOrderByName(category);
+	}
+
+	@Override
+	public List<Car> getByCategory(Category category, Pageable pageable) {
+		return repo.findByCategoryOrderByName(category, pageable);
 	}
 
 }

@@ -19,7 +19,7 @@ public class JPACategoryService implements CategoryService{
 	
 	@Override
 	public List<Category> getAll() {
-		return repo.findAll();
+		return repo.findAllByOrderByNameAsc();
 	}
 
 	@Override
