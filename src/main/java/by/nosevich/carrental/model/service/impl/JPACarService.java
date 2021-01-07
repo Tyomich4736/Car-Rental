@@ -49,4 +49,15 @@ public class JPACarService implements CarService {
 		return repo.findByCategoryOrderByName(category, pageable);
 	}
 
+	@Override
+	public List<Car> searchByNameLike(String title, Pageable pageable) {
+		return repo.findByNameContainingIgnoreCase(title, pageable);
+	}
+
+	@Override
+	public List<Car> searchByNameLikeAndCategory(String title, Category category, Pageable pageable) {
+		return repo.findByNameContainingIgnoreCaseAndCategory(title, category, pageable);
+	}
+	
+
 }

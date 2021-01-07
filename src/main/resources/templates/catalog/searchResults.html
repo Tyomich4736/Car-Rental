@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<title><th:block th:text="${currentCategory}" /></title>
+<title><th:block th:text="Search" /></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
@@ -13,14 +13,16 @@
 
 <body>
 	<th:block th:insert="fragments/navBar.html" />
+	<form class="form-inline md-form mr-auto mb-4 justify-content-center" th:action="@{/catalog/search}" method="post">
+		<input class="form-control mr-sm-2" type="text" placeholder="Search"
+			aria-label="Search" name="search">
+		<button class="btn btn-outline-primary"
+			type="submit">Search</button>
+	</form>
 	<div align="center">
 		<h1>
-			<span th:if="${currentCategory!=null}" th:text="${currentCategory}">
+			<th:block th:text="${'Results for ['+search+']'}">
 		</h1>
-	</div>
-	<div sec:authorize="hasAuthority('ADMIN')">
-		<a th:href="@{/admin/{category}/addCar(category=${currentCategory})}"
-			class="w-100 btn btn-lg btn-primary">Add car</a>
 	</div>
 
 	<th:block th:each="car : ${cars}">
@@ -43,18 +45,24 @@
 		</div>
 	</th:block>
 
-	<nav>
+	<nav th:if="${cars.size()!=0}">
 		<ul class="pagination justify-content-center">
 		<th:block th:if="${currentPage!=0}">
-			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage-1})}">Previous</a></li>
-			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage-1})}">Previous</a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"></a></li>
 		</th:block>
-			<li class="page-item active"><a class="page-link" href="#"><th:block th:text="${currentPage+1}"></a></li>
+			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"></a></li>
 		<th:block th:if="${hasNextPage==true}">	
-			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage+1})}"><th:block th:text="${currentPage+2}"></a></li>
-			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage+1})}">Next</a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage+1})}"><th:block th:text="${currentPage+2}"></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage+1})}">Next</a></li>
 		</th:block>	
 		</ul>
 	</nav>
+	
+	<div align="center" th:if="${cars.size()==0}">
+		<h1>
+			No results found
+		</h1>
+	</div>
 </body>
 </html>
