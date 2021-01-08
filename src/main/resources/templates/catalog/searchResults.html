@@ -13,12 +13,7 @@
 
 <body>
 	<th:block th:insert="fragments/navBar.html" />
-	<form class="form-inline md-form mr-auto mb-4 justify-content-center" th:action="@{/catalog/search}" method="post">
-		<input class="form-control mr-sm-2" type="text" placeholder="Search"
-			aria-label="Search" name="search">
-		<button class="btn btn-outline-primary"
-			type="submit">Search</button>
-	</form>
+	<th:block th:insert="fragments/searchBar.html" />
 	<div align="center">
 		<h1>
 			<th:block th:text="${'Results for ['+search+']'}">
@@ -38,9 +33,9 @@
 					height="320">
 				</a> <br /> <font size="5"><th:block th:text="${car.year}" /></font>
 			</div>
-			<div sec:authorize="hasAuthority('ADMIN')">
+			<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto">
 				<a th:href="@{/admin/{car}/delete(car=${car.id})}"
-					class="w-100 btn btn-lg btn-primary">Delete car</a> <br /> <br />
+					class="btn btn-lg btn-danger">Delete car</a> <br /> <br />
 			</div>
 		</div>
 	</th:block>

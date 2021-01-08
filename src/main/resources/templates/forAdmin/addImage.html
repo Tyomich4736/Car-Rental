@@ -22,7 +22,7 @@
     <div class="form-group">
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Image:</font></label>
       <div class="col-sm-10">          
-        <input type="file" name="file">
+        <input type="file" name="file" required="required" accept="image/jpeg,image/png,image/gif" id="file" onchange="Filevalidation(this)">
       </div>
        <label class="control-label col-sm-2" >The uploaded file must be in jpg or png format and have a size of no more than 1 mb</label>
     </div>
@@ -35,4 +35,23 @@
   </form>
   </div>
 </body>
+<script> 
+    function Filevalidation(fi){ 
+        if (fi.files.length > 0) { 
+            for (const i = 0; i <= fi.files.length - 1; i++) { 
+  
+                const fsize = fi.files.item(i).size; 
+                const file = Math.round((fsize / 1024)); 
+                if (file >= 1024) { 
+                    alert( 
+                      "File too Big, please select a file less than 1mb"); 
+                    fi.value = '';
+                } else { 
+                    document.getElementById('size').innerHTML = '<b>'
+                    + file + '</b> KB'; 
+                } 
+            } 
+        } 
+    } 
+</script> 
 </html>

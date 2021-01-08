@@ -40,7 +40,7 @@ public class AdminController {
 	@PostMapping("/addCategory")
 	public String addCategory(@RequestParam("name") String name, @RequestParam("file") MultipartFile file) {
 		try {
-			if (isImageFile(file) && !hasCategoryWithSameName(name)) {
+			if (!hasCategoryWithSameName(name)) {
 				imageStoreService.storeCategoryImage(file);
 				Category category = new Category();
 				category.setName(name);
@@ -52,58 +52,39 @@ public class AdminController {
 		}
 		return "redirect:/catalog";
 	}
-	
+
 	private boolean hasCategoryWithSameName(String name) {
-		for(Category category : categoryService.getAll())
-			if (category.getImageName().equals(name)) return true;
+		for (Category category : categoryService.getAll())
+			if (category.getImageName().equals(name))
+				return true;
 		return false;
 	}
-	
+
 	@GetMapping("/{category}/addCar")
 	public String addCarForm(@PathVariable("category") String category, Model model) {
 		model.addAttribute("currentCategory", category);
 		return "forAdmin/addCar";
 	}
-	
+
 	@PostMapping("/{currentCategory}/addCar")
-	public String addCar(@PathVariable("currentCategory") String currentCategory,
-			Car car,
+	public String addCar(@PathVariable("currentCategory") String currentCategory, Car car,
 			@RequestParam("file") MultipartFile preview) {
 		try {
-			if (isImageFile(preview) && carIsCorrectly(car)) {
-				carService.save(car);
-				imageStoreService.storeCarPreview(car, preview);
-				car.setCategory(categoryService.getByName(currentCategory));
-				carService.save(car);
-			} else 
-				return "redirect:/admin/"+currentCategory+"/addCar";
-		} catch(Exception e) {
+			carService.save(car);
+			imageStoreService.storeCarPreview(car, preview);
+			car.setCategory(categoryService.getByName(currentCategory));
+			carService.save(car);
+		} catch (Exception e) {
 			carService.delete(car);
-			return "redirect:/admin/"+currentCategory+"/addCar";
+			return "redirect:/admin/" + currentCategory + "/addCar";
 		}
-		return "redirect:/catalog/"+currentCategory;
+		return "redirect:/catalog/" + currentCategory;
 	}
-	
-	private boolean carIsCorrectly(Car car) {
-		if (car.getName()!=""
-				&& car.getPriceFrom1To3Days()!=null
-				&& car.getPriceFrom4To7Days()!=null
-				&& car.getPriceFrom8To15Days()!=null
-				&& car.getPriceFrom16To30Days()!=null) {
-			return true;
-		}
-		return false;
-	}
-	
-	private boolean isImageFile(MultipartFile file) {
-		String fileName = file.getOriginalFilename();
-		return fileName.endsWith(".png") || fileName.endsWith(".jpg") ? true : false;
-	}
-	
+
 	@GetMapping("/category/{category}/delete")
 	public String deleteCategory(@PathVariable("category") String categoryName) throws IOException {
 		Category category = categoryService.getByName(categoryName);
-		for(Car car : carService.getByCategory(category)) {
+		for (Car car : carService.getByCategory(category)) {
 			imageStoreService.deleteAllImagesForCar(car);
 			carService.delete(car);
 		}
@@ -117,57 +98,67 @@ public class AdminController {
 		model.addAttribute("car", carService.getById(Integer.parseInt(id)));
 		return "forAdmin/editCar";
 	}
-	
+
 	@PostMapping("/{carId}/edit")
-	public String editCar(@PathVariable("carId") String id, Model model, Car editedCar){
+	public String editCar(@PathVariable("carId") String id, Model model, Car editedCar) {
 		Car car = carService.getById(Integer.parseInt(id));
-		
-		if (editedCar.getName()!="") car.setName(editedCar.getName());
-		car.setYear(editedCar.getYear());
-		if (editedCar.getTranmission()!=null) car.setTranmission(editedCar.getTranmission());
-		car.setFuelConsumption(editedCar.getFuelConsumption());
-		if (editedCar.getFuelType()!=null) car.setFuelType(editedCar.getFuelType());
-		car.setNumberOfSeats(editedCar.getNumberOfSeats());
-		car.setAverageSpeed(editedCar.getAverageSpeed());
-		if (editedCar.getPriceFrom1To3Days()!=null) car.setPriceFrom1To3Days(editedCar.getPriceFrom1To3Days());
-		if (editedCar.getPriceFrom4To7Days()!=null) car.setPriceFrom4To7Days(editedCar.getPriceFrom4To7Days());
-		if (editedCar.getPriceFrom8To15Days()!=null) car.setPriceFrom8To15Days(editedCar.getPriceFrom8To15Days());
-		if (editedCar.getPriceFrom16To30Days()!=null) car.setPriceFrom16To30Days(editedCar.getPriceFrom16To30Days());
+		setNotNullFieldsFromCarToCar(editedCar, car);
 		carService.save(car);
 		return "redirect:/catalog";
 	}
-	
+
+	private void setNotNullFieldsFromCarToCar(Car from, Car to) {
+		if (from.getName() != "")
+			to.setName(from.getName());
+		to.setYear(from.getYear());
+		if (from.getTranmission() != null)
+			to.setTranmission(from.getTranmission());
+		to.setFuelConsumption(from.getFuelConsumption());
+		if (from.getFuelType() != null)
+			to.setFuelType(from.getFuelType());
+		to.setNumberOfSeats(from.getNumberOfSeats());
+		to.setAverageSpeed(from.getAverageSpeed());
+		if (from.getPriceFrom1To3Days() != null)
+			to.setPriceFrom1To3Days(from.getPriceFrom1To3Days());
+		if (from.getPriceFrom4To7Days() != null)
+			to.setPriceFrom4To7Days(from.getPriceFrom4To7Days());
+		if (from.getPriceFrom8To15Days() != null)
+			to.setPriceFrom8To15Days(from.getPriceFrom8To15Days());
+		if (from.getPriceFrom16To30Days() != null)
+			to.setPriceFrom16To30Days(from.getPriceFrom16To30Days());
+	}
+
 	@GetMapping("/{carId}/{imageName}/delete")
 	public String deleteCarImage(@PathVariable("carId") String id, Model model,
 			@PathVariable("imageName") String imageName) throws NumberFormatException, IOException {
 		imageStoreService.deleteCarImageFile(carService.getById(Integer.parseInt(id)), imageName);
-		return "redirect:/catalog/car/"+id;
+		return "redirect:/catalog/car/" + id;
 	}
-	
+
 	@GetMapping("/{carId}/addImage")
-	public String addCarImageForm(@PathVariable("carId") String id, Model model){
+	public String addCarImageForm(@PathVariable("carId") String id, Model model) {
 		model.addAttribute("car", carService.getById(Integer.parseInt(id)));
 		return "forAdmin/addImage";
 	}
-	
+
 	@PostMapping("/{carId}/addImage")
 	public String addCarImage(@PathVariable("carId") String id, Model model,
-			@RequestParam("file") MultipartFile image){
+			@RequestParam("file") MultipartFile image) {
 		Car car = carService.getById(Integer.parseInt(id));
 		try {
-		imageStoreService.storeCarImage(car, image);
+			imageStoreService.storeCarImage(car, image);
 		} catch (IOException e) {
-			return "redirect:/admin/"+id+"/addImage";
+			return "redirect:/admin/" + id + "/addImage";
 		}
-		return "redirect:/catalog/car/"+id;
+		return "redirect:/catalog/car/" + id;
 	}
-	
+
 	@GetMapping("/{carId}/delete")
-	public String deleteCar(@PathVariable("carId") String id) throws IOException{
+	public String deleteCar(@PathVariable("carId") String id) throws IOException {
 		Car car = carService.getById(Integer.parseInt(id));
 		imageStoreService.deleteAllImagesForCar(car);
 		carService.delete(car);
 		return "redirect:/catalog";
 	}
-	
+
 }

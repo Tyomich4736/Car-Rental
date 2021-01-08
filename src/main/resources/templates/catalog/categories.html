@@ -13,17 +13,12 @@
 
 <body>
 	<th:block th:insert="fragments/navBar.html" />
+	<th:block th:insert="fragments/searchBar.html" />
 	
-	<form class="form-inline md-form mr-auto mb-4 justify-content-center" th:action="@{/catalog/search}" method="post">
-		<input class="form-control mr-sm-2" type="text" placeholder="Search"
-			aria-label="Search" name="search">
-		<button class="btn btn-outline-primary"
-			type="submit">Search</button>
-	</form>
 	
-	<div sec:authorize="hasAuthority('ADMIN')">
+	<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto">
 		<a th:href="@{/admin/addCategory}"
-			class="w-100 btn btn-lg btn-primary">Add category</a>
+			class="btn btn-lg btn-primary">Add category</a>
 	</div>
 
 	<th:block th:each="category : ${categories}">
@@ -40,10 +35,9 @@
 				</a>
 			</div>
 			<br /> <br />
-			<div sec:authorize="hasAuthority('ADMIN')">
-				<a
-					th:href="@{/admin/category/{category}/delete(category=${category.name})}"
-					class="w-100 btn btn-lg btn-primary">Delete category</a> <br /> <br />
+			<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto">
+				<a th:href="@{/admin/category/{category}/delete(category=${category.name})}"
+					class="btn btn-lg btn-danger">Delete category</a> <br /> <br />
 			</div>
 	</th:block>
 </body>
