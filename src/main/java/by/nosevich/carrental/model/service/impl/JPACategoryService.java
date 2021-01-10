@@ -38,7 +38,7 @@ public class JPACategoryService implements CategoryService{
 	}
 
 	@Override
-	public Category getByName(String name) {
+	public Category getByName(String name) throws NullPointerException{
 		return repo.findByName(name);
 	}
 	

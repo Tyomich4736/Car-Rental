@@ -25,7 +25,7 @@ public class JPACarService implements CarService {
 	}
 
 	@Override
-	public Car getById(int id) {
+	public Car getById(int id) throws NullPointerException{
 		return repo.getOne(id);
 	}
 

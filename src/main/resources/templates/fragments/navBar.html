@@ -12,7 +12,6 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <meta name="author"
 	content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
 <meta name="generator" content="Hugo 0.79.0">
-<title>Pricing example · Bootstrap v5.0</title>
 
 <link rel="canonical"
 	href="https://getbootstrap.com/docs/5.0/examples/pricing/">
@@ -76,8 +75,12 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 		class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
 		<p class="h5 my-0 me-md-auto fw-normal">Rental</p>
 		<nav class="my-2 my-md-0 me-md-3">
-			<a class="p-2 text-dark" href="#">Home</a> <a class="p-2 text-dark"
-				th:href="@{/catalog}">Catalor</a> <a class="p-2 text-dark" href="#">My orders</a>
+			<a class="p-2 text-dark" href="#">Home</a>
+			<a class="p-2 text-dark" th:href="@{/catalog}">Catalor</a>
+			<a sec:authorize="hasAuthority('CLIENT')" class="p-2 text-dark" href="#">My orders</a>
+			<a sec:authorize="hasAuthority('EMPLOYEE')" class="p-2 text-dark" href="#">Today's orders</a>
+			<a sec:authorize="hasAuthority('ADMIN')" class="p-2 text-dark" href="#">Users</a>
+			<a sec:authorize="hasAuthority('ADMIN')" class="p-2 text-dark" href="#">List of accessories</a>
 			<a class="p-2 text-dark" href="#">About us</a>
 		</nav> &nbsp; &nbsp; &nbsp;
 			<a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary" th:href="@{/login}">Sign up</a>
@@ -86,6 +89,5 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 				<input  class="btn btn-outline-primary" type="submit" value="Logout">
 			</form>
 	</header>
-
 </body>
 </html>

@@ -3,7 +3,6 @@ package by.nosevich.carrental.controllers;
 import java.io.IOException;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +14,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Category;
-import by.nosevich.carrental.model.entities.carenums.FuelType;
-import by.nosevich.carrental.model.entities.carenums.Transmission;
 import by.nosevich.carrental.model.service.CarService;
 import by.nosevich.carrental.model.service.CategoryService;
 import by.nosevich.carrental.model.service.ImageStoreService;

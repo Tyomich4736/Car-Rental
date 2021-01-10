@@ -3,6 +3,8 @@ package by.nosevich.carrental.controllers;
 import java.io.IOException;
 import java.util.UUID;
 
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
@@ -33,7 +35,7 @@ public class AuthController {
 				userService.saveProtectedUser(user);
 			} else
 				return "redirect:/register";
-		} catch (Exception e) {
+		} catch (MessagingException e) {
 			return "redirect:/register";
 		}
 		return "redirect:/successfulreg";
