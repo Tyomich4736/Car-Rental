@@ -25,12 +25,17 @@
 			<tr>
 				<th scope="col">Name</th>
 				<th scope="col">Price</th>
+				<th scope="col">Actions</th>
 			</tr>
 		</thead>
 		<tbody>
 			<tr th:each="acc : ${accessories}">
 				<td><th:block th:text="${acc.name}"/></td>
 				<td><th:block th:text="${acc.price}"/> BYN</td>
+				<td>
+					<a class="btn btn-danger" th:href="@{/admin/deleteAccessory/{id}(id = ${acc.id})}">Delete</a>
+					<a class="btn btn-primary" th:href="@{/admin/editAccessory/{id}(id = ${acc.id})}">Edit</a>
+				</td>
 			</tr>
 		</tbody>
 	</table>
