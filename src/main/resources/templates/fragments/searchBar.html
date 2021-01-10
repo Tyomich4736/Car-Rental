@@ -3,7 +3,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 <body>
 <form class="form-inline md-form mr-auto mb-4 justify-content-center" th:action="@{/catalog/search}">
 		<input class="form-control mr-sm-2" type="text" placeholder="Search"
-			aria-label="Search" name="search" required="required">
+			aria-label="Search" name="search" required="required" th:value="${search}">
 		<button class="btn btn-outline-primary"
 			type="submit">Search</button>
 	</form>

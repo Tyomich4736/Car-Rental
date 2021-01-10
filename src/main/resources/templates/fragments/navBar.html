@@ -79,8 +79,8 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 			<a class="p-2 text-dark" th:href="@{/catalog}">Catalor</a>
 			<a sec:authorize="hasAuthority('CLIENT')" class="p-2 text-dark" href="#">My orders</a>
 			<a sec:authorize="hasAuthority('EMPLOYEE')" class="p-2 text-dark" href="#">Today's orders</a>
-			<a sec:authorize="hasAuthority('ADMIN')" class="p-2 text-dark" href="#">Users</a>
-			<a sec:authorize="hasAuthority('ADMIN')" class="p-2 text-dark" th:href="@{/admin/accessories}">List of accessories</a>
+			<a sec:authorize="hasAnyAuthority('ADMIN','EMPLOYEE')" class="p-2 text-dark" th:href="@{/users}">Users</a>
+			<a sec:authorize="hasAuthority('ADMIN')" class="p-2 text-dark" th:href="@{/admin/accessories}">Accessories</a>
 			<a class="p-2 text-dark" href="#">About us</a>
 		</nav> &nbsp; &nbsp; &nbsp;
 			<a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary" th:href="@{/login}">Sign up</a>

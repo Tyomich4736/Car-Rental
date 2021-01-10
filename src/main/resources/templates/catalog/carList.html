@@ -50,7 +50,7 @@
 			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage-1})}">Previous</a></li>
 			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"></a></li>
 		</th:block>
-			<li class="page-item active"><a class="page-link" href="#"><th:block th:text="${currentPage+1}"></a></li>
+			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"></a></li>
 		<th:block th:if="${hasNextPage==true}">	
 			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage+1})}"><th:block th:text="${currentPage+2}"></a></li>
 			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage+1})}">Next</a></li>

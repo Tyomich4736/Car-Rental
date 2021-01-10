@@ -15,5 +15,4 @@ public interface CarRepository extends JpaRepository<Car, Integer>{
 	List<Car> findByCategoryOrderByName(Category category);
 	List<Car> findAllByOrderByName();
 	List<Car> findByNameContainingIgnoreCase(String title, Pageable pageable);
-	List<Car> findByNameContainingIgnoreCaseAndCategory(String title, Category category, Pageable pageable);
 }

@@ -1,0 +1,89 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>Accessories</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<body>
+	<th:block th:insert="fragments/navBar.html" />
+	<div align="center">
+		<h1>
+			Users
+		</h1>
+	</div>
+
+	<form class="form-inline md-form mr-auto mb-4 justify-content-center" th:action="@{/users}">
+		<input class="form-control mr-sm-2" type="text" placeholder="Search"
+			aria-label="Search" name="search" required="required" th:value="${search}">
+		<button class="btn btn-outline-primary"
+			type="submit">Search</button>
+	</form>
+
+	<div>
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">E-mail</th>
+				<th scope="col">First name</th>
+				<th scope="col">Last name</th>
+				<th scope="col">Phone number</th>
+				<th scope="col">Role</th>
+				<th scope="col">Is active</th>
+				<th scope="col">Actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${users}">
+				<td><th:block th:text="${user.email}"/></td>
+				<td><th:block th:text="${user.firstName}"/></td>
+				<td><th:block th:text="${user.lastName}"/></td>
+				<td><th:block th:text="${user.phoneNumber}"/></td>
+				<td><th:block th:text="${user.role.name()}"/></td>
+				<td><th:block th:text="${user.isActive}"/></td>
+				<td>
+					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.role.name()=='CLIENT'}" 
+					th:href="@{/users/employee?id={id}(id = ${user.id})}">Make an employee</a>
+					<a class="btn btn-primary" href="#">Orders</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	
+	<nav th:if="${search==null}">
+		<ul class="pagination justify-content-center">
+		<th:block th:if="${currentPage!=0}">
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage-1})}">Previous</a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"></a></li>
+		</th:block>
+			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"></a></li>
+		<th:block th:if="${hasNextPage==true}">	
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage+1})}"><th:block th:text="${currentPage+2}"></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage+1})}">Next</a></li>
+		</th:block>	
+		</ul>
+	</nav>
+	
+	<nav th:if="${search!=null}">
+		<ul class="pagination justify-content-center">
+		<th:block th:if="${currentPage!=0}">
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage-1}, search=${search})}">Previous</a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage-1}, search=${search})}"><th:block th:text="${currentPage}"></a></li>
+		</th:block>
+			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"></a></li>
+		<th:block th:if="${hasNextPage==true}">	
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage+1}, search=${search})}"><th:block th:text="${currentPage+2}"></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage+1}, search=${search})}">Next</a></li>
+		</th:block>	
+		</ul>
+	</nav>
+	<br/>
+</body>
+</html>
