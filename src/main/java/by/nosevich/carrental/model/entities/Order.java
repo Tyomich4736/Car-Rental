@@ -48,6 +48,6 @@ public class Order {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private Car car;
-	@ManyToMany(mappedBy = "projects", fetch = FetchType.EAGER)
-    private Set<Accessory> asseccories = new HashSet<>();
+	@ManyToMany(mappedBy = "orders", fetch = FetchType.EAGER)
+    private Set<Accessory> asseccories = new HashSet<Accessory>();
 }

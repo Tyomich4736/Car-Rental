@@ -1,4 +1,4 @@
-package by.nosevich.carrental.model.service.impl;
+package by.nosevich.carrental.model.service.entityservice.impl;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import by.nosevich.carrental.model.entities.Order;
 import by.nosevich.carrental.model.repo.OrderRepository;
-import by.nosevich.carrental.model.service.OrderService;
+import by.nosevich.carrental.model.service.entityservice.OrderService;
 
 @Service
 @Transactional

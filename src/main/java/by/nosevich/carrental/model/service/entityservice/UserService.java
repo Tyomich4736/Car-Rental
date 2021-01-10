@@ -1,4 +1,4 @@
-package by.nosevich.carrental.model.service;
+package by.nosevich.carrental.model.service.entityservice;
 
 import java.util.Optional;
 

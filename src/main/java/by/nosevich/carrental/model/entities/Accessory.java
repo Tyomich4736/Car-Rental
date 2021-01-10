@@ -5,7 +5,6 @@ import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -36,5 +35,5 @@ public class Accessory {
     @JoinTable(name = "accessory_order",
     			joinColumns = @JoinColumn(name = "accessory_id"),
     			inverseJoinColumns = @JoinColumn(name = "order_id"))
-    private Set<Order> orders = new HashSet<>();
+    private Set<Order> orders = new HashSet<Order>();
 }

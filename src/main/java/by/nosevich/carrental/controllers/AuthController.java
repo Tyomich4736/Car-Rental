@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import by.nosevich.carrental.model.entities.User;
 import by.nosevich.carrental.model.entities.userenums.Role;
 import by.nosevich.carrental.model.service.MailService;
-import by.nosevich.carrental.model.service.UserService;
+import by.nosevich.carrental.model.service.entityservice.UserService;
 
 @Controller
 public class AuthController {

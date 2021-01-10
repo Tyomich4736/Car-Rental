@@ -12,7 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import by.nosevich.carrental.model.entities.userenums.Role;
-import by.nosevich.carrental.model.service.UserService;
+import by.nosevich.carrental.model.service.entityservice.UserService;
 
 @Configuration
 @EnableWebSecurity

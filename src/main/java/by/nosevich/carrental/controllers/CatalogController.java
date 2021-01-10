@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Category;
-import by.nosevich.carrental.model.service.CarService;
-import by.nosevich.carrental.model.service.CategoryService;
 import by.nosevich.carrental.model.service.ImageStoreService;
+import by.nosevich.carrental.model.service.entityservice.CarService;
+import by.nosevich.carrental.model.service.entityservice.CategoryService;
 
 @Controller
 @RequestMapping("/catalog")

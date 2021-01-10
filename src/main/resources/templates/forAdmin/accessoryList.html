@@ -1,0 +1,45 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>Accessories</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<body>
+	<th:block th:insert="fragments/navBar.html" />
+	<div align="center">
+		<h1>
+			Accessories
+		</h1>
+	</div>
+
+	<div class="d-grid gap-2 col-6 mx-auto">
+	<table class="table">
+		<thead>
+			<tr>
+				<th scope="col">Name</th>
+				<th scope="col">Price</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="acc : ${accessories}">
+				<td><th:block th:text="${acc.name}"/></td>
+				<td><th:block th:text="${acc.price}"/> BYN</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+	
+	<div class="d-grid gap-2 col-6 mx-auto"
+		sec:authorize="hasAuthority('ADMIN')">
+		<a th:href="@{/admin/addAccessory}"
+			class="btn btn-lg btn-primary">Add accessory</a>
+	</div>
+</body>
+</html>

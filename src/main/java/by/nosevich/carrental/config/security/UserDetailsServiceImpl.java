@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import by.nosevich.carrental.model.entities.User;
-import by.nosevich.carrental.model.service.UserService;
+import by.nosevich.carrental.model.service.entityservice.UserService;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

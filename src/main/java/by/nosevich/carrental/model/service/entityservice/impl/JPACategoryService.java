@@ -1,4 +1,4 @@
-package by.nosevich.carrental.model.service.impl;
+package by.nosevich.carrental.model.service.entityservice.impl;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import by.nosevich.carrental.model.entities.Category;
 import by.nosevich.carrental.model.repo.CategoryRepository;
-import by.nosevich.carrental.model.service.CategoryService;
+import by.nosevich.carrental.model.service.entityservice.CategoryService;
 
 @Service
 @Transactional

@@ -64,6 +64,4 @@ public class Car {
 	private Category category;
 	@OneToMany(mappedBy = "car")
 	private List<Order> orders = new ArrayList<Order>();
-	@OneToOne(mappedBy = "car", cascade = CascadeType.REMOVE)
-	private Insurance insurance;
 }
