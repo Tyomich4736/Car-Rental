@@ -33,7 +33,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 		http.
 			authorizeRequests().
 				antMatchers("/", "/home", "/register", "/activate/**","/successfulreg", "/img/**",
-						"/catalog", "/catalog/**", "/categories/**", "/cars/**").permitAll().
+						"/catalog", "/catalog/**", "/categories/**", "/cars/**", "/rentterms").permitAll().
 				antMatchers("/admin/**").hasAnyAuthority("ADMIN").
 				antMatchers("/users","/users/**").hasAnyAuthority("ADMIN", "EMPLOYEE").
 				anyRequest().authenticated().

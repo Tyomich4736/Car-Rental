@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title><th:block th:text="${currentCategory}" /></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<body>
+	<th:block th:insert="fragments/navBar.html" />
+	<h1 align="center">Rent terms</h1>
+	<div class="container">
+	
+	
+		<font size="4">We offer to rent a car on the most favorable terms. Car rental in our company is carried out for a period of at least 1 day.
+The countdown starts from the moment of signing the vehicle acceptance certificate.
+For economy class cars, a minimum driving experience is sufficient, for cars costing over $ 70 (at the rate of the National Bank of Belarus), driving experience is required at least 2 years
+All cars are insured under the CASCO policy, in case of an accident, you must immediately notify us and call the traffic police. 
+</font>
+<br/>
+	<b><font size="5">Car rental rates include:</font></b>
+	<br/>
+	<ul>
+		<li><font size="4">car rental cost</font></li>
+		<li><font size="4">insurance against theft, traffic accidents and damage by third parties</font></li>
+	</ul>
+	<b><font size="5">Car rental rates do not include:</font></b>
+	<ul>
+		<li><font size="4">the cost of fuel and windscreen washer</font></li>
+		<li><font size="4">payment for parking</font></li>
+		<li><font size="4">payment of fines for traffic violations</font></li>
+		<li><font size="4">car wash and cleaning</font></li>
+		<li><font size="4">punctures and damage to tires and rims</font></li>
+		<li><font size="4">damage to the interior of the car</font></li>
+	</ul>
+	<b><font size="5">Rent payment terms:</font></b>
+	<br/>
+	<font size="4">Car rental is paid in full in cash upon signing the contract.</font>
+	<br/>
+	<b><font size="5">Rental deposit</font></b>
+	<br/>
+	<ul>
+		<li><font size="4">for renting an economy and middle class car (worth up to $ 70), a deposit of $ 50 (at the rate of the National Bank of Belarus)</font></li>
+		<li><font size="4">for business class cars, experience from 5 years and age not less than 25 years</font></li>
+		<li><font size="4">p.s. for citizens of the Republic of Belarus with a driving experience of up to 2 years, the minimum deposit is $ 100 (at the rate of the National Bank of Belarus)</font></li>
+		<li><font size="4">for renting a premium class car, a deposit from $ 100 to $ 300 (at the rate of the National Bank of Belarus)</font></li>
+		<li><font size="4">for renting a car traveling outside the Republic of Belarus from $ 200 (at the rate of NB.RB.)</font></li>
+		<li><font size="4">for non-residents of the Republic of Belarus, the deposit ranges from $ 100 to $ 300 (at the rate of NB.RB.), depending on the chosen car and your driving experience.</font></li>
+	</ul>
+	
+	</div>
+</body>
+</html>
+	

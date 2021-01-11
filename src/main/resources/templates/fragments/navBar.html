@@ -81,7 +81,7 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 			<a sec:authorize="hasAuthority('EMPLOYEE')" class="p-2 text-dark" href="#">Today's orders</a>
 			<a sec:authorize="hasAnyAuthority('ADMIN','EMPLOYEE')" class="p-2 text-dark" th:href="@{/users}">Users</a>
 			<a sec:authorize="hasAuthority('ADMIN')" class="p-2 text-dark" th:href="@{/admin/accessories}">Accessories</a>
-			<a class="p-2 text-dark" href="#">About us</a>
+			<a class="p-2 text-dark" th:href="@{/rentterms}">Rent terms</a>
 		</nav> &nbsp; &nbsp; &nbsp;
 			<a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary" th:href="@{/login}">Sign up</a>
 			<form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
