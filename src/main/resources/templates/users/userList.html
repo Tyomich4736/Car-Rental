@@ -49,7 +49,9 @@
 				<td><th:block th:text="${user.isActive}"/></td>
 				<td>
 					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.role.name()=='CLIENT'}" 
-					th:href="@{/users/employee?id={id}(id = ${user.id})}">Make an employee</a>
+					th:href="@{/users/set/employee?id={id}(id = ${user.id})}">Make an employee</a>
+					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.role.name()=='EMPLOYEE'}" 
+					th:href="@{/users/set/client?id={id}(id = ${user.id})}">Make an client</a>
 					<a class="btn btn-primary" href="#">Orders</a>
 				</td>
 			</tr>

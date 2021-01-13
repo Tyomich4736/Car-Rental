@@ -35,7 +35,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				antMatchers("/", "/home", "/register", "/activate/**","/successfulreg", "/img/**",
 						"/catalog", "/catalog/**", "/categories/**", "/cars/**", "/rentterms").permitAll().
 				antMatchers("/admin/**").hasAnyAuthority("ADMIN").
-				antMatchers("/users","/users/**").hasAnyAuthority("ADMIN", "EMPLOYEE").
+				antMatchers("/users").hasAnyAuthority("ADMIN", "EMPLOYEE").
+				antMatchers("/users/set/**").hasAnyAuthority("ADMIN").
+				antMatchers("/order/**").hasAnyAuthority("CLIENT").
 				anyRequest().authenticated().
 			and().
 				formLogin().

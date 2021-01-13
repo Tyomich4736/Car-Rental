@@ -49,7 +49,7 @@ public class Car {
 
 	private Integer numberOfSeats;
 
-	private Double averageSpeed;
+	private Double maxSpeed;
 
 	private Double priceFrom1To3Days;
 

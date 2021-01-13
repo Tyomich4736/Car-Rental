@@ -48,8 +48,8 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 	        	<th>Number of seats:</th>
 	        	<th><th:block th:text="${car.numberOfSeats}"/></th>
 	        </tr>
-	        <tr th:if="${car.averageSpeed!=null}">
-	        	<th>Average speed:</th>
+	        <tr th:if="${car.maxSpeed!=null}">
+	        	<th>Maximal speed:</th>
 	        	<th><th:block th:text="${car.averageSpeed}"/></th>
 	        </tr>
 	        <tr th:if="${car.tranmission!=null}">
@@ -93,6 +93,11 @@ xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
        <div class="d-grid gap-2 col-6 mx-auto">
       	<a sec:authorize="hasAuthority('ADMIN')" th:href="@{${'/admin/'+car.id+'/edit'}}">
       		<button type="button" class="btn btn-lg btn-primary">Edit</button>
+      	</a>
+      </div>
+      <div class="d-grid gap-2 col-6 mx-auto">
+      	<a sec:authorize="hasAuthority('CLIENT')" th:href="@{/order/{car}(car=${car.id})}">
+      		<button type="button" class="btn btn-lg btn-success">To order</button>
       	</a>
       </div>
     </div>

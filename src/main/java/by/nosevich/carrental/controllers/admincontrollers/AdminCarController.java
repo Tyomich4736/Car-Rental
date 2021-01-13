@@ -73,7 +73,7 @@ public class AdminCarController {
 		if (from.getFuelType() != null)
 			to.setFuelType(from.getFuelType());
 		to.setNumberOfSeats(from.getNumberOfSeats());
-		to.setAverageSpeed(from.getAverageSpeed());
+		to.setMaxSpeed(from.getMaxSpeed());
 		if (from.getPriceFrom1To3Days() != null)
 			to.setPriceFrom1To3Days(from.getPriceFrom1To3Days());
 		if (from.getPriceFrom4To7Days() != null)

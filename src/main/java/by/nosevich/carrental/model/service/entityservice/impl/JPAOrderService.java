@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Order;
+import by.nosevich.carrental.model.entities.orderenums.Status;
 import by.nosevich.carrental.model.repo.OrderRepository;
 import by.nosevich.carrental.model.service.entityservice.OrderService;
 
@@ -35,6 +37,13 @@ public class JPAOrderService implements OrderService{
 	@Override
 	public void save(Order entity) {
 		repo.save(entity);
+	}
+
+	@Override
+	public List<Order> getAllByCar(Car car) {
+		List<Order> result = repo.findAllByCarAndStatus(car, Status.ACTIVE);
+		result.addAll(repo.findAllByCarAndStatus(car, Status.WAITING));
+		return result;
 	}
 
 }

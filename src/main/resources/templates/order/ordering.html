@@ -1,0 +1,86 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>Add category</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">	
+
+<body>
+	<th:block th:insert="fragments/navBar.html"/>
+
+	<h1 align="center">Ordering</h1>
+
+	<div align="center">
+	<form class="form-horizontal" th:action="@{/order/confirmOrder}" method="post" enctype="multipart/form-data">
+	
+    <label class="control-label col-sm-2" th:if="${busyOrders!=null}"><font color="Light Slate Blue" size="4">This car is busy on:</font></label>
+    <div class="col-sm-10" th:each="order : ${busyOrders}">
+    	[<th:block th:text="${order.beginDate}"/>] - [<th:block th:text="${order.endDate}"/>]
+    </div>
+    <br>
+    
+    
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Select order date
+      (Should not overlap with existing orders)</font></label>
+				<div class="col-sm-3 my-1">
+					<input type="date" class="form-control" name="beginDate"
+						id="from" required="required">
+				</div>
+				<div class="col-sm-3 my-1">
+					<input type="date" class="form-control" name="endDate"
+					id="to" required="required">
+				</div>
+
+
+			<label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Select optional accessories:</font></label>
+			<table>
+    <div class="form-group" th:each="accessory : ${accessories}">
+    <tr>
+    	<th>
+        	<input type="checkbox" name="accessories" th:value="${accessory.name}">
+    	</th>
+    	<th>
+    		<th:block th:text="${' ' +accessory.name}"/>
+    	</th>
+    	<th>
+    		<th:block th:text="${'  ' +accessory.price + ' BYN'}"/>
+    	</th>
+    </tr>
+    </div>
+    </table>
+    <br>
+    
+    <div class="form-group">
+    <label class="control-label col-sm-2" >By clicking on this button you confirm that you have read our <a th:href="@{/rentterms}">rental terms</a></label>        
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </div>
+    </div>
+ </form>
+ </div>
+</body>
+<script type="text/javascript">
+document.getElementById('from').min = new Date().toISOString().substring(0, 10);
+document.getElementById('to').min = new Date().toISOString().substring(0, 10);
+</script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script type="text/javascript">
+var date_from = document.getElementById('from');
+var date_to = document.getElementById('to');
+
+date_from.onchange = function(){
+   date_to.min = new Date(date_from.value).toISOString().split("T")[0];
+}
+date_to.onchange = function(){
+	   date_from.max = new Date(date_to.value).toISOString().split("T")[0];
+}
+</script>
+</html>

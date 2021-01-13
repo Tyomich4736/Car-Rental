@@ -51,12 +51,26 @@ public class UserListController {
 		return "users/userList";
 	}
 	
-	@GetMapping("/employee")
+	@GetMapping("/set/employee")
 	public String makeAnEmployee(HttpServletRequest request,
 			@RequestParam("id") Integer userId) {
 		try {
 			User user = userService.getById(userId);
 			user.setRole(Role.EMPLOYEE);
+			userService.save(user);
+		} catch (Exception e) {
+			return "redirect:/users";
+		}
+		String referer = request.getHeader("Referer");
+		return "redirect:" + referer;
+	}
+	
+	@GetMapping("/set/client")
+	public String makeAnClient(HttpServletRequest request,
+			@RequestParam("id") Integer userId) {
+		try {
+			User user = userService.getById(userId);
+			user.setRole(Role.CLIENT);
 			userService.save(user);
 		} catch (Exception e) {
 			return "redirect:/users";

@@ -42,12 +42,9 @@ public class CatalogController {
 			@RequestParam(value = "page",required = false) Integer pageNum) {
 		if (pageNum==null)
 			pageNum=0;
-		Category currentCategory;
-		try{
-			currentCategory = categoryService.getByName(categoryName);
-		} catch (NullPointerException e) {
+		Category currentCategory = categoryService.getByName(categoryName);
+		if (currentCategory==null)
 			return "redirect:/catalog";
-		}
 		Pageable pageable = PageRequest.of(pageNum, PAGE_SIZE);
 		List<Car> cars = carService.getByCategory(currentCategory, pageable);
 		List<Car> nextCars = carService.getByCategory(currentCategory, PageRequest.of(pageNum+1, PAGE_SIZE));
