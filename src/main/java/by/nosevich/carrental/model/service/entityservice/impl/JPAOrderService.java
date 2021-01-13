@@ -1,11 +1,16 @@
 package by.nosevich.carrental.model.service.entityservice.impl;
 
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.ZoneId;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import by.nosevich.carrental.model.entities.Accessory;
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Order;
 import by.nosevich.carrental.model.entities.orderenums.Status;
@@ -46,4 +51,29 @@ public class JPAOrderService implements OrderService{
 		return result;
 	}
 
+	@Override
+	public void calculateAndSetPrice(Order order) {
+		double price = 0;
+		int days = Period.between(convertDateToLocalDate(order.getBeginDate()), 
+								convertDateToLocalDate(order.getEndDate())).getDays();
+		if (days<=3) {
+			price+=order.getCar().getPriceFrom1To3Days();
+		} else if (days<=7) {
+			price+=order.getCar().getPriceFrom4To7Days();
+		} else if (days<=15) {
+			price+=order.getCar().getPriceFrom8To15Days();
+		} else if (days<=30) {
+			price+=order.getCar().getPriceFrom16To30Days();
+		}
+		for(Accessory acc : order.getAccessories()) {
+			price+=acc.getPrice();
+		}
+		order.setPrice(price);
+	}
+
+	private LocalDate convertDateToLocalDate(Date dateToConvert) {
+	    return dateToConvert.toInstant()
+	      .atZone(ZoneId.systemDefault())
+	      .toLocalDate();
+	}
 }

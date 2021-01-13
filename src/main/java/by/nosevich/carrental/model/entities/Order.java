@@ -38,7 +38,7 @@ public class Order {
 	@Temporal(TemporalType.DATE)
 	private Date endDate;
 	@Column
-	private int price;
+	private Double price;
 	@Column
 	@Enumerated(EnumType.STRING)
 	private Status status;
@@ -49,5 +49,5 @@ public class Order {
 	@JoinColumn
 	private Car car;
 	@ManyToMany(mappedBy = "orders", fetch = FetchType.EAGER)
-    private Set<Accessory> asseccories = new HashSet<Accessory>();
+    private Set<Accessory> accessories = new HashSet<Accessory>();
 }

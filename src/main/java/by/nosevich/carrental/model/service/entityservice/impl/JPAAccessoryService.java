@@ -35,4 +35,9 @@ public class JPAAccessoryService implements AccessoryService{
 	public void save(Accessory entity) {
 		repo.save(entity);
 	}
+
+	@Override
+	public Accessory getByName(String name) {
+		return repo.findByName(name);
+	}
 }
