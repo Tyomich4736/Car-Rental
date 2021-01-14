@@ -67,9 +67,13 @@
  </form>
  </div>
 </body>
+<th:block th:insert="fragments/footer.html" />
 <script type="text/javascript">
 document.getElementById('from').min = new Date().toISOString().substring(0, 10);
 document.getElementById('to').min = new Date().toISOString().substring(0, 10);
+var D = new Date(document.getElementById('from').min);
+D.setDate(D.getDate() + 30);
+document.getElementById('to').max = D.toISOString().substring(0, 10);
 </script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script type="text/javascript">

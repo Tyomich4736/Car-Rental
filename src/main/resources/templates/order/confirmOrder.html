@@ -17,7 +17,7 @@
 	<th:block th:insert="fragments/navBar.html"/>
 	<div align="center">
 	<h1 >Total</h1>
-	<h1 ><font color="Light Slate Blue" size="7"><th:block th:text="${order.price}"/></font></h1>
+	<h1 ><font color="Light Slate Blue" size="7"><th:block th:text="${order.price}"/> BYN</font></h1>
 	<br>
 	<font size="5">Is that correct?</font>
 	<br>
@@ -27,4 +27,5 @@
 	<button type="button" class="btn btn-danger" onclick="history.back();">No</button>
 	</div>
 </body>
+<th:block th:insert="fragments/footer.html" />
 </html>
