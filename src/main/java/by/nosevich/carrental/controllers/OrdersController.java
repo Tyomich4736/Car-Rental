@@ -5,10 +5,14 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
+
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import by.nosevich.carrental.model.entities.Accessory;
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Order;
+import by.nosevich.carrental.model.entities.User;
 import by.nosevich.carrental.model.entities.orderenums.Status;
 import by.nosevich.carrental.model.service.entityservice.AccessoryService;
 import by.nosevich.carrental.model.service.entityservice.CarService;
@@ -30,7 +35,7 @@ import by.nosevich.carrental.model.service.entityservice.UserService;
 
 @Controller
 @RequestMapping("/order")
-public class OrderingController {
+public class OrdersController {
 
 	@Autowired
 	private CarService carService;
@@ -53,13 +58,13 @@ public class OrderingController {
 
 		List<Accessory> accessories = accessoryService.getAll();
 		model.addAttribute("accessories", accessories);
-		return "order/ordering";
+		return "ordering/ordering";
 	}
 
 	@PostMapping("/confirmOrder/{carId}")
 	public String getConfirmPage(@RequestParam(required = false, name = "accessories") List<String> accessoryNames,
 			@RequestParam("beginDate") String beginDateStr, @RequestParam("endDate") String endDateStr,
-			@PathVariable("carId") Integer carId, Principal principal, Model model) {
+			@PathVariable("carId") Integer carId, Principal principal, Model model, HttpSession session) {
 
 		// init and check values
 		Car car = carService.getById(carId);
@@ -70,9 +75,12 @@ public class OrderingController {
 		} catch (ParseException e) {
 			return "redirect:/catalog";
 		}
-		if (car == null || orderIsCross(beginDate, endDate, car))
+		if (car == null)
 			return "redirect:/catalog";
-		Set<Accessory> accessories = new HashSet<Accessory>();
+		if (orderIsCross(beginDate, endDate, car)) {
+			return "redirect:/order/"+carId;
+		}
+		HashSet<Accessory> accessories = new HashSet<Accessory>();
 		if (accessoryNames != null)
 			accessoryNames.forEach(name -> {
 				Accessory currentAccessory = accessoryService.getByName(name);
@@ -85,13 +93,16 @@ public class OrderingController {
 		order.setBeginDate(beginDate);
 		order.setEndDate(endDate);
 		order.setCar(car);
-		order.setAccessories(accessories);
+		//order.setAccessories(accessories);
 		order.setStatus(Status.WAITING);
-		order.setUser(userService.getByEmail(principal.getName()).get());
+		User currentUser = userService.getByEmail(principal.getName()).get();
+		order.setUser(currentUser);
 		orderService.calculateAndSetPrice(order);
 		
+		session.setAttribute("currentOrder", order);
+		session.setAttribute("currentAccessories", accessories);
 		model.addAttribute("order", order);
-		return "order/confirmOrder";
+		return "ordering/confirmOrder";
 	}
 
 	private boolean orderIsCross(Date beginDate, Date endDate, Car car) {
@@ -102,5 +113,26 @@ public class OrderingController {
 				return true;
 		}
 		return false;
+	}
+	
+	@GetMapping("/saveOrder")
+	public String saveOrder(HttpSession session) {
+		Order order = (Order) session.getAttribute("currentOrder");
+		if (order!=null) {
+			orderService.save(order);
+			Set<Accessory> acc = (Set<Accessory>) session.getAttribute("currentAccessories");
+			order.setAccessories(acc);
+			orderService.save(order);
+		}
+		
+		return "redirect:/order/myOrders";
+	}
+	
+	@GetMapping("/myOrders")
+	public String getMyOrders(Model model, Principal principal) {
+		User currentUser = userService.getByEmail(principal.getName()).get();
+		List<Order> orders = orderService.getAllByUser(currentUser);
+		model.addAttribute("orders", orders);
+		return "ordering/myOrdersList";
 	}
 }

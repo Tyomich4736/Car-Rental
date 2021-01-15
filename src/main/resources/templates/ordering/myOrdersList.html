@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title><th:block th:text="${currentCategory}" /></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<body>
+	<th:block th:insert="fragments/navBar.html" />
+
+	<th:block th:each="order : ${orders}">
+		<div class="card mb-4 shadow-sm" align="center">
+			<div class="card-header">
+				<h4 class="my-0 fw-normal">
+					<a th:href="@{/catalog/car/{id}(id=${order.car.id})}"><th:block th:text="${order.car.name}" /></a>
+				</h4>
+			</div>
+			<div class="card-body">
+			Date: [<th:block th:text="${order.beginDate}"/>] - [<th:block th:text="${order.endDate}"/>] <br>
+			Accessories:<br>
+			<th:block th:each="acc : ${order.accessories}">
+				<th:block th:text="${acc.name+' ('+acc.price+' BYN)'}"/> <br>
+			</th:block>
+			Status: <th:block th:text="${order.status.name()}"/> <br>
+			Price: <th:block th:text="${order.price}"/> <br>
+				<img alt=""
+					th:src="@{/cars/{id}/{preview}(id=${order.car.id},preview=${order.car.previewImageName})}" width="500"
+					height="320">
+				<br>
+			</div>
+		</div>
+	</th:block>
+</body>
+<th:block th:insert="fragments/footer.html" />
+</html>

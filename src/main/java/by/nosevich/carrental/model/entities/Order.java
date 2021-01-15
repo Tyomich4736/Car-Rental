@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -48,6 +49,6 @@ public class Order {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private Car car;
-	@ManyToMany(mappedBy = "orders", fetch = FetchType.EAGER)
+	@ManyToMany(mappedBy = "orders", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private Set<Accessory> accessories = new HashSet<Accessory>();
 }

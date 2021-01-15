@@ -21,11 +21,10 @@
 	<br>
 	<font size="5">Is that correct?</font>
 	<br>
-	<a>
+	<a th:href="@{/order/saveOrder}">
 		<button type="button" class="btn btn-primary">Yes</button>
 	</a>
 	<button type="button" class="btn btn-danger" onclick="history.back();">No</button>
 	</div>
 </body>
-<th:block th:insert="fragments/footer.html" />
 </html>

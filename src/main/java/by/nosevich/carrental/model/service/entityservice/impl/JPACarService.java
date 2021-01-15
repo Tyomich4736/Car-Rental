@@ -9,8 +9,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Category;
+import by.nosevich.carrental.model.entities.Order;
 import by.nosevich.carrental.model.repo.CarRepository;
 import by.nosevich.carrental.model.service.entityservice.CarService;
+import by.nosevich.carrental.model.service.entityservice.OrderService;
 
 @Service
 @Transactional
@@ -18,6 +20,8 @@ public class JPACarService implements CarService {
 	
 	@Autowired
 	private CarRepository repo;
+	@Autowired
+	private OrderService orderService;
 	
 	@Override
 	public List<Car> getAll() {
@@ -31,6 +35,9 @@ public class JPACarService implements CarService {
 
 	@Override
 	public void delete(Car entity) {
+		for(Order order:entity.getOrders()) {
+			orderService.delete(order);
+		}
 		repo.delete(entity);
 	}
 

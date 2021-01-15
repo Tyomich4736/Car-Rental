@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import by.nosevich.carrental.model.entities.Accessory;
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Order;
+import by.nosevich.carrental.model.entities.User;
 import by.nosevich.carrental.model.entities.orderenums.Status;
 import by.nosevich.carrental.model.repo.OrderRepository;
 import by.nosevich.carrental.model.service.entityservice.OrderService;
@@ -75,5 +76,10 @@ public class JPAOrderService implements OrderService{
 	    return dateToConvert.toInstant()
 	      .atZone(ZoneId.systemDefault())
 	      .toLocalDate();
+	}
+
+	@Override
+	public List<Order> getAllByUser(User user) {
+		return repo.findAllByUserOrderByBeginDateDesc(user);
 	}
 }

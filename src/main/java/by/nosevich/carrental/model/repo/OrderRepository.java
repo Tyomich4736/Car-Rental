@@ -7,9 +7,11 @@ import org.springframework.stereotype.Repository;
 
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Order;
+import by.nosevich.carrental.model.entities.User;
 import by.nosevich.carrental.model.entities.orderenums.Status;
 
 @Repository
 public interface OrderRepository extends JpaRepository<Order, Integer>{
 	List<Order> findAllByCarAndStatus(Car car, Status status);
+	List<Order> findAllByUserOrderByBeginDateDesc(User user);
 }
