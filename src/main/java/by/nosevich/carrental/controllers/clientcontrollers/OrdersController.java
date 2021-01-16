@@ -14,6 +14,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import javax.mail.MessagingException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Order;
 import by.nosevich.carrental.model.entities.User;
 import by.nosevich.carrental.model.entities.orderenums.Status;
+import by.nosevich.carrental.model.service.MailService;
 import by.nosevich.carrental.model.service.entityservice.AccessoryService;
 import by.nosevich.carrental.model.service.entityservice.CarService;
 import by.nosevich.carrental.model.service.entityservice.OrderService;
@@ -41,6 +43,8 @@ public class OrdersController {
 
 	@Autowired
 	private CarService carService;
+	@Autowired
+	private MailService mailService;
 	@Autowired
 	private UserService userService;
 	@Autowired
@@ -119,7 +123,7 @@ public class OrdersController {
 	}
 	
 	@GetMapping("/saveOrder")
-	public String saveOrder(HttpSession session) {
+	public String saveOrder(HttpSession session, Principal principal) {
 		Order order = (Order) session.getAttribute("currentOrder");
 		if (order!=null) {
 			orderService.save(order);
@@ -127,9 +131,14 @@ public class OrdersController {
 			addAccessoriesToOrder(order, accessories);
 //			or (accessories are not saved)
 //			order.setAccessories(accessories); 
+			User currentUser = userService.getByEmail(principal.getName()).get();
+			try {
+				mailService.sendSuccessfulOrderingMessage(currentUser, order);
+			} catch (MessagingException e) {
+				return "redirect:/order/myOrders";
+			}
 			orderService.save(order);
 		}
-		
 		return "redirect:/order/myOrders";
 	}
 

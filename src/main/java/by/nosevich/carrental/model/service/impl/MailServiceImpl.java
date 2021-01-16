@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import by.nosevich.carrental.config.properties.EmailProperties;
+import by.nosevich.carrental.model.entities.Car;
+import by.nosevich.carrental.model.entities.Order;
 import by.nosevich.carrental.model.entities.User;
 import by.nosevich.carrental.model.service.MailService;
 
@@ -26,13 +28,45 @@ public class MailServiceImpl implements MailService {
 
 	@Autowired
 	private EmailProperties emailProperties;
-	
+
 	@Override
 	public void sendActivationMessage(User user) throws MessagingException {
 		sendMessage(user, getActivationMessage(user), getActivasionSubject());
-		
 	}
-	
+
+	private String getActivationMessage(User user) {
+		String siteName = emailProperties.getDomainHost().replaceAll("http://", "");
+		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\">Hello, "
+				+ user.getFirstName() + "!</font></h1><br/>"
+				+ "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >We are glad to welcome you to our service "
+				+ siteName + "!<br/>" + "To activate your account follow this link:</div> <br/>"
+				+ "<h2 align=\"center\"><a href=" + emailProperties.getDomainHost() + "/activate/"
+				+ user.getActivationCode() + ">Link</a></h2>";
+	}
+
+	private String getActivasionSubject() {
+		String siteName = emailProperties.getDomainHost().replaceAll("http://", "");
+		return siteName + " activasion link";
+	}
+
+	@Override
+	public void sendSuccessfulOrderingMessage(User user, Order order) throws MessagingException {
+		sendMessage(user, getSuccessfulOrderingMessage(order), getSuccessfulOrderingSubject(order));
+
+	}
+
+	private String getSuccessfulOrderingSubject(Order order) {
+		return order.getCar().getName()+", successful ordering!";
+	}
+
+	private String getSuccessfulOrderingMessage(Order order) {
+		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\"> Order "
+				+ order.getId() + " successful ordering!</font></h1><br/>"
+				+ "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >The order for car "
+				+ order.getCar().getName() + "has been successfully placed!We are waiting for you"
+				+ order.getBeginDate()+" in our service. If you do not show up, your order will be canceled.<br/>";
+	}
+
 	private void sendMessage(User user, String message, String subject) throws MessagingException {
 		// sets SMTP server properties
 		Properties properties = new Properties();
@@ -54,7 +88,7 @@ public class MailServiceImpl implements MailService {
 
 		// creates a new e-mail message
 		MimeMessage msg = new MimeMessage(session);
-		
+
 		msg.setFrom("CarRental@service.com");
 		InternetAddress[] toAddresses = { new InternetAddress(user.getEmail()) };
 		msg.setRecipients(Message.RecipientType.TO, toAddresses);
@@ -73,17 +107,5 @@ public class MailServiceImpl implements MailService {
 
 		// sends the e-mail
 		Transport.send(msg);
-	}
-	
-	private String getActivationMessage(User user) {
-		String siteName = emailProperties.getDomainHost().replaceAll("http://", "");
-		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\">Hello, "+user.getFirstName()+"!</font></h1><br/>" +
-				  "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >We are glad to welcome you to our service "+siteName +"!<br/>" +
-				  "To activate your account follow this link:</div> <br/>" +
-				  "<h2 align=\"center\"><a href="+emailProperties.getDomainHost()+"/activate/"+user.getActivationCode()+">Link</a></h2>";
-	}
-	private String getActivasionSubject() {
-		String siteName = emailProperties.getDomainHost().replaceAll("http://", "");
-		return siteName+" activasion link";
 	}
 }
