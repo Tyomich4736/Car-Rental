@@ -1,6 +1,7 @@
-package by.nosevich.carrental.controllers;
+package by.nosevich.carrental.controllers.usercontrollers;
 
 import java.security.Principal;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -8,6 +9,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
@@ -70,8 +72,9 @@ public class OrdersController {
 		Car car = carService.getById(carId);
 		Date beginDate, endDate;
 		try {
-			beginDate = new SimpleDateFormat("yyyy-mm-dd").parse(beginDateStr);
-			endDate = new SimpleDateFormat("yyyy-mm-dd").parse(endDateStr);
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			beginDate = format.parse(beginDateStr);
+			endDate = format.parse(endDateStr);
 		} catch (ParseException e) {
 			return "redirect:/catalog";
 		}
@@ -87,7 +90,7 @@ public class OrdersController {
 				if (currentAccessory != null)
 					accessories.add(currentAccessory);
 			});
-
+		
 		// creating order
 		Order order = new Order();
 		order.setBeginDate(beginDate);
@@ -97,7 +100,7 @@ public class OrdersController {
 		order.setStatus(Status.WAITING);
 		User currentUser = userService.getByEmail(principal.getName()).get();
 		order.setUser(currentUser);
-		orderService.calculateAndSetPrice(order);
+		orderService.calculateAndSetPrice(order, accessories);
 		
 		session.setAttribute("currentOrder", order);
 		session.setAttribute("currentAccessories", accessories);
@@ -120,12 +123,21 @@ public class OrdersController {
 		Order order = (Order) session.getAttribute("currentOrder");
 		if (order!=null) {
 			orderService.save(order);
-			Set<Accessory> acc = (Set<Accessory>) session.getAttribute("currentAccessories");
-			order.setAccessories(acc);
+			Set<Accessory> accessories = (Set<Accessory>) session.getAttribute("currentAccessories");
+			addAccessoriesToOrder(order, accessories);
+//			or (accessories are not saved)
+//			order.setAccessories(accessories); 
 			orderService.save(order);
 		}
 		
 		return "redirect:/order/myOrders";
+	}
+
+	private void addAccessoriesToOrder(Order order, Set<Accessory> accessories) {
+		for(Accessory acc : accessories) {
+			accessoryService.save(acc);
+			order.getAccessories().add(acc);
+		}
 	}
 	
 	@GetMapping("/myOrders")

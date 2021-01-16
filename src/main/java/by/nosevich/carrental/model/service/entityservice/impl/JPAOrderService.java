@@ -5,6 +5,7 @@ import java.time.Period;
 import java.time.ZoneId;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class JPAOrderService implements OrderService{
 	}
 
 	@Override
-	public void calculateAndSetPrice(Order order) {
+	public void calculateAndSetPrice(Order order, Set<Accessory> accessories) {
 		double price = 0;
 		int days = Period.between(convertDateToLocalDate(order.getBeginDate()), 
 								convertDateToLocalDate(order.getEndDate())).getDays();
@@ -66,7 +67,7 @@ public class JPAOrderService implements OrderService{
 		} else if (days<=30) {
 			price+=order.getCar().getPriceFrom16To30Days();
 		}
-		for(Accessory acc : order.getAccessories()) {
+		for(Accessory acc : accessories) {
 			price+=acc.getPrice();
 		}
 		order.setPrice(price);
