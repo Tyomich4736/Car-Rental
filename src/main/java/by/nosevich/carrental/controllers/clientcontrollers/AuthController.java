@@ -1,4 +1,4 @@
-package by.nosevich.carrental.controllers.usercontrollers;
+package by.nosevich.carrental.controllers.clientcontrollers;
 
 import java.io.IOException;
 import java.util.UUID;

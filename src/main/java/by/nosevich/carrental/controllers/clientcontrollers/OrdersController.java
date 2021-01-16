@@ -1,4 +1,4 @@
-package by.nosevich.carrental.controllers.usercontrollers;
+package by.nosevich.carrental.controllers.clientcontrollers;
 
 import java.security.Principal;
 import java.text.DateFormat;

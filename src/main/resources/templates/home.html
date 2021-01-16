@@ -1,0 +1,39 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title><th:block th:text="${currentCategory}" /></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<body>
+	<th:block th:insert="fragments/navBar.html" />
+
+	<br>
+	<br>
+	<br>
+	<div class="card mb-4 shadow-sm" th:if="${latestCar!=null}">
+		<div class="container">
+		<table class="table-responsive-lg">
+			<tr>
+				<td align="justify">
+					<h1><font color="Light Slate Blue">Latest! <th:block th:text="${latestCar.name}"/> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</font></h1><br>
+					<a th:href="@{/car/{id}(id=${latestCar.id})}"><button type="button" class="btn btn-primary">More details</button></a>
+				</td>
+				<td align="right">
+					<img alt=""
+					th:src="@{/cars/{id}/{preview}(id=${latestCar.id},preview=${latestCar.previewImageName})}"
+					width="700" height="442">
+				</td>
+			</tr>
+		</table>
+		</div>
+	</div>
+</body>
+<th:block th:insert="fragments/footer.html" />
+</html>

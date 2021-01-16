@@ -3,6 +3,7 @@ package by.nosevich.carrental.model.service.entityservice.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -59,6 +60,11 @@ public class JPACarService implements CarService {
 	@Override
 	public List<Car> searchByNameLike(String title, Pageable pageable) {
 		return repo.findByNameContainingIgnoreCase(title, pageable);
+	}
+
+	@Override
+	public Car getLatest() {
+		return repo.findAllByOrderByYearDesc(PageRequest.of(0, 1)).get(0);
 	}
 	
 

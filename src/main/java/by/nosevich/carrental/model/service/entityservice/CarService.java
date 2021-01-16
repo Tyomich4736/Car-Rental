@@ -11,4 +11,5 @@ public interface CarService extends DAO<Car>{
 	List<Car> getByCategory(Category category);
 	List<Car> getByCategory(Category category, Pageable pageable);
 	List<Car> searchByNameLike(String title, Pageable pageable);
+	Car getLatest();
 }
