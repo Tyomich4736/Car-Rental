@@ -32,6 +32,7 @@ import by.nosevich.carrental.model.entities.Order;
 import by.nosevich.carrental.model.entities.User;
 import by.nosevich.carrental.model.entities.orderenums.Status;
 import by.nosevich.carrental.model.service.MailService;
+import by.nosevich.carrental.model.service.TodaysOrdersService;
 import by.nosevich.carrental.model.service.entityservice.AccessoryService;
 import by.nosevich.carrental.model.service.entityservice.CarService;
 import by.nosevich.carrental.model.service.entityservice.OrderService;
@@ -51,6 +52,8 @@ public class OrdersController {
 	private OrderService orderService;
 	@Autowired
 	private AccessoryService accessoryService;
+	@Autowired
+	private TodaysOrdersService todaysOrdersService;
 
 	@GetMapping("/{carId}")
 	public String getOrderingPage(Model model, @PathVariable("carId") Integer carId) {
@@ -137,7 +140,10 @@ public class OrdersController {
 			} catch (MessagingException e) {
 				return "redirect:/order/myOrders";
 			}
+			
 			orderService.save(order);
+			if (new Date().equals(order.getBeginDate()))
+				todaysOrdersService.addToTodaysOrders(order);
 		}
 		return "redirect:/order/myOrders";
 	}

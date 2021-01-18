@@ -83,4 +83,14 @@ public class JPAOrderService implements OrderService{
 	public List<Order> getAllByUser(User user) {
 		return repo.findAllByUserOrderByBeginDateDesc(user);
 	}
+
+	@Override
+	public List<Order> getAllByBeginDateAndStatus(Date beginDate, Status status) {
+		return repo.findAllByBeginDateAndStatus(beginDate, status);
+	}
+
+	@Override
+	public List<Order> getAllByEndDateAndStatus(Date endDate, Status status) {
+		return repo.findAllByEndDateAndStatus(endDate, status);
+	}
 }

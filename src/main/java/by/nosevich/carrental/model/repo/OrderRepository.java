@@ -1,5 +1,6 @@
 package by.nosevich.carrental.model.repo;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,6 @@ import by.nosevich.carrental.model.entities.orderenums.Status;
 public interface OrderRepository extends JpaRepository<Order, Integer>{
 	List<Order> findAllByCarAndStatus(Car car, Status status);
 	List<Order> findAllByUserOrderByBeginDateDesc(User user);
+	List<Order> findAllByBeginDateAndStatus(Date beginDate, Status status);
+	List<Order> findAllByEndDateAndStatus(Date beginDate, Status status);
 }
