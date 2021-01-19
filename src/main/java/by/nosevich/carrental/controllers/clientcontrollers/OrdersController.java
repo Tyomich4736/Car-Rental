@@ -106,7 +106,7 @@ public class OrdersController {
 		order.setCar(car);
 		//order.setAccessories(accessories);
 		order.setStatus(Status.WAITING);
-		User currentUser = userService.getByEmail(principal.getName()).get();
+		User currentUser = userService.getByEmail(principal.getName());
 		order.setUser(currentUser);
 		orderService.calculateAndSetPrice(order, accessories);
 		
@@ -127,8 +127,8 @@ public class OrdersController {
 		return false;
 	}
 	
-	@Transactional
 	@GetMapping("/saveOrder")
+	@Transactional
 	public String saveOrder(HttpSession session, Principal principal) {
 		Order order = (Order) session.getAttribute("currentOrder");
 		if (order!=null) {
@@ -137,7 +137,7 @@ public class OrdersController {
 			addAccessoriesToOrder(order, accessories);
 //			or (accessories are not saved)
 //			order.setAccessories(accessories); 
-			User currentUser = userService.getByEmail(principal.getName()).get();
+			User currentUser = userService.getByEmail(principal.getName());
 			try {
 				mailService.sendSuccessfulOrderingMessage(currentUser, order);
 			} catch (MessagingException e) {
@@ -159,7 +159,7 @@ public class OrdersController {
 	
 	@GetMapping("/myOrders")
 	public String getMyOrders(Model model, Principal principal) {
-		User currentUser = userService.getByEmail(principal.getName()).get();
+		User currentUser = userService.getByEmail(principal.getName());
 		List<Order> orders = orderService.getAllByUser(currentUser);
 		model.addAttribute("orders", orders);
 		return "ordering/myOrdersList";

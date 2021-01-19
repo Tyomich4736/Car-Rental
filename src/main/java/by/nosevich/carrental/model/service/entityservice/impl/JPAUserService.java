@@ -43,7 +43,7 @@ public class JPAUserService implements UserService{
 	}
 
 	@Override
-	public Optional<User> getByEmail(String email) {
+	public User getByEmail(String email) {
 		return repo.findByEmail(email);
 	}
 

@@ -11,7 +11,7 @@ import by.nosevich.carrental.model.entities.User;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>{
-	Optional<User> findByEmail(String email);
+	User findByEmail(String email);
 	User findByActivationCode(String code);
 	
 	List<User> findByEmailContainingIgnoreCaseOrFirstNameContainingIgnoreCaseOrLastNameContainingIgnoreCase(String title, String title2, String title3, Pageable pageable);
