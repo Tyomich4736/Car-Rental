@@ -33,7 +33,6 @@ public class MailServiceImpl implements MailService {
 	public void sendActivationMessage(User user) throws MessagingException {
 		sendMessage(user, getActivationMessage(user), getActivasionSubject());
 	}
-
 	private String getActivationMessage(User user) {
 		String siteName = emailProperties.getDomainHost().replaceAll("http://", "");
 		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\">Hello, "
@@ -43,30 +42,60 @@ public class MailServiceImpl implements MailService {
 				+ "<h2 align=\"center\"><a href=" + emailProperties.getDomainHost() + "/activate/"
 				+ user.getActivationCode() + ">Link</a></h2>";
 	}
-
 	private String getActivasionSubject() {
 		String siteName = emailProperties.getDomainHost().replaceAll("http://", "");
 		return siteName + " activasion link";
 	}
 
+	
 	@Override
 	public void sendSuccessfulOrderingMessage(User user, Order order) throws MessagingException {
 		sendMessage(user, getSuccessfulOrderingMessage(order), getSuccessfulOrderingSubject(order));
 
 	}
-
 	private String getSuccessfulOrderingSubject(Order order) {
-		return order.getCar().getName()+", successful ordering!";
+		return order.getCar().getName() + ", successful ordering!";
 	}
-
 	private String getSuccessfulOrderingMessage(Order order) {
-		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\"> Order "
-				+ order.getId() + " successful ordering!</font></h1><br/>"
+		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\"> Order " + order.getId()
+				+ " successful ordering!</font></h1><br/>"
 				+ "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >The order for car "
-				+ order.getCar().getName() + "has been successfully placed!We are waiting for you"
-				+ order.getBeginDate()+" in our service. If you do not show up, your order will be canceled.<br/>";
+				+ order.getCar().getName() + " has been successfully placed!We are waiting for you"
+				+ order.getBeginDate() + " in our service. If you do not show up, your order will be canceled.<br/>";
 	}
 
+	
+	@Override
+	public void sendPickUpOrderMessage(User user, Order order) throws MessagingException {
+		sendMessage(user, getPickUpOrderMessage(order), getPickUpOrderSubject(order));
+	}
+	private String getPickUpOrderSubject(Order order) {
+		return "Pick up " + order.getCar().getName();
+	}
+	private String getPickUpOrderMessage(Order order) {
+		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\"> Pick up "
+				+ order.getCar().getName() + " today!</font></h1><br/>"
+				+ "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >Pick up the order for car "
+				+ order.getCar().getName()+".<br>"
+				+ "If you do not show up until the end of the day, your order will be canceled.<br/>";
+	}
+
+	
+	@Override
+	public void sendCanselOrderMessage(User user, Order order) throws MessagingException {
+		sendMessage(user, getCanselOrderMessage(order), getCanselOrderSubject(order));
+	}
+	private String getCanselOrderSubject(Order order) {
+		return "Car " + order.getCar().getName() + " order has been canceled";
+	}
+	private String getCanselOrderMessage(Order order) {
+		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\"> Car "
+				+ order.getCar().getName() + " order has been canceled!</font></h1><br/>"
+				+ "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >"
+				+ "The reason is your failure to pick up the car on time.<br/>";
+	}
+	
+	
 	private void sendMessage(User user, String message, String subject) throws MessagingException {
 		// sets SMTP server properties
 		Properties properties = new Properties();
@@ -108,4 +137,5 @@ public class MailServiceImpl implements MailService {
 		// sends the e-mail
 		Transport.send(msg);
 	}
+
 }

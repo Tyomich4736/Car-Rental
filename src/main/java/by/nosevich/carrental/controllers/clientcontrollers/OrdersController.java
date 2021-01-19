@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -118,13 +119,15 @@ public class OrdersController {
 	private boolean orderIsCross(Date beginDate, Date endDate, Car car) {
 		List<Order> orders = orderService.getAllByCar(car);
 		for (Order order : orders) {
-			if ((beginDate.compareTo(order.getBeginDate()) > 0 && beginDate.compareTo(order.getEndDate()) < 0)
-					|| ((endDate.compareTo(order.getBeginDate()) > 0 && endDate.compareTo(order.getEndDate()) < 0)))
+			if ((beginDate.compareTo(order.getBeginDate()) < 0 && beginDate.compareTo(order.getEndDate()) < 0)
+					|| ((endDate.compareTo(order.getBeginDate()) > 0 && endDate.compareTo(order.getEndDate()) < 0))
+					|| (beginDate.compareTo(order.getBeginDate())<0 && endDate.compareTo(order.getEndDate()) > 0))
 				return true;
 		}
 		return false;
 	}
 	
+	@Transactional
 	@GetMapping("/saveOrder")
 	public String saveOrder(HttpSession session, Principal principal) {
 		Order order = (Order) session.getAttribute("currentOrder");
@@ -150,7 +153,6 @@ public class OrdersController {
 
 	private void addAccessoriesToOrder(Order order, Set<Accessory> accessories) {
 		for(Accessory acc : accessories) {
-			accessoryService.save(acc);
 			order.getAccessories().add(acc);
 		}
 	}
