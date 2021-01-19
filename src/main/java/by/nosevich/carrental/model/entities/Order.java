@@ -49,6 +49,6 @@ public class Order {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
 	private Car car;
-	@ManyToMany(mappedBy = "orders", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@ManyToMany(mappedBy = "orders", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
     private Set<Accessory> accessories = new HashSet<Accessory>();
 }
