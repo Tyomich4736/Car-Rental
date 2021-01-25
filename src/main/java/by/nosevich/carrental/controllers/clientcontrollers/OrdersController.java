@@ -4,19 +4,12 @@ import java.security.Principal;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -41,6 +34,7 @@ import by.nosevich.carrental.model.service.entityservice.UserService;
 
 @Controller
 @RequestMapping("/order")
+@Transactional
 public class OrdersController {
 
 	@Autowired
@@ -57,7 +51,12 @@ public class OrdersController {
 	private TodaysOrdersService todaysOrdersService;
 
 	@GetMapping("/{carId}")
-	public String getOrderingPage(Model model, @PathVariable("carId") Integer carId) {
+	public String getOrderingPage(Model model, @PathVariable("carId") Integer carId, Principal principal) {
+		Order previousUnconfirmedOrder = orderService.getByStatusAndUser(Status.UNCOMFIRMED, userService.getByEmail(principal.getName()));
+		if (previousUnconfirmedOrder!=null) {
+			orderService.delete(previousUnconfirmedOrder);
+		}
+		
 		Car currentCar = carService.getById(carId);
 		if (currentCar == null)
 			return "redirect:/catalog";
@@ -74,7 +73,7 @@ public class OrdersController {
 	@PostMapping("/confirmOrder/{carId}")
 	public String getConfirmPage(@RequestParam(required = false, name = "accessories") List<String> accessoryNames,
 			@RequestParam("beginDate") String beginDateStr, @RequestParam("endDate") String endDateStr,
-			@PathVariable("carId") Integer carId, Principal principal, Model model, HttpSession session) {
+			@PathVariable("carId") Integer carId, Principal principal, Model model) {
 
 		// init and check values
 		Car car = carService.getById(carId);
@@ -95,8 +94,10 @@ public class OrdersController {
 		if (accessoryNames != null)
 			accessoryNames.forEach(name -> {
 				Accessory currentAccessory = accessoryService.getByName(name);
-				if (currentAccessory != null)
+				if (currentAccessory != null) {
 					accessories.add(currentAccessory);
+					accessoryService.save(currentAccessory);
+				}
 			});
 		
 		// creating order
@@ -104,14 +105,15 @@ public class OrdersController {
 		order.setBeginDate(beginDate);
 		order.setEndDate(endDate);
 		order.setCar(car);
-		//order.setAccessories(accessories);
-		order.setStatus(Status.WAITING);
+		order.setStatus(Status.UNCOMFIRMED);
 		User currentUser = userService.getByEmail(principal.getName());
 		order.setUser(currentUser);
-		orderService.calculateAndSetPrice(order, accessories);
 		
-		session.setAttribute("currentOrder", order);
-		session.setAttribute("currentAccessories", accessories);
+		orderService.save(order);
+		order.setAccessories(accessories);
+		orderService.calculateAndSetPrice(order);
+		
+		orderService.save(order); //accesssories don't save
 		model.addAttribute("order", order);
 		return "ordering/confirmOrder";
 	}
@@ -128,33 +130,22 @@ public class OrdersController {
 	}
 	
 	@GetMapping("/saveOrder")
-	@Transactional
-	public String saveOrder(HttpSession session, Principal principal) {
-		Order order = (Order) session.getAttribute("currentOrder");
+	public String saveOrder(Principal principal) {
+		User currentUser = userService.getByEmail(principal.getName());
+		Order order = orderService.getByStatusAndUser(Status.UNCOMFIRMED, currentUser);
 		if (order!=null) {
-			orderService.save(order);
-			Set<Accessory> accessories = (Set<Accessory>) session.getAttribute("currentAccessories");
-			addAccessoriesToOrder(order, accessories);
-//			or (accessories are not saved)
-//			order.setAccessories(accessories); 
-			User currentUser = userService.getByEmail(principal.getName());
 			try {
 				mailService.sendSuccessfulOrderingMessage(currentUser, order);
 			} catch (MessagingException e) {
+				//orderService.delete(order); TODO uncomment this string in final version
 				return "redirect:/order/myOrders";
 			}
-			
+			order.setStatus(Status.WAITING);
 			orderService.save(order);
 			if (new Date().equals(order.getBeginDate()))
 				todaysOrdersService.addToTodaysOrders(order);
 		}
 		return "redirect:/order/myOrders";
-	}
-
-	private void addAccessoriesToOrder(Order order, Set<Accessory> accessories) {
-		for(Accessory acc : accessories) {
-			order.getAccessories().add(acc);
-		}
 	}
 	
 	@GetMapping("/myOrders")

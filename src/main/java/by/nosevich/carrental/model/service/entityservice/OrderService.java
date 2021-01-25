@@ -13,8 +13,9 @@ import by.nosevich.carrental.model.entities.orderenums.Status;
 public interface OrderService extends DAO<Order>{
 	List<Order> getAllByCar(Car car);
 	List<Order> getAllByUser(User user);
-	void calculateAndSetPrice(Order order, Set<Accessory> accessories);
+	void calculateAndSetPrice(Order order);
 	
 	List<Order> getAllByBeginDateAndStatus(Date beginDate, Status status);
 	List<Order> getAllByEndDateAndStatus(Date endDate, Status status);
+	Order getByStatusAndUser(Status status, User user);
 }

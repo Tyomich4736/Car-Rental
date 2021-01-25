@@ -54,7 +54,7 @@ public class JPAOrderService implements OrderService{
 	}
 
 	@Override
-	public void calculateAndSetPrice(Order order, Set<Accessory> accessories) {
+	public void calculateAndSetPrice(Order order) {
 		double price = 0;
 		int days = Period.between(convertDateToLocalDate(order.getBeginDate()), 
 								convertDateToLocalDate(order.getEndDate())).getDays();
@@ -67,7 +67,7 @@ public class JPAOrderService implements OrderService{
 		} else if (days<=30) {
 			price+=order.getCar().getPriceFrom16To30Days();
 		}
-		for(Accessory acc : accessories) {
+		for(Accessory acc : order.getAccessories()) {
 			price+=acc.getPrice();
 		}
 		order.setPrice(price);
@@ -92,5 +92,10 @@ public class JPAOrderService implements OrderService{
 	@Override
 	public List<Order> getAllByEndDateAndStatus(Date endDate, Status status) {
 		return repo.findAllByEndDateAndStatus(endDate, status);
+	}
+
+	@Override
+	public Order getByStatusAndUser(Status status, User user) {
+		return repo.findByStatusAndUser(status, user);
 	}
 }

@@ -1,6 +1,5 @@
 package by.nosevich.carrental.model.entities;
 
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -32,9 +31,9 @@ public class Accessory {
 	private String name;
 	private Double price;
 	
-	@ManyToMany(cascade = CascadeType.ALL)
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinTable(name = "accessory_order",
     			joinColumns = @JoinColumn(name = "accessory_id"),
     			inverseJoinColumns = @JoinColumn(name = "order_id"))
-    private Set<Order> orders = new HashSet<Order>();
+    private Set<Order> orders;
 }

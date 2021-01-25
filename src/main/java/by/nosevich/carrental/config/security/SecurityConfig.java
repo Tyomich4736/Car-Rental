@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				logoutSuccessUrl("/").
 				permitAll();
 		
-		//admin initialization
+		//default users initialization
 		if(userService.getAll().size()==0) {
 			userService.saveProtectedUser(new by.nosevich.carrental.model.entities.User(
 				null,
@@ -60,6 +60,30 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				null,
 				Role.ADMIN,
 				"admin@rental.com",
+				"rentalpvt",
+				null
+				));
+			userService.saveProtectedUser(new by.nosevich.carrental.model.entities.User(
+				null,
+				"client",
+				"client",
+				null,
+				true,
+				null,
+				Role.CLIENT,
+				"client@rental.com",
+				"rentalpvt",
+				null
+				));
+			userService.saveProtectedUser(new by.nosevich.carrental.model.entities.User(
+				null,
+				"employee",
+				"employee",
+				null,
+				true,
+				null,
+				Role.EMPLOYEE,
+				"employee@rental.com",
 				"rentalpvt",
 				null
 				));

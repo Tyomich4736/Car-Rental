@@ -64,6 +64,11 @@ public class InMemoryTodaysOrdersService implements TodaysOrdersService{
 	@Override
 	public void deleteFromTodaysOrders(Order order) {
 		todaysOrders.remove(order);
+		try {
+			mailService.sendCanselOrderMessage(order.getUser(), order);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 	}
 
 }
