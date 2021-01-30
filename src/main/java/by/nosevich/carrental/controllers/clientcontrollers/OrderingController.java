@@ -35,7 +35,7 @@ import by.nosevich.carrental.model.service.entityservice.UserService;
 @Controller
 @RequestMapping("/order")
 @Transactional
-public class OrdersController {
+public class OrderingController {
 
 	@Autowired
 	private CarService carService;
@@ -134,12 +134,13 @@ public class OrdersController {
 		User currentUser = userService.getByEmail(principal.getName());
 		Order order = orderService.getByStatusAndUser(Status.UNCOMFIRMED, currentUser);
 		if (order!=null) {
-			try {
-				mailService.sendSuccessfulOrderingMessage(currentUser, order);
-			} catch (MessagingException e) {
-				//orderService.delete(order); TODO uncomment this string in final version
-				return "redirect:/order/myOrders";
-			}
+//			try {
+//				mailService.sendSuccessfulOrderingMessage(currentUser, order);
+//			} catch (MessagingException e) {
+//				orderService.delete(order); 
+//				return "redirect:/order/myOrders";
+//			}
+//			TODO uncomment this strings in final version
 			order.setStatus(Status.WAITING);
 			orderService.save(order);
 			if (new Date().equals(order.getBeginDate()))

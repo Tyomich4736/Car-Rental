@@ -52,7 +52,7 @@
 					th:href="@{/users/set/employee?id={id}(id = ${user.id})}">Make an employee</a>
 					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.role.name()=='EMPLOYEE'}" 
 					th:href="@{/users/set/client?id={id}(id = ${user.id})}">Make an client</a>
-					<a class="btn btn-primary" href="#">Orders</a>
+					<a class="btn btn-primary" th:href="@{/orders/user/{id}(id=${user.id})}" th:if="${user.role.name()=='CLIENT'}">Orders</a>
 				</td>
 			</tr>
 		</tbody>

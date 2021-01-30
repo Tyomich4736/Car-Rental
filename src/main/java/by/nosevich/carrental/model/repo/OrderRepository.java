@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import by.nosevich.carrental.model.entities.Car;
@@ -17,5 +18,6 @@ public interface OrderRepository extends JpaRepository<Order, Integer>{
 	List<Order> findAllByUserOrderByBeginDateDesc(User user);
 	List<Order> findAllByBeginDateAndStatus(Date beginDate, Status status);
 	List<Order> findAllByEndDateAndStatus(Date beginDate, Status status);
-	Order findByStatusAndUser(Status status, User user);
+	@Query("SELECT o FROM Order o WHERE o.user.id = ?1")
+	List<Order> findAllByUserId(Integer id);
 }

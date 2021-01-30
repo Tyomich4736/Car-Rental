@@ -18,7 +18,6 @@ import by.nosevich.carrental.model.service.entityservice.OrderService;
 import lombok.Data;
 
 @Service
-@Data
 public class InMemoryTodaysOrdersService implements TodaysOrdersService{
 
 	@Autowired
@@ -27,6 +26,10 @@ public class InMemoryTodaysOrdersService implements TodaysOrdersService{
 	private MailService mailService;
 	
 	private List<Order> todaysOrders = new ArrayList<Order>(); 
+
+	public List<Order> getTodaysOrders() {
+		return todaysOrders;
+	}
 
 	@Override
 	@Scheduled(cron = "")
@@ -37,8 +40,10 @@ public class InMemoryTodaysOrdersService implements TodaysOrdersService{
 
 	private void cancelTodaysWaitingOrders() {
 		for(Order order : todaysOrders) {
-			if (order.getStatus()==Status.WAITING)
+			if (order.getStatus()==Status.WAITING) {
 				order.setStatus(Status.CANCELED);
+				todaysOrders.remove(order);
+			}
 		}
 	}
 	
@@ -64,11 +69,12 @@ public class InMemoryTodaysOrdersService implements TodaysOrdersService{
 	@Override
 	public void deleteFromTodaysOrders(Order order) {
 		todaysOrders.remove(order);
-		try {
-			mailService.sendCanselOrderMessage(order.getUser(), order);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			mailService.sendCanselOrderMessage(order.getUser(), order);
+//		} catch (MessagingException e) {
+//			e.printStackTrace();
+//		}
+//		TODO uncomment
 	}
 
 }

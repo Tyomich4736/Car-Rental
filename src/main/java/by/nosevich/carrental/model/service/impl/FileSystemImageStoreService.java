@@ -19,7 +19,7 @@ import by.nosevich.carrental.model.service.ImageStoreService;
 
 @Service
 @Transactional
-public class ClasspathImageStoreService implements ImageStoreService{
+public class FileSystemImageStoreService implements ImageStoreService{
 	
 	private static final String IMAGE_STORAGE_PATH = "src/main/resources/static";
 	

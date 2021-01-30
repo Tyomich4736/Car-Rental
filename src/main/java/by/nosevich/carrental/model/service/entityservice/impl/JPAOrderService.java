@@ -96,6 +96,11 @@ public class JPAOrderService implements OrderService{
 
 	@Override
 	public Order getByStatusAndUser(Status status, User user) {
-		return repo.findByStatusAndUser(status, user);
+		for (Order order : repo.findAllByUserId(user.getId())) {
+			if (order.getStatus()==status) {
+				return order;
+			}
+		}
+		return null;
 	}
 }

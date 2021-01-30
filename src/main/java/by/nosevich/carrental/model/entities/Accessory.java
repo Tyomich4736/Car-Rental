@@ -1,5 +1,7 @@
 package by.nosevich.carrental.model.entities;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -11,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.MapKey;
 import javax.persistence.Table;
 
 
@@ -31,9 +34,7 @@ public class Accessory {
 	private String name;
 	private Double price;
 	
-	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    @JoinTable(name = "accessory_order",
-    			joinColumns = @JoinColumn(name = "accessory_id"),
-    			inverseJoinColumns = @JoinColumn(name = "order_id"))
+	@ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "accessories")
     private Set<Order> orders;
+
 }

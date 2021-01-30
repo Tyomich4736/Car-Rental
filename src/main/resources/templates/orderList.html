@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<title>My orders</title>
+<title>Orders</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
@@ -15,7 +15,7 @@
 	<th:block th:insert="fragments/navBar.html" />
 
 	<th:block th:each="order : ${orders}">
-		<div th:if="${order.status.name()!='UNCONFIRMED'}" class="card mb-4 shadow-sm" align="center">
+		<div class="card mb-4 shadow-sm" align="center">
 			<div class="card-header">
 				<h4 class="my-0 fw-normal">
 					<a th:href="@{/catalog/car/{id}(id=${order.car.id})}"><th:block th:text="${order.car.name}" /></a>
@@ -36,6 +36,8 @@
 					height="320">
 				<br>
 			</div>
+			<a th:href="@{/orders/cancel/{id}(id=${order.id})}"
+					class="btn btn-lg btn-danger" th:if="${order.status.name()=='WAITING'}">Cancel</a>
 		</div>
 	</th:block>
 </body>
