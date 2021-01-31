@@ -22,7 +22,7 @@
 	<div class="card mb-4 shadow-sm" align="center">
 		<div class="card-body" align="center">
 			<th:block th:each="imageName : ${images}">
-				<img alt="" th:src="@{${'/cars/'+car.id+'/'+imageName}}" width="780"
+				<img alt="" th:src="${'/files'+imageName}" width="780"
 					height="500">
 				<div th:if="${car.previewImageName!=imageName}"
 					class="d-grid gap-2 col-6 mx-auto">

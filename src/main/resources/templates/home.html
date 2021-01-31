@@ -27,7 +27,7 @@
 				</td>
 				<td align="right">
 					<img alt=""
-					th:src="@{/cars/{id}/{preview}(id=${latestCar.id},preview=${latestCar.previewImageName})}"
+					th:src="${'/files'+latestCar.previewImageName}"
 					width="700" height="442">
 				</td>
 			</tr>

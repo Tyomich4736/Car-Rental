@@ -32,7 +32,7 @@
 			Status: <th:block th:text="${order.status.name()}"/> <br>
 			Price: <th:block th:text="${order.price}"/> BYN<br> </font>
 				<img alt=""
-					th:src="@{/cars/{id}/{preview}(id=${order.car.id},preview=${order.car.previewImageName})}" width="500"
+					th:src="${'/files'+order.car.previewImageName}" width="500"
 					height="320">
 				<br>
 			</div>

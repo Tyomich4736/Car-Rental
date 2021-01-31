@@ -104,6 +104,7 @@ public class AdminCarController {
 		try {
 			imageStoreService.storeCarImage(car, image);
 		} catch (IOException e) {
+			e.printStackTrace();
 			return "redirect:/admin/" + id + "/addImage";
 		}
 		return "redirect:/catalog/car/" + id;

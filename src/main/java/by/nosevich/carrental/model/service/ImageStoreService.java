@@ -10,7 +10,7 @@ import by.nosevich.carrental.model.entities.Category;
 
 public interface ImageStoreService{
 	void storeCarImage(Car car, MultipartFile file) throws IOException;
-	void storeCategoryImage(MultipartFile file) throws IOException;
+	void storeCategoryImage(MultipartFile file, Category category) throws IOException;
 	void storeCarPreview(Car car, MultipartFile file) throws IOException;
 
 	List<String> getCarImagePaths(Car car);

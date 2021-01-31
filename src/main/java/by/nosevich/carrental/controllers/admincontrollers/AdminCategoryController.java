@@ -38,10 +38,9 @@ public class AdminCategoryController {
 	public String addCategory(@RequestParam("name") String name, @RequestParam("file") MultipartFile file) {
 		try {
 			if (!hasCategoryWithSameName(name)) {
-				imageStoreService.storeCategoryImage(file);
 				Category category = new Category();
+				imageStoreService.storeCategoryImage(file, category);
 				category.setName(name);
-				category.setImageName(file.getOriginalFilename());
 				categoryService.save(category);
 			}
 		} catch (IOException e) {

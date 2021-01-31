@@ -64,9 +64,10 @@ public class JPACarService implements CarService {
 
 	@Override
 	public Car getLatest() {
-		Car car = repo.findAllByOrderByYearDesc(PageRequest.of(0, 1)).get(0);
-		if (car==null)
+		List<Car> list = repo.findAllByOrderByYearDesc(PageRequest.of(0, 1));
+		if (list.size()==0)
 			return null;
+		Car car = list.get(0);
 		return car;
 	}
 	

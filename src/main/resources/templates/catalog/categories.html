@@ -30,7 +30,7 @@
 			</div>
 			<div class="card-body">
 				<a th:href="@{/catalog/{category}(category=${category.name})}">
-					<img alt="" th:src="@{${'/categories/'+category.imageName}}"
+						<img alt="" th:src="${'/files'+category.imageName}"
 					width="500" height="320">
 				</a>
 			</div>
