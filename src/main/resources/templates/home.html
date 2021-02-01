@@ -3,7 +3,20 @@
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
 <title>Home</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta name="viewport"
+	content="initial-scale=1.0,
+            width=device-width" />
+<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+	type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+	type="text/javascript" charset="utf-8"></script>
+<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"
+	type="text/javascript" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css"
+	href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+
+
+
 </head>
 
 <link rel="stylesheet"
@@ -19,21 +32,74 @@
 	<br>
 	<div class="card mb-4 shadow-sm" th:if="${latestCar!=null}">
 		<div class="container">
-		<table class="table-responsive-lg">
-			<tr>
-				<td align="justify">
-					<h1><font color="Light Slate Blue">Latest! <th:block th:text="${latestCar.name}"/> &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;</font></h1><br>
-					<a th:href="@{/catalog/car/{id}(id=${latestCar.id})}"><button type="button" class="btn btn-primary">More details</button></a>
-				</td>
-				<td align="right">
-					<img alt=""
-					th:src="${'/files'+latestCar.previewImageName}"
-					width="700" height="442">
-				</td>
-			</tr>
-		</table>
+			<table class="table-responsive-lg">
+				<tr>
+					<td align="justify">
+						<h1>
+							<font color="Light Slate Blue">Latest! <th:block
+									th:text="${latestCar.name}" /> &nbsp; &nbsp; &nbsp; &nbsp;
+								&nbsp;
+							</font>
+						</h1> <br> <a th:href="@{/catalog/car/{id}(id=${latestCar.id})}"><button
+								type="button" class="btn btn-primary">More details</button></a>
+					</td>
+					<td align="right"><img alt=""
+						th:src="${'/files'+latestCar.previewImageName}" width="700"
+						height="442"></td>
+				</tr>
+			</table>
 		</div>
 	</div>
+	<br>
+	<br>
+	<h1 align="center">We are here!</h1>
+	<div style="width: 1920px; height: 480px" id="mapContainer"></div>
+	<script>
+		var platform = new H.service.Platform({
+			'apikey' : '86X5KfJqXC0z7KBB9VWB8o_UEjryg68GH9OC5ERh-Es'
+		});
+		var defaultLayers = platform.createDefaultLayers();
+
+		// Instantiate the map:
+		var map = new H.Map(document.getElementById('mapContainer'),
+				defaultLayers.vector.normal.map, {
+					zoom : 13,
+					center : {
+						lng : 23.868371,
+						lat : 53.669538
+					}
+				});
+
+		var svgMarkup = '<svg width="24" height="24" ' +
+    'xmlns="http://www.w3.org/2000/svg">'
+				+ '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
+    'height="22" /><text x="12" y="18" font-size="12pt" ' +
+    'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
+    'fill="white">R</text></svg>';
+
+		// Create an icon, an object holding the latitude and longitude, and a marker:
+		var icon = new H.map.Icon(svgMarkup), coords = {
+			lat : 53.669538,
+			lng : 23.868371
+		}, marker = new H.map.Marker(coords, {
+			icon : icon
+		});
+
+		// Add the marker to the map and center the map at the location of the marker:
+		map.addObject(marker);
+		map.setCenter(coords);
+
+		// Create the default UI:
+		var ui = H.ui.UI.createDefault(map, defaultLayers, 'ru-RU');
+		var mapSettings = ui.getControl('mapsettings');
+		var zoom = ui.getControl('zoom');
+		var scalebar = ui.getControl('scalebar');
+
+		mapSettings.setAlignment('top-left');
+		zoom.setAlignment('top-left');
+		scalebar.setAlignment('top-left');
+		ui.getControl('zoom').setDisabled(false);
+	</script>
 </body>
 <th:block th:insert="fragments/footer.html" />
 </html>

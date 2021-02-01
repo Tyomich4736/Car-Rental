@@ -1,0 +1,24 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title>Home</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<body>
+	<th:block th:insert="fragments/navBar.html" />
+
+	<br>
+	<br>
+	<br>
+	<h1 align="center">Error <th:block th:text="${status}"/></h1>
+	<h2 align="center"><th:block th:text="${error}"/></h2>
+</body>
+<th:block th:insert="fragments/footer.html" />
+</html>

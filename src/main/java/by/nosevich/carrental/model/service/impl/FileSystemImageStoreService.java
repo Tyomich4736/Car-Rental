@@ -75,7 +75,7 @@ public class FileSystemImageStoreService implements ImageStoreService{
 	}
 	
 	public void deleteCategoryImage(Category category) throws IOException {
-		String imagePath = props.getStoragePath()+"/categories/"+category.getImageName();
+		String imagePath = props.getStoragePath()+category.getImageName();
 		new File(imagePath).delete();
 	}
 
