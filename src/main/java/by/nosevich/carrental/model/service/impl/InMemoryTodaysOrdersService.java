@@ -10,6 +10,7 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import by.nosevich.carrental.model.entities.Order;
 import by.nosevich.carrental.model.entities.orderenums.Status;
@@ -19,6 +20,7 @@ import by.nosevich.carrental.model.service.TodaysOrdersService;
 import by.nosevich.carrental.model.service.entityservice.OrderService;
 
 @Service
+@Transactional 
 public class InMemoryTodaysOrdersService implements TodaysOrdersService, InitializingBean{
 
 	@Autowired

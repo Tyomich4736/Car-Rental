@@ -50,7 +50,7 @@ public class Order {
 	@JoinColumn
 	private User user;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn
 	private Car car;
 	

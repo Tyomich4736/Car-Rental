@@ -11,6 +11,7 @@ import java.util.List;
 import javax.mail.MessagingException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import by.nosevich.carrental.model.entities.Accessory;
 import by.nosevich.carrental.model.entities.Car;
@@ -25,6 +26,7 @@ import by.nosevich.carrental.model.service.entityservice.CarService;
 import by.nosevich.carrental.model.service.entityservice.OrderService;
 import by.nosevich.carrental.model.service.entityservice.UserService;
 
+@Service
 public class OrdersControlServiceImpl implements OrdersControlService{
 	
 	@Autowired
