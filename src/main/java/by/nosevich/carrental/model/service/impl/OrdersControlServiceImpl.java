@@ -46,26 +46,27 @@ public class OrdersControlServiceImpl implements OrdersControlService{
 	public void cancelOrder(Order order) {
 		order.setStatus(Status.CANCELED);
 		orderService.save(order);
-		todaysOrders.removeFromTodaysOrders(order);
-		try {
-			mailService.sendCanselOrderMessage(order.getUser(), order);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
+		todaysOrders.remove(order);
+//		try {
+//			mailService.sendCanselOrderMessage(order.getUser(), order);
+//		} catch (MessagingException e) {
+//			e.printStackTrace();
+//		}
+//		TODO uncomment
 	}
 
 	@Override
 	public void activateOrder(Order order) {
 		order.setStatus(Status.ACTIVE);
 		orderService.save(order);
-		todaysOrders.removeFromTodaysOrders(order);
+		todaysOrders.remove(order);
 	}
 
 	@Override
 	public void finishOrder(Order order) {
 		order.setStatus(Status.ENDED);
 		orderService.save(order);
-		todaysOrders.removeFromTodaysOrders(order);
+		todaysOrders.remove(order);
 	}
 
 	@Override
@@ -78,8 +79,8 @@ public class OrdersControlServiceImpl implements OrdersControlService{
 //			orderService.delete(order); 
 //			return "redirect:/order/myOrders";
 //		}
-//	TODO uncomment this strings in final version
-		if (dateRemoveTime(new Date()).compareTo(dateRemoveTime(order.getBeginDate()))==0)
+//		TODO uncomment this strings in final version
+		if (dateRemoveTime(new Date()).compareTo(dateRemoveTime(order.getBeginDate()))==1)
 			todaysOrders.addToTodaysOrders(order);
 	}
 	

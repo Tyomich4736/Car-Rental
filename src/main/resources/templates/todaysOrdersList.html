@@ -30,9 +30,10 @@
 			</th:block>
 			<font size="5">
 			Status: <th:block th:text="${order.status.name()}"/> <br>
-			Price: <th:block th:text="${order.price}"/> BYN<br> </font>
+			Price: <th:block th:text="${order.price}"/> BYN<br> 
 			Client: <th:block th:text="${order.user.email}"/> <br>
 			Clients phone number: <th:block th:text="${order.user.phoneNumber}"/> <br>
+			</font>
 				<img alt=""
 					th:src="${'/files'+order.car.previewImageName}" width="500"
 					height="320">

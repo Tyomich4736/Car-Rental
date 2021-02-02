@@ -63,15 +63,22 @@ public class InMemoryTodaysOrdersService implements TodaysOrdersService, Initial
 	@Override
 	public void addToTodaysOrders(Order order){
 		todaysOrders.add(order);
-		try {
-			mailService.sendPickUpOrderMessage(order.getUser(), order);
-		} catch (MessagingException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			mailService.sendPickUpOrderMessage(order.getUser(), order);
+//		} catch (MessagingException e) {
+//			e.printStackTrace();
+//		}
+//		TODO uncomment
 	}
 	
 	@Override
-	public void removeFromTodaysOrders(Order order) {
+	public void remove(Order order) {
+		for(int i = 0; i<todaysOrders.size(); i++) {
+			Order o = todaysOrders.get(i);
+			if (order.getId()==o.getId()) {
+				todaysOrders.remove(i);
+			}
+		}
 		todaysOrders.remove(order);
 	}
 
