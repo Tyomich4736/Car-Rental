@@ -36,8 +36,10 @@
 					height="320">
 				<br>
 			</div>
-			<a th:href="@{/orders/cancel/{id}(id=${order.id})}"
+			<div class="d-grid gap-2 col-6 mx-auto">
+				<a th:href="@{/orders/cancel/{id}(id=${order.id})}"
 					class="btn btn-lg btn-danger" th:if="${order.status.name()=='WAITING'}">Cancel</a>
+			</div>
 		</div>
 	</th:block>
 </body>

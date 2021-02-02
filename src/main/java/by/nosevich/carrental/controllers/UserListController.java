@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.User;
 import by.nosevich.carrental.model.entities.userenums.Role;
 import by.nosevich.carrental.model.service.entityservice.UserService;

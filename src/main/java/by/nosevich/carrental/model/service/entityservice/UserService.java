@@ -1,8 +1,6 @@
 package by.nosevich.carrental.model.service.entityservice;
 
 import java.util.List;
-import java.util.Optional;
-
 import org.springframework.data.domain.Pageable;
 
 import by.nosevich.carrental.model.entities.User;

@@ -18,7 +18,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import by.nosevich.carrental.config.properties.EmailProperties;
-import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Order;
 import by.nosevich.carrental.model.entities.User;
 import by.nosevich.carrental.model.service.MailService;

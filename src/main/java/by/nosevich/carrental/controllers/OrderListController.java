@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import by.nosevich.carrental.model.entities.Order;
 import by.nosevich.carrental.model.entities.User;
-import by.nosevich.carrental.model.entities.orderenums.Status;
 import by.nosevich.carrental.model.service.MailService;
+import by.nosevich.carrental.model.service.OrdersControlService;
 import by.nosevich.carrental.model.service.TodaysOrdersService;
 import by.nosevich.carrental.model.service.entityservice.OrderService;
 import by.nosevich.carrental.model.service.entityservice.UserService;
@@ -28,9 +28,9 @@ public class OrderListController {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private TodaysOrdersService todaysOrdersService;
+	private OrdersControlService ordersControlService;
 	@Autowired
-	private MailService mailService;
+	private TodaysOrdersService todaysOrdersService;
 	
 	@GetMapping("/user/{id}")
 	public String getOrdersForUser(Model model, @PathVariable("id") Integer userId) {
@@ -43,7 +43,7 @@ public class OrderListController {
 	@GetMapping("/cancel/{id}")
 	public String cancelOrder(HttpServletRequest req, @PathVariable("id") Integer id) {
 		Order order = orderService.getById(id);
-		todaysOrdersService.cancelOrder(order);
+		ordersControlService.cancelOrder(order);
 		return "redirect:"+req.getHeader("Referer");
 	}
 	
@@ -57,14 +57,14 @@ public class OrderListController {
 	@GetMapping("/activate/{id}")
 	public String activateOrder(HttpServletRequest req, @PathVariable("id") Integer id) {
 		Order order = orderService.getById(id);
-		todaysOrdersService.activateOrder(order);
+		ordersControlService.activateOrder(order);
 		return "redirect:"+req.getHeader("Referer");
 	}
 	
 	@GetMapping("/finish/{id}")
 	public String finishOrder(HttpServletRequest req, @PathVariable("id") Integer id) {
 		Order order = orderService.getById(id);
-		todaysOrdersService.finishOrder(order);
+		ordersControlService.finishOrder(order);
 		return "redirect:"+req.getHeader("Referer");
 	}
 }

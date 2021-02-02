@@ -1,7 +1,6 @@
 package by.nosevich.carrental.model.entities;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -21,11 +20,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import by.nosevich.carrental.model.entities.orderenums.Status;
 import lombok.AllArgsConstructor;
-import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
