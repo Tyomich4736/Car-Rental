@@ -50,7 +50,7 @@ public class Order {
 	@Enumerated(EnumType.STRING)
 	private Status status;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn
 	private User user;
 	

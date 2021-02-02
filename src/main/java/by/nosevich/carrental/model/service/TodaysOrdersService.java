@@ -8,5 +8,8 @@ public interface TodaysOrdersService {
 	List<Order> getTodaysOrders();
 	void updateTodaysOrders();
 	void addToTodaysOrders(Order order);
-	void deleteFromTodaysOrders(Order order);
+	void waitOrder(Order order);
+	void cancelOrder(Order order);
+	void activateOrder(Order order);
+	void finishOrder(Order order);
 }

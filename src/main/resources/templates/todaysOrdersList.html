@@ -31,6 +31,8 @@
 			<font size="5">
 			Status: <th:block th:text="${order.status.name()}"/> <br>
 			Price: <th:block th:text="${order.price}"/> BYN<br> </font>
+			Client: <th:block th:text="${order.user.email}"/> <br>
+			Clients phone number: <th:block th:text="${order.user.phoneNumber}"/> <br>
 				<img alt=""
 					th:src="${'/files'+order.car.previewImageName}" width="500"
 					height="320">
@@ -38,6 +40,10 @@
 			</div>
 			<a th:href="@{/orders/cancel/{id}(id=${order.id})}"
 					class="btn btn-lg btn-danger" th:if="${order.status.name()=='WAITING'}">Cancel</a>
+			<a th:href="@{/orders/activate/{id}(id=${order.id})}"
+					class="btn btn-lg btn-primary" th:if="${order.status.name()=='WAITING'}">Make active</a>
+			<a th:href="@{/orders/finish/{id}(id=${order.id})}"
+					class="btn btn-lg btn-primary" th:if="${order.status.name()=='ACTIVE'}">Make ended</a>
 		</div>
 	</th:block>
 </body>
