@@ -84,10 +84,11 @@ public class AdminCarController {
 			to.setPriceFrom16To30Days(from.getPriceFrom16To30Days());
 	}
 
-	@GetMapping("/{carId}/{imageName}/delete")
-	public String deleteCarImage(@PathVariable("carId") String id, Model model,
-			@PathVariable("imageName") String imageName) throws NumberFormatException, IOException {
-		imageStoreService.deleteCarImageFile(carService.getById(Integer.parseInt(id)), imageName);
+	@GetMapping("/deleteImage/cars/{id}/{fileName}")
+	public String deleteCarImage(@PathVariable("id") String id, Model model,
+			@PathVariable("fileName") String fileName) throws NumberFormatException, IOException {
+		String imageName = "/cars/"+id+"/"+fileName;
+		imageStoreService.deleteCarImageFile(imageName);
 		return "redirect:/catalog/car/" + id;
 	}
 

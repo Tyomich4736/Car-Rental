@@ -58,9 +58,8 @@ public class FileSystemImageStoreService implements ImageStoreService{
 	}
 	
 	@Override
-	public void deleteCarImageFile(Car car, String imageName) throws IOException {
-		String filePath = props.getStoragePath() + "/cars/" + car.getId()
-				+ "/" + imageName;
+	public void deleteCarImageFile(String imageName) throws IOException {
+		String filePath = props.getStoragePath() + imageName;
 		new File(filePath).delete();
 	}
 

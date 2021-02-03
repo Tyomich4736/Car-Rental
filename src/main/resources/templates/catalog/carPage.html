@@ -18,16 +18,17 @@
 			<th:block th:text="${car.name}">
 		</h1>
 	</div>
-	
 	<div class="card mb-4 shadow-sm" align="center">
 		<div class="card-body" align="center">
+	<table border="0">
+	<tr><th>
 			<th:block th:each="imageName : ${images}">
 				<img alt="" th:src="${'/files'+imageName}" width="780"
 					height="500">
 				<div th:if="${car.previewImageName!=imageName}"
 					class="d-grid gap-2 col-6 mx-auto">
 					<a sec:authorize="hasAuthority('ADMIN')"
-						th:href="@{${'/admin/'+car.id+'/'+imageName+'/delete'}}">
+						th:href="@{${'/admin/deleteImage'+imageName}}">
 						<button type="button" class="btn btn-lg btn-danger">Delete
 							Image</button>
 					</a>
@@ -43,7 +44,12 @@
 						Image</button>
 				</a> <br />
 			</div>
-
+			</th>
+			<th>
+			&nbsp;&nbsp;&nbsp;&nbsp;
+			</th>
+			<th valign="top">
+			<div align="center">
 			<font size="5"> Parameters:
 				<table>
 					<tr th:if="${car.year!=null}">
@@ -94,7 +100,7 @@
 					</tr>
 				</table>
 			</font>
-		</div>
+		
 	
 		<div class="d-grid gap-2 col-6 mx-auto">
 			<a sec:authorize="hasAuthority('ADMIN')"
@@ -110,6 +116,11 @@
 			</a>
 		</div>
 		<br>
+	</div>
+	</th>
+	</tr>
+	</table>
+	</div>
 	</div>
 </body>
 <th:block th:insert="fragments/footer.html" />

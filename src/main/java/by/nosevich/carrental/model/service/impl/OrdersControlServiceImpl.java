@@ -13,6 +13,7 @@ import javax.mail.MessagingException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import by.nosevich.carrental.exceptions.OrderIsCrossException;
 import by.nosevich.carrental.model.entities.Accessory;
 import by.nosevich.carrental.model.entities.Car;
 import by.nosevich.carrental.model.entities.Order;
@@ -107,7 +108,7 @@ public class OrdersControlServiceImpl implements OrdersControlService{
 		if (car == null)
 			throw new RuntimeException();
 		if (orderIsCross(beginDate, endDate, car)) {
-			
+			throw new OrderIsCrossException();
 		}
 		HashSet<Accessory> accessories = new HashSet<Accessory>();
 		if (accessoryNames != null)

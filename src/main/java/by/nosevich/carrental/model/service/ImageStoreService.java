@@ -15,7 +15,7 @@ public interface ImageStoreService{
 
 	List<String> getCarImagePaths(Car car);
 	
-	void deleteCarImageFile(Car car, String imageName) throws IOException;
+	void deleteCarImageFile(String imageName) throws IOException;
 	void deleteAllImagesForCar(Car car) throws IOException;
 	void deleteCategoryImage(Category category) throws IOException;
 }

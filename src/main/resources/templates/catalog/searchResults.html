@@ -29,7 +29,7 @@
 			</div>
 			<div class="card-body">
 				<a th:href="@{${'/catalog/car/'+car.id}}"> <img alt=""
-					th:src="@{${'/cars/'+car.id+'/'+car.previewImageName}}" width="500"
+					th:src="${'/files'+car.previewImageName}" width="500"
 					height="320">
 				</a> <br /> <font size="5"><th:block th:text="${car.year}" /></font>
 			</div>
