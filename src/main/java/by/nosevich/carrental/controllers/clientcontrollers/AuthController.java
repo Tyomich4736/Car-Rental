@@ -4,10 +4,12 @@ import java.io.IOException;
 import java.util.UUID;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,7 +28,8 @@ public class AuthController {
 	private UserService userService;
 	
 	@PostMapping("/register")
-	public String createNewUser(User user, @Param("confirmPassword") String confirmPassword) throws IOException {
+	public String createNewUser(User user, @Param("confirmPassword") String confirmPassword,
+			HttpServletRequest request, Model model) throws IOException {
 		try {
 			if (userDataIsCorrect(user, confirmPassword)) {
 				user.setActivationCode(UUID.randomUUID().toString());
@@ -34,12 +37,24 @@ public class AuthController {
 				user.setActive(false);
 				emailService.sendActivationMessage(user);
 				userService.saveProtectedUser(user);
-			} else
-				return "redirect:/register";
+			} else {
+				putUserDataInAttributes(user, model);
+				model.addAttribute("passwordError", true);
+				return "auth/register";
+			}	
 		} catch (MessagingException e) {
-			return "redirect:/register";
+			putUserDataInAttributes(user, model);
+			model.addAttribute("mailError", true);
+			return "auth/register";
 		}
 		return "redirect:/successfulreg";
+	}
+	
+	private void putUserDataInAttributes(User user, Model model) {
+		model.addAttribute("firstName", user.getFirstName());
+		model.addAttribute("lastName", user.getLastName());
+		model.addAttribute("phone", user.getPhoneNumber());
+		model.addAttribute("email", user.getEmail());
 	}
 
 	@GetMapping("/register")

@@ -11,17 +11,23 @@
     <!-- Login Form -->
     <form th:action="@{/register}" method="post">
     First name <br/>
-      <input type="text" id="login" class="fadeIn second" name="firstName" required="required"><br/>
+      <input type="text" id="login" class="fadeIn second" name="firstName" required="required" th:value="${firstName}"><br/>
       Last name<br/>
-      <input type="text" id="login" class="fadeIn second" name="lastName" required="required"><br/>
+      <input type="text" id="login" class="fadeIn second" name="lastName" required="required" th:value="${lastName}"><br/>
       Phone number<br/>
-      <input type="text" id="login" class="fadeIn second" name="phoneNumber" required="required"><br/>
+      <input type="text" id="login" class="fadeIn second" name="phoneNumber" required="required" th:value="${phone}"><br/>
     Email<br/>
-      <input type="email" id="login" class="fadeIn second" name="email" required="required"><br/>
+      <input type="email" id="login" class="fadeIn second" name="email" required="required" th:value="${email}"><br/>
     Password  <br/>
       <input type="password" id="password" class="fadeIn third" name="password" required="required"><br/>
     Confirm password<br/>
-      <input type="password" id="password" class="fadeIn third" name="confirmPassword" required="required">  
+      <input type="password" id="password" class="fadeIn third" name="confirmPassword" required="required">
+      <div th:if="${passwordError}">
+            <font color="red">Passwords do not match.</font>
+        </div>
+       <div th:if="${mailError}">
+            <font color="red">Mail entered incorrectly.</font>
+       </div>  
       <input type="submit" class="fadeIn fourth" value="Register">
     </form>
 

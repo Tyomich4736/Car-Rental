@@ -37,7 +37,7 @@ public class InMemoryTodaysOrdersService implements TodaysOrdersService, Initial
 	}
 
 	@Override
-	@Scheduled(cron = "0 0 * * *")
+	@Scheduled(cron = "0 0 0 * * ?", zone = "Europe/Minsk")
 	public void updateTodaysOrders() {
 		cancelTodaysWaitingOrders();
 		addNewOrdersInList();
@@ -63,12 +63,11 @@ public class InMemoryTodaysOrdersService implements TodaysOrdersService, Initial
 	@Override
 	public void addToTodaysOrders(Order order){
 		todaysOrders.add(order);
-//		try {
-//			mailService.sendPickUpOrderMessage(order.getUser(), order);
-//		} catch (MessagingException e) {
-//			e.printStackTrace();
-//		}
-//		TODO uncomment
+		try {
+			mailService.sendPickUpOrderMessage(order.getUser(), order);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override

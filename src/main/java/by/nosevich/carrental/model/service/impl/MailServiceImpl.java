@@ -33,11 +33,10 @@ public class MailServiceImpl implements MailService {
 		sendMessage(user, getActivationMessage(user), getActivasionSubject());
 	}
 	private String getActivationMessage(User user) {
-		String siteName = emailProperties.getDomainHost().replaceAll("http://", "");
 		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\">Hello, "
 				+ user.getFirstName() + "!</font></h1><br/>"
-				+ "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >We are glad to welcome you to our service "
-				+ siteName + "!<br/>" + "To activate your account follow this link:</div> <br/>"
+				+ "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >We are glad to welcome you to our rental service!"
+				+ "<br/>" + "To activate your account follow this link:</div> <br/>"
 				+ "<h2 align=\"center\"><a href=" + emailProperties.getDomainHost() + "/activate/"
 				+ user.getActivationCode() + ">Link</a></h2>";
 	}
@@ -59,7 +58,7 @@ public class MailServiceImpl implements MailService {
 		return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\"> Order " + order.getId()
 				+ " successful ordering!</font></h1><br/>"
 				+ "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >The order for car "
-				+ order.getCar().getName() + " has been successfully placed!We are waiting for you"
+				+ order.getCar().getName() + " has been successfully placed!We are waiting for you "
 				+ order.getBeginDate() + " in our service. If you do not show up, your order will be canceled.<br/>";
 	}
 

@@ -48,12 +48,11 @@ public class OrdersControlServiceImpl implements OrdersControlService{
 		order.setStatus(Status.CANCELED);
 		orderService.save(order);
 		todaysOrders.remove(order);
-//		try {
-//			mailService.sendCanselOrderMessage(order.getUser(), order);
-//		} catch (MessagingException e) {
-//			e.printStackTrace();
-//		}
-//		TODO uncomment
+		try {
+			mailService.sendCanselOrderMessage(order.getUser(), order);
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
@@ -71,16 +70,10 @@ public class OrdersControlServiceImpl implements OrdersControlService{
 	}
 
 	@Override
-	public void waitOrder(Order order) {
+	public void waitOrder(Order order) throws MessagingException {
 		order.setStatus(Status.WAITING);
 		orderService.save(order);
-//		try {
-//			mailService.sendSuccessfulOrderingMessage(currentUser, order);
-//		} catch (MessagingException e) {
-//			orderService.delete(order); 
-//			return "redirect:/order/myOrders";
-//		}
-//		TODO uncomment this strings in final version
+		mailService.sendSuccessfulOrderingMessage(order.getUser(), order);
 		if (dateRemoveTime(new Date()).compareTo(dateRemoveTime(order.getBeginDate()))==1)
 			todaysOrders.addToTodaysOrders(order);
 	}
@@ -140,7 +133,7 @@ public class OrdersControlServiceImpl implements OrdersControlService{
 	private boolean orderIsCross(Date beginDate, Date endDate, Car car) {
 		List<Order> orders = orderService.getAllByCar(car);
 		for (Order order : orders) {
-			if ((beginDate.compareTo(order.getBeginDate()) < 0 && beginDate.compareTo(order.getEndDate()) < 0)
+			if ((beginDate.compareTo(order.getBeginDate()) > 0 && beginDate.compareTo(order.getEndDate()) < 0)
 					|| ((endDate.compareTo(order.getBeginDate()) > 0 && endDate.compareTo(order.getEndDate()) < 0))
 					|| (beginDate.compareTo(order.getBeginDate())<0 && endDate.compareTo(order.getEndDate()) > 0))
 				return true;

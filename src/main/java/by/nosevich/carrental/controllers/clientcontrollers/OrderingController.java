@@ -2,6 +2,9 @@ package by.nosevich.carrental.controllers.clientcontrollers;
 
 import java.security.Principal;
 import java.util.List;
+
+import javax.mail.MessagingException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +73,7 @@ public class OrderingController {
 					endDateStr, carId, principal.getName());
 			model.addAttribute("order", order);
 		} catch (OrderIsCrossException e) {
-			return "redirect:/order/"+carId;
+			return "redirect:/order/"+carId+"?cross=true";
 		} catch (Exception e) {
 			return "redirect:/home";
 		}
@@ -82,7 +85,12 @@ public class OrderingController {
 		User currentUser = userService.getByEmail(principal.getName());
 		Order order = orderService.getByStatusAndUser(Status.UNCOMFIRMED, currentUser);
 		if (order!=null) {
-			ordersControlService.waitOrder(order);
+			try {
+				ordersControlService.waitOrder(order);
+			} catch (MessagingException e) {
+				orderService.delete(order); 
+				return "redirect:/order/myOrders";
+			}
 		}
 		return "redirect:/order/myOrders";
 	}
