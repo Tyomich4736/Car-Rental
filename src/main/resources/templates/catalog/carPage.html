@@ -26,7 +26,7 @@
 				<img alt="" th:src="${'/files'+imageName}" width="780"
 					height="500">
 				<div th:if="${car.previewImageName!=imageName}"
-					class="d-grid gap-2 col-6 mx-auto">
+					class="d-grid gap-2 col-6 mx-auto" align="center" style="margin-top: 10px">
 					<a sec:authorize="hasAuthority('ADMIN')"
 						th:href="@{${'/admin/deleteImage'+imageName}}">
 						<button type="button" class="btn btn-lg btn-danger">Delete
@@ -37,7 +37,7 @@
 				<br />
 			</th:block>
 			<br /> <br />
-			<div class="d-grid gap-2 col-6 mx-auto">
+			<div class="d-grid gap-2 col-6 mx-auto" align="center">
 				<a sec:authorize="hasAuthority('ADMIN')"
 					th:href="@{${'/admin/'+car.id+'/addImage'}}">
 					<button type="button" class="btn btn-lg btn-primary">Add
@@ -53,66 +53,65 @@
 			<font size="5"> Parameters:
 				<table>
 					<tr th:if="${car.year!=null}">
-						<th>Year of issue:</th>
+						<th>Year of issue:&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.year}" /></th>
 					</tr>
 					<tr th:if="${car.numberOfSeats!=null}">
-						<th>Number of seats:</th>
+						<th>Number of seats:&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.numberOfSeats}" /></th>
 					</tr>
 					<tr th:if="${car.maxSpeed!=null}">
-						<th>Maximal speed:</th>
+						<th>Maximal speed:&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.maxSpeed}" /></th>
 					</tr>
 					<tr th:if="${car.tranmission!=null}">
-						<th>Tranmission:</th>
+						<th>Tranmission:&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.tranmission.name()}" /></th>
 					</tr>
 					<tr th:if="${car.fuelType!=null}">
-						<th>Fuel type:</th>
+						<th>Fuel type:&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.fuelType.name()}" /></th>
 					</tr>
 					<tr th:if="${car.fuelConsumption!=null}">
-						<th>Fuel consumption:</th>
+						<th>Fuel consumption:&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.fuelConsumption}" /></th>
 					</tr>
 				</table> <br />
 				<table>
 					<tr>
-						<th>Time</th>
-						<th>Price</th>
+						<th>Time&nbsp;&nbsp;</th>
+						<th>Price&nbsp;&nbsp;</th>
 					</tr>
 					<tr>
-						<td>1-3 days</td>
-						<td><th:block th:text="${car.priceFrom1To3Days}+' BYN'"></td>
+						<td>1-3 days&nbsp;&nbsp;</td>
+						<td><th:block th:text="${car.priceFrom1To3Days}+' BYN'"/></td>
 					</tr>
 					<tr>
-						<td>4-7 days</td>
-						<td><th:block th:text="${car.priceFrom4To7Days}+' BYN'"></td>
+						<td>4-7 days&nbsp;&nbsp;</td>
+						<td><th:block th:text="${car.priceFrom4To7Days}+' BYN'"/></td>
 					</tr>
 					<tr>
-						<td>8-15 days</td>
-						<td><th:block th:text="${car.priceFrom8To15Days}+' BYN'"></td>
+						<td>8-15 days&nbsp;&nbsp;</td>
+						<td><th:block th:text="${car.priceFrom8To15Days}+' BYN'"/></td>
 					</tr>
 					<tr>
-						<td>16-30 days</td>
-						<td><th:block th:text="${car.priceFrom16To30Days}+' BYN'"></td>
+						<td>16-30 days&nbsp;&nbsp;</td>
+						<td><th:block th:text="${car.priceFrom16To30Days}+' BYN'"/></td>
 					</tr>
 				</table>
 			</font>
 		
 	
-		<div class="d-grid gap-2 col-6 mx-auto">
+		<div class="d-grid gap-2 col-6 mx-auto" style="margin-top: 10px">
 			<a sec:authorize="hasAuthority('ADMIN')"
 				th:href="@{${'/admin/'+car.id+'/edit'}}">
 				<button type="button" class="btn btn-lg btn-primary">Edit</button>
 			</a>
 		</div>
-		<div class="d-grid gap-2 col-6 mx-auto">
+		<div class="d-grid gap-2 col-6 mx-auto" style="margin-top: 10px">
 			<a sec:authorize="hasAuthority('CLIENT')"
 				th:href="@{/order/{car}(car=${car.id})}">
-				<button type="button" class="btn btn-lg btn-success">To
-					order</button>
+				<button type="button" class="btn btn-lg btn-success">To order</button>
 			</a>
 		</div>
 		<br>

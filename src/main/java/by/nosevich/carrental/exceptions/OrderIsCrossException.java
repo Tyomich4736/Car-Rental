@@ -1,5 +1,5 @@
 package by.nosevich.carrental.exceptions;
 
-public class OrderIsCrossException extends RuntimeException{
+public class OrderIsCrossException extends RuntimeException {
 
 }

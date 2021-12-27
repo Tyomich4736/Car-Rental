@@ -51,7 +51,7 @@
 					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.role.name()=='CLIENT'}" 
 					th:href="@{/users/set/employee?id={id}(id = ${user.id})}">Make an employee</a>
 					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.role.name()=='EMPLOYEE'}" 
-					th:href="@{/users/set/client?id={id}(id = ${user.id})}">Make an client</a>
+					th:href="@{/users/set/client?id={id}(id = ${user.id})}">Make a client</a>
 					<a class="btn btn-primary" th:href="@{/orders/user/{id}(id=${user.id})}" th:if="${user.role.name()=='CLIENT'}">Orders</a>
 				</td>
 			</tr>
@@ -65,7 +65,7 @@
 			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage-1})}">Previous</a></li>
 			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"></a></li>
 		</th:block>
-			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"></a></li>
+			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"/></a></li>
 		<th:block th:if="${hasNextPage==true}">	
 			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage+1})}"><th:block th:text="${currentPage+2}"></a></li>
 			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage+1})}">Next</a></li>
@@ -79,7 +79,7 @@
 			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage-1}, search=${search})}">Previous</a></li>
 			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage-1}, search=${search})}"><th:block th:text="${currentPage}"></a></li>
 		</th:block>
-			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"></a></li>
+			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"/></a></li>
 		<th:block th:if="${hasNextPage==true}">	
 			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage+1}, search=${search})}"><th:block th:text="${currentPage+2}"></a></li>
 			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage+1}, search=${search})}">Next</a></li>

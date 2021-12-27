@@ -16,7 +16,7 @@
 	<th:block th:insert="fragments/searchBar.html" />
 	
 	
-	<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto">
+	<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto" style="margin-bottom: 20px" align="center">
 		<a th:href="@{/admin/addCategory}"
 			class="btn btn-lg btn-primary">Add category</a>
 	</div>
@@ -35,7 +35,7 @@
 				</a>
 			</div>
 			<br /> <br />
-			<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto">
+			<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto" style="margin-bottom: 10px">
 				<a th:href="@{/admin/category/{category}/delete(category=${category.name})}"
 					class="btn btn-lg btn-danger">Delete category</a> <br /> <br />
 			</div>

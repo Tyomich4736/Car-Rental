@@ -16,10 +16,10 @@
 	<th:block th:insert="fragments/searchBar.html" />
 	<div align="center">
 		<h1>
-			<span th:if="${currentCategory!=null}" th:text="${currentCategory}">
+			<span th:if="${currentCategory!=null}" th:text="${currentCategory}"/>
 		</h1>
 	</div>
-	<div class="d-grid gap-2 col-6 mx-auto" sec:authorize="hasAuthority('ADMIN')">
+	<div class="d-grid gap-2 col-6 mx-auto" sec:authorize="hasAuthority('ADMIN')" style="margin-bottom: 20px" align="center">
 		<a th:href="@{/admin/{category}/addCar(category=${currentCategory})}"
 			class="btn btn-lg btn-primary">Add car</a>
 	</div>
@@ -37,7 +37,7 @@
 					height="320">
 				</a> <br /> <font size="5"><th:block th:text="${car.year}" /></font>
 			</div>
-			<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto">
+			<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto" style="margin-bottom: 10px">
 				<a th:href="@{/admin/{car}/delete(car=${car.id})}"
 					class="btn btn-lg btn-danger">Delete car</a> <br /> <br />
 			</div>
@@ -50,7 +50,7 @@
 			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage-1})}">Previous</a></li>
 			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"></a></li>
 		</th:block>
-			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"></a></li>
+			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"/></a></li>
 		<th:block th:if="${hasNextPage==true}">	
 			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage+1})}"><th:block th:text="${currentPage+2}"></a></li>
 			<li class="page-item"><a class="page-link" th:href="@{/catalog/{category}?page={pageNum}(category=${currentCategory}, pageNum=${currentPage+1})}">Next</a></li>
