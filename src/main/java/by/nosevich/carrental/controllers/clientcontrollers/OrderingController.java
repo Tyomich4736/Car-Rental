@@ -61,8 +61,8 @@ public class OrderingController {
     public String getConfirmPage(@RequestParam(required = false, name = "accessories") List<String> accessoryNames, @RequestParam("beginDate") String beginDateStr, @RequestParam("endDate") String endDateStr, @PathVariable("carId") Integer carId, Principal principal, Model model) {
 
         try {
-            Order order = ordersControlService
-                    .saveUnconfirmedOrder(accessoryNames, beginDateStr, endDateStr, carId, principal.getName());
+            Order order = ordersControlService.saveUnconfirmedOrder(accessoryNames, beginDateStr, endDateStr, carId,
+                    principal.getName());
             model.addAttribute("order", order);
         } catch(OrderIsCrossException e) {
             return "redirect:/order/" + carId + "?cross=true";

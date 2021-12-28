@@ -56,7 +56,7 @@ public class JPAOrderService implements OrderService {
         double price = 0;
         int days =
                 Period.between(convertDateToLocalDate(order.getBeginDate()), convertDateToLocalDate(order.getEndDate()))
-                      .getDays();
+                        .getDays();
         if(days <= 3) {
             price += order.getCar().getPriceFrom1To3Days();
         } else if(days <= 7) {

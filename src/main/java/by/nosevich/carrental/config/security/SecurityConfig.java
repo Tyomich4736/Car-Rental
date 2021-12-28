@@ -27,12 +27,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-            .antMatchers("/", "/home", "/register", "/activate/**", "/successfulreg", "/img/**", "/catalog",
-                    "/catalog/**", "/rentterms", "/files/**").permitAll().antMatchers("/admin/**")
-            .hasAnyAuthority("ADMIN").antMatchers("/users", "/orders").hasAnyAuthority("ADMIN", "EMPLOYEE")
-            .antMatchers("/users/set/**").hasAnyAuthority("ADMIN").antMatchers("/order/**").hasAnyAuthority("CLIENT")
-            .anyRequest().authenticated().and().formLogin().loginPage("/login").defaultSuccessUrl("/", true).permitAll()
-            .and().logout().logoutSuccessUrl("/").permitAll();
+                .antMatchers("/", "/home", "/register", "/activate/**", "/successfulreg", "/img/**", "/catalog",
+                        "/catalog/**", "/rentterms", "/files/**")
+                .permitAll()
+                .antMatchers("/admin/**")
+                .hasAnyAuthority("ADMIN")
+                .antMatchers("/users", "/orders")
+                .hasAnyAuthority("ADMIN", "EMPLOYEE")
+                .antMatchers("/users/set/**")
+                .hasAnyAuthority("ADMIN")
+                .antMatchers("/order/**")
+                .hasAnyAuthority("CLIENT")
+                .anyRequest()
+                .authenticated()
+                .and()
+                .formLogin()
+                .loginPage("/login")
+                .defaultSuccessUrl("/", true)
+                .permitAll()
+                .and()
+                .logout()
+                .logoutSuccessUrl("/")
+                .permitAll();
     }
 
     @Bean
