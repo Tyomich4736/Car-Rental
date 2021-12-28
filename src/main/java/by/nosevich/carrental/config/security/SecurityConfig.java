@@ -1,7 +1,7 @@
 package by.nosevich.carrental.config.security;
 
 import by.nosevich.carrental.entities.userenums.Role;
-import by.nosevich.carrental.service.modelservice.UserService;
+import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -71,7 +71,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
 
     @Override
     public void afterPropertiesSet() throws Exception {
-        if(userService.getAll().size() == 0) {
+        if(userService.getAll().isEmpty()) {
             userService.saveProtectedUser(
                     new by.nosevich.carrental.entities.User(null, "admin", "admin", null, true, null, Role.ADMIN,
                             "admin@rental.com", "rentalpvt", null));

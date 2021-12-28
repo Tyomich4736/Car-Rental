@@ -2,10 +2,10 @@ package by.nosevich.carrental.controllers;
 
 import by.nosevich.carrental.entities.Order;
 import by.nosevich.carrental.entities.User;
-import by.nosevich.carrental.service.OrdersControlService;
-import by.nosevich.carrental.service.TodaysOrdersListService;
-import by.nosevich.carrental.service.modelservice.OrderService;
-import by.nosevich.carrental.service.modelservice.UserService;
+import by.nosevich.carrental.service.order.control.OrdersControlService;
+import by.nosevich.carrental.service.order.current.CurrentOrdersService;
+import by.nosevich.carrental.service.order.OrderService;
+import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +29,7 @@ public class OrderListController {
     @Autowired
     private OrdersControlService ordersControlService;
     @Autowired
-    private TodaysOrdersListService todaysOrdersListService;
+    private CurrentOrdersService currentOrdersService;
 
     @GetMapping("/user/{id}")
     public String getOrdersForUser(Model model, @PathVariable("id") Integer userId) {
@@ -48,7 +48,7 @@ public class OrderListController {
 
     @GetMapping("/todays")
     public String getTodaysOrders(Model model) {
-        List<Order> orders = todaysOrdersListService.getTodaysOrders();
+        List<Order> orders = currentOrdersService.getTodaysOrders();
         model.addAttribute("orders", orders);
         return "todaysOrdersList";
     }

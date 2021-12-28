@@ -2,8 +2,8 @@ package by.nosevich.carrental.controllers.clientcontrollers;
 
 import by.nosevich.carrental.entities.User;
 import by.nosevich.carrental.entities.userenums.Role;
-import by.nosevich.carrental.service.MailService;
-import by.nosevich.carrental.service.modelservice.UserService;
+import by.nosevich.carrental.service.mailsender.MailService;
+import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Controller;

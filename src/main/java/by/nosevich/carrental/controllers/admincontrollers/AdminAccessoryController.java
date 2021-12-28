@@ -1,7 +1,7 @@
 package by.nosevich.carrental.controllers.admincontrollers;
 
 import by.nosevich.carrental.entities.Accessory;
-import by.nosevich.carrental.service.modelservice.AccessoryService;
+import by.nosevich.carrental.service.accessory.AccessoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;

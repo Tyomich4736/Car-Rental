@@ -1,9 +1,9 @@
 package by.nosevich.carrental.controllers.admincontrollers;
 
 import by.nosevich.carrental.entities.Car;
-import by.nosevich.carrental.service.ImageStoreService;
-import by.nosevich.carrental.service.modelservice.CarService;
-import by.nosevich.carrental.service.modelservice.CategoryService;
+import by.nosevich.carrental.service.imagestorage.ImageStoreService;
+import by.nosevich.carrental.service.car.CarService;
+import by.nosevich.carrental.service.category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
