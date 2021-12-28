@@ -1,6 +1,6 @@
 package by.nosevich.carrental.repository;
 
-import by.nosevich.carrental.entities.Category;
+import by.nosevich.carrental.model.Category;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

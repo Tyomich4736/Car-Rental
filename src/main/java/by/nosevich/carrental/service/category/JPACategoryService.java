@@ -1,6 +1,6 @@
 package by.nosevich.carrental.service.category;
 
-import by.nosevich.carrental.entities.Category;
+import by.nosevich.carrental.model.Category;
 import by.nosevich.carrental.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

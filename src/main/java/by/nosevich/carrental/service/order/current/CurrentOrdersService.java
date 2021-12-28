@@ -1,6 +1,6 @@
 package by.nosevich.carrental.service.order.current;
 
-import by.nosevich.carrental.entities.Order;
+import by.nosevich.carrental.model.Order;
 
 import java.util.List;
 

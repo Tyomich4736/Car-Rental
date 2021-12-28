@@ -1,7 +1,7 @@
 package by.nosevich.carrental.service.car;
 
-import by.nosevich.carrental.entities.Car;
-import by.nosevich.carrental.entities.Category;
+import by.nosevich.carrental.model.Car;
+import by.nosevich.carrental.model.Category;
 import by.nosevich.carrental.service.DaoService;
 import org.springframework.data.domain.Pageable;
 

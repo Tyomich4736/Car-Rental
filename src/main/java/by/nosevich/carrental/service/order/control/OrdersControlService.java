@@ -1,6 +1,6 @@
 package by.nosevich.carrental.service.order.control;
 
-import by.nosevich.carrental.entities.Order;
+import by.nosevich.carrental.model.Order;
 
 import javax.mail.MessagingException;
 import java.util.List;

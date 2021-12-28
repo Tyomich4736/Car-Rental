@@ -1,7 +1,7 @@
 package by.nosevich.carrental.controllers.clientcontrollers;
 
-import by.nosevich.carrental.entities.User;
-import by.nosevich.carrental.entities.userenums.Role;
+import by.nosevich.carrental.model.User;
+import by.nosevich.carrental.model.enums.UserRole;
 import by.nosevich.carrental.service.mailsender.MailService;
 import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,7 +31,7 @@ public class AuthController {
         try {
             if(userDataIsCorrect(user, confirmPassword)) {
                 user.setActivationCode(UUID.randomUUID().toString());
-                user.setRole(Role.CLIENT);
+                user.setUserRole(UserRole.CLIENT);
                 user.setActive(false);
                 emailService.sendActivationMessage(user);
                 userService.saveProtectedUser(user);

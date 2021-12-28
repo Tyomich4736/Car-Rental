@@ -1,7 +1,7 @@
 package by.nosevich.carrental.controllers;
 
-import by.nosevich.carrental.entities.Order;
-import by.nosevich.carrental.entities.User;
+import by.nosevich.carrental.model.Order;
+import by.nosevich.carrental.model.User;
 import by.nosevich.carrental.service.order.control.OrdersControlService;
 import by.nosevich.carrental.service.order.current.CurrentOrdersService;
 import by.nosevich.carrental.service.order.OrderService;

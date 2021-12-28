@@ -1,6 +1,6 @@
 package by.nosevich.carrental.service.user;
 
-import by.nosevich.carrental.entities.User;
+import by.nosevich.carrental.model.User;
 import by.nosevich.carrental.service.DaoService;
 import org.springframework.data.domain.Pageable;
 

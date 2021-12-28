@@ -15,7 +15,7 @@
 	<th:block th:insert="fragments/navBar.html" />
 
 	<th:block th:each="order : ${orders}">
-		<div th:if="${order.status.name()!='UNCONFIRMED'}" class="card mb-4 shadow-sm" align="center">
+		<div th:if="${order.orderStatus.name()!='UNCONFIRMED'}" class="card mb-4 shadow-sm" align="center">
 			<div class="card-header">
 				<h4 class="my-0 fw-normal">
 					<a th:href="@{/catalog/car/{id}(id=${order.car.id})}"><th:block th:text="${order.car.name}" /></a>
@@ -29,7 +29,7 @@
 				<th:block th:text="${acc.name+' ('+acc.price+' BYN)'}"/> <br>
 			</th:block>
 			<font size="5">
-			Status: <th:block th:text="${order.status.name()}"/> <br>
+			Status: <th:block th:text="${order.orderStatus.name()}"/> <br>
 			Price: <th:block th:text="${order.price}"/> BYN<br> </font>
 				<img alt=""
 					th:src="${'/files'+order.car.previewImageName}" width="500"

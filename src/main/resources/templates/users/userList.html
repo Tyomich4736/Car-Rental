@@ -45,14 +45,14 @@
 				<td><th:block th:text="${user.firstName}"/></td>
 				<td><th:block th:text="${user.lastName}"/></td>
 				<td><th:block th:text="${user.phoneNumber}"/></td>
-				<td><th:block th:text="${user.role.name()}"/></td>
+				<td><th:block th:text="${user.getUserRole.name()}"/></td>
 				<td><th:block th:text="${user.isActive}"/></td>
 				<td>
-					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.role.name()=='CLIENT'}" 
+					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.getUserRole.name()=='CLIENT'}"
 					th:href="@{/users/set/employee?id={id}(id = ${user.id})}">Make an employee</a>
-					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.role.name()=='EMPLOYEE'}" 
+					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.getUserRole.name()=='EMPLOYEE'}"
 					th:href="@{/users/set/client?id={id}(id = ${user.id})}">Make a client</a>
-					<a class="btn btn-primary" th:href="@{/orders/user/{id}(id=${user.id})}" th:if="${user.role.name()=='CLIENT'}">Orders</a>
+					<a class="btn btn-primary" th:href="@{/orders/user/{id}(id=${user.id})}" th:if="${user.getUserRole.name()=='CLIENT'}">Orders</a>
 				</td>
 			</tr>
 		</tbody>

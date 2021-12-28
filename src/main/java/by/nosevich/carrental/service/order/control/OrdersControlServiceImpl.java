@@ -1,10 +1,10 @@
 package by.nosevich.carrental.service.order.control;
 
-import by.nosevich.carrental.entities.Accessory;
-import by.nosevich.carrental.entities.Car;
-import by.nosevich.carrental.entities.Order;
-import by.nosevich.carrental.entities.User;
-import by.nosevich.carrental.entities.orderenums.Status;
+import by.nosevich.carrental.model.Accessory;
+import by.nosevich.carrental.model.Car;
+import by.nosevich.carrental.model.Order;
+import by.nosevich.carrental.model.User;
+import by.nosevich.carrental.model.enums.OrderStatus;
 import by.nosevich.carrental.exceptions.OrderIsCrossException;
 import by.nosevich.carrental.service.order.current.CurrentOrdersService;
 import by.nosevich.carrental.service.accessory.AccessoryService;
@@ -42,7 +42,7 @@ public class OrdersControlServiceImpl implements OrdersControlService {
 
     @Override
     public void cancelOrder(Order order) {
-        order.setStatus(Status.CANCELED);
+        order.setOrderStatus(OrderStatus.CANCELED);
         orderService.save(order);
         todaysOrders.remove(order);
         try {
@@ -54,21 +54,21 @@ public class OrdersControlServiceImpl implements OrdersControlService {
 
     @Override
     public void activateOrder(Order order) {
-        order.setStatus(Status.ACTIVE);
+        order.setOrderStatus(OrderStatus.ACTIVE);
         orderService.save(order);
         todaysOrders.remove(order);
     }
 
     @Override
     public void finishOrder(Order order) {
-        order.setStatus(Status.ENDED);
+        order.setOrderStatus(OrderStatus.ENDED);
         orderService.save(order);
         todaysOrders.remove(order);
     }
 
     @Override
     public void waitOrder(Order order) throws MessagingException {
-        order.setStatus(Status.WAITING);
+        order.setOrderStatus(OrderStatus.WAITING);
         orderService.save(order);
         mailService.sendSuccessfulOrderingMessage(order.getUser(), order);
         if(dateRemoveTime(new Date()).compareTo(dateRemoveTime(order.getBeginDate())) == 1)
@@ -112,7 +112,7 @@ public class OrdersControlServiceImpl implements OrdersControlService {
         order.setBeginDate(beginDate);
         order.setEndDate(endDate);
         order.setCar(car);
-        order.setStatus(Status.UNCOMFIRMED);
+        order.setOrderStatus(OrderStatus.UNCOMFIRMED);
         User currentUser = userService.getByEmail(username);
         order.setUser(currentUser);
 

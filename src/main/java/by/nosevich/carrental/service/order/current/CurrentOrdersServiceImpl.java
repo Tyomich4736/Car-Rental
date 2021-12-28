@@ -1,10 +1,9 @@
 package by.nosevich.carrental.service.order.current;
 
-import by.nosevich.carrental.entities.Order;
-import by.nosevich.carrental.entities.orderenums.Status;
+import by.nosevich.carrental.model.Order;
+import by.nosevich.carrental.model.enums.OrderStatus;
 import by.nosevich.carrental.service.mailsender.MailService;
 import by.nosevich.carrental.service.order.control.OrdersControlService;
-import by.nosevich.carrental.service.order.current.CurrentOrdersService;
 import by.nosevich.carrental.service.order.OrderService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,7 @@ public class CurrentOrdersServiceImpl implements CurrentOrdersService, Initializ
 
     private void cancelTodaysWaitingOrders() {
         for(Order order : todaysOrders) {
-            if(order.getStatus() == Status.WAITING) {
+            if(order.getOrderStatus() == OrderStatus.WAITING) {
                 ordersControlService.cancelOrder(order);
             }
         }
@@ -51,10 +50,10 @@ public class CurrentOrdersServiceImpl implements CurrentOrdersService, Initializ
 
     private void addNewOrdersInList() {
         Date today = new Date();
-        for(Order order : orderService.getAllByBeginDateAndStatus(today, Status.WAITING)) {
+        for(Order order : orderService.getAllByBeginDateAndStatus(today, OrderStatus.WAITING)) {
             addToTodaysOrders(order);
         }
-        todaysOrders.addAll(orderService.getAllByEndDateAndStatus(today, Status.ACTIVE));
+        todaysOrders.addAll(orderService.getAllByEndDateAndStatus(today, OrderStatus.ACTIVE));
     }
 
     @Override

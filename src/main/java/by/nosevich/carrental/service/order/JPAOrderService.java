@@ -1,12 +1,11 @@
 package by.nosevich.carrental.service.order;
 
-import by.nosevich.carrental.entities.Accessory;
-import by.nosevich.carrental.entities.Car;
-import by.nosevich.carrental.entities.Order;
-import by.nosevich.carrental.entities.User;
-import by.nosevich.carrental.entities.orderenums.Status;
+import by.nosevich.carrental.model.Accessory;
+import by.nosevich.carrental.model.Car;
+import by.nosevich.carrental.model.Order;
+import by.nosevich.carrental.model.User;
+import by.nosevich.carrental.model.enums.OrderStatus;
 import by.nosevich.carrental.repository.OrderRepository;
-import by.nosevich.carrental.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,8 +45,8 @@ public class JPAOrderService implements OrderService {
 
     @Override
     public List<Order> getAllByCar(Car car) {
-        List<Order> result = repo.findAllByCarAndStatus(car, Status.ACTIVE);
-        result.addAll(repo.findAllByCarAndStatus(car, Status.WAITING));
+        List<Order> result = repo.findAllByCarAndStatus(car, OrderStatus.ACTIVE);
+        result.addAll(repo.findAllByCarAndStatus(car, OrderStatus.WAITING));
         return result;
     }
 
@@ -82,19 +81,19 @@ public class JPAOrderService implements OrderService {
     }
 
     @Override
-    public List<Order> getAllByBeginDateAndStatus(Date beginDate, Status status) {
-        return repo.findAllByBeginDateAndStatus(beginDate, status);
+    public List<Order> getAllByBeginDateAndStatus(Date beginDate, OrderStatus orderStatus) {
+        return repo.findAllByBeginDateAndStatus(beginDate, orderStatus);
     }
 
     @Override
-    public List<Order> getAllByEndDateAndStatus(Date endDate, Status status) {
-        return repo.findAllByEndDateAndStatus(endDate, status);
+    public List<Order> getAllByEndDateAndStatus(Date endDate, OrderStatus orderStatus) {
+        return repo.findAllByEndDateAndStatus(endDate, orderStatus);
     }
 
     @Override
-    public Order getByStatusAndUser(Status status, User user) {
+    public Order getByStatusAndUser(OrderStatus orderStatus, User user) {
         for(Order order : repo.findAllByUserId(user.getId())) {
-            if(order.getStatus() == status) {
+            if(order.getOrderStatus() == orderStatus) {
                 return order;
             }
         }

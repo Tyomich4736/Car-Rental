@@ -1,8 +1,7 @@
 package by.nosevich.carrental.service.mailsender;
 
-import by.nosevich.carrental.entities.Order;
-import by.nosevich.carrental.entities.User;
-import by.nosevich.carrental.service.mailsender.MailService;
+import by.nosevich.carrental.model.Order;
+import by.nosevich.carrental.model.User;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 

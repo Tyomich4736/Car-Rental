@@ -64,9 +64,9 @@
 						<th>Maximal speed:&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.maxSpeed}" /></th>
 					</tr>
-					<tr th:if="${car.tranmission!=null}">
-						<th>Tranmission:&nbsp;&nbsp;</th>
-						<th><th:block th:text="${car.tranmission.name()}" /></th>
+					<tr th:if="${car.getTransmission!=null}">
+						<th>Transmission:&nbsp;&nbsp;</th>
+						<th><th:block th:text="${car.getTransmission.name()}" /></th>
 					</tr>
 					<tr th:if="${car.fuelType!=null}">
 						<th>Fuel type:&nbsp;&nbsp;</th>

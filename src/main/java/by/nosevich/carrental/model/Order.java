@@ -1,6 +1,6 @@
-package by.nosevich.carrental.entities;
+package by.nosevich.carrental.model;
 
-import by.nosevich.carrental.entities.orderenums.Status;
+import by.nosevich.carrental.model.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
@@ -28,7 +28,7 @@ public class Order {
 
     @Column
     @Enumerated(EnumType.STRING)
-    private Status status;
+    private OrderStatus orderStatus;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn
@@ -75,12 +75,12 @@ public class Order {
         this.price = price;
     }
 
-    public Status getStatus() {
-        return status;
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public User getUser() {

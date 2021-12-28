@@ -1,6 +1,6 @@
 package by.nosevich.carrental.config.security;
 
-import by.nosevich.carrental.entities.User;
+import by.nosevich.carrental.model.User;
 import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

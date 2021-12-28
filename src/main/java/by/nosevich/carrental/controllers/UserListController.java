@@ -1,7 +1,7 @@
 package by.nosevich.carrental.controllers;
 
-import by.nosevich.carrental.entities.User;
-import by.nosevich.carrental.entities.userenums.Role;
+import by.nosevich.carrental.model.User;
+import by.nosevich.carrental.model.enums.UserRole;
 import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -48,7 +48,7 @@ public class UserListController {
     public String makeAnEmployee(HttpServletRequest request, @RequestParam("id") Integer userId) {
         try {
             User user = userService.getById(userId);
-            user.setRole(Role.EMPLOYEE);
+            user.setUserRole(UserRole.EMPLOYEE);
             userService.save(user);
         } catch(Exception e) {
             return "redirect:/users";
@@ -61,7 +61,7 @@ public class UserListController {
     public String makeAnClient(HttpServletRequest request, @RequestParam("id") Integer userId) {
         try {
             User user = userService.getById(userId);
-            user.setRole(Role.CLIENT);
+            user.setUserRole(UserRole.CLIENT);
             userService.save(user);
         } catch(Exception e) {
             return "redirect:/users";

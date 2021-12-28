@@ -1,6 +1,6 @@
 package by.nosevich.carrental.config.security;
 
-import by.nosevich.carrental.entities.userenums.Role;
+import by.nosevich.carrental.model.enums.UserRole;
 import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,14 +73,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     public void afterPropertiesSet() throws Exception {
         if(userService.getAll().isEmpty()) {
             userService.saveProtectedUser(
-                    new by.nosevich.carrental.entities.User(null, "admin", "admin", null, true, null, Role.ADMIN,
+                    new by.nosevich.carrental.model.User(null, "admin", "admin", null, true, null, UserRole.ADMIN,
                             "admin@rental.com", "rentalpvt", null));
             userService.saveProtectedUser(
-                    new by.nosevich.carrental.entities.User(null, "client", "client", null, true, null, Role.CLIENT,
+                    new by.nosevich.carrental.model.User(null, "client", "client", null, true, null, UserRole.CLIENT,
                             "client@rental.com", "rentalpvt", null));
             userService.saveProtectedUser(
-                    new by.nosevich.carrental.entities.User(null, "employee", "employee", null, true, null,
-                            Role.EMPLOYEE, "employee@rental.com", "rentalpvt", null));
+                    new by.nosevich.carrental.model.User(null, "employee", "employee", null, true, null,
+                            UserRole.EMPLOYEE, "employee@rental.com", "rentalpvt", null));
         }
     }
 

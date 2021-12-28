@@ -1,8 +1,7 @@
 package by.nosevich.carrental.service.imagestorage;
 
-import by.nosevich.carrental.entities.Car;
-import by.nosevich.carrental.entities.Category;
-import by.nosevich.carrental.service.imagestorage.ImageStoreService;
+import by.nosevich.carrental.model.Car;
+import by.nosevich.carrental.model.Category;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

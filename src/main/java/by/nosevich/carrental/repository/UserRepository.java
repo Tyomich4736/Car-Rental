@@ -1,6 +1,6 @@
 package by.nosevich.carrental.repository;
 
-import by.nosevich.carrental.entities.User;
+import by.nosevich.carrental.model.User;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

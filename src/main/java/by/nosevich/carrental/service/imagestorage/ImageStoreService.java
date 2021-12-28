@@ -1,7 +1,7 @@
 package by.nosevich.carrental.service.imagestorage;
 
-import by.nosevich.carrental.entities.Car;
-import by.nosevich.carrental.entities.Category;
+import by.nosevich.carrental.model.Car;
+import by.nosevich.carrental.model.Category;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;

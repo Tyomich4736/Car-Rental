@@ -1,7 +1,7 @@
-package by.nosevich.carrental.entities;
+package by.nosevich.carrental.model;
 
-import by.nosevich.carrental.entities.carenums.FuelType;
-import by.nosevich.carrental.entities.carenums.Transmission;
+import by.nosevich.carrental.model.enums.FuelType;
+import by.nosevich.carrental.model.enums.Transmission;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -25,7 +25,7 @@ public class Car {
     private Integer year;
 
     @Enumerated(EnumType.STRING)
-    private Transmission tranmission;
+    private Transmission transmission;
 
     private Double fuelConsumption;
 

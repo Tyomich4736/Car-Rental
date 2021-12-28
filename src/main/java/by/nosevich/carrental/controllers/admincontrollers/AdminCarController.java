@@ -1,6 +1,6 @@
 package by.nosevich.carrental.controllers.admincontrollers;
 
-import by.nosevich.carrental.entities.Car;
+import by.nosevich.carrental.model.Car;
 import by.nosevich.carrental.service.imagestorage.ImageStoreService;
 import by.nosevich.carrental.service.car.CarService;
 import by.nosevich.carrental.service.category.CategoryService;
@@ -60,7 +60,7 @@ public class AdminCarController {
     private void setNotNullFieldsFromCarToCar(Car from, Car to) {
         if(from.getName() != "") to.setName(from.getName());
         to.setYear(from.getYear());
-        if(from.getTranmission() != null) to.setTranmission(from.getTranmission());
+        if(from.getTransmission() != null) to.setTransmission(from.getTransmission());
         to.setFuelConsumption(from.getFuelConsumption());
         if(from.getFuelType() != null) to.setFuelType(from.getFuelType());
         to.setNumberOfSeats(from.getNumberOfSeats());

@@ -29,7 +29,7 @@
 				<th:block th:text="${acc.name+' ('+acc.price+' BYN)'}"/> <br>
 			</th:block>
 			<font size="5">
-			Status: <th:block th:text="${order.status.name()}"/> <br>
+			Status: <th:block th:text="${order.orderStatus.name()}"/> <br>
 			Price: <th:block th:text="${order.price}"/> BYN<br> 
 			Client: <th:block th:text="${order.user.email}"/> <br>
 			Clients phone number: <th:block th:text="${order.user.phoneNumber}"/> <br>
@@ -41,11 +41,11 @@
 			</div>
 			<div class="d-grid gap-2 col-6 mx-auto">
 				<a th:href="@{/orders/cancel/{id}(id=${order.id})}"
-					class="btn btn-lg btn-danger" th:if="${order.status.name()=='WAITING'}">Cancel</a>
+					class="btn btn-lg btn-danger" th:if="${order.orderStatus.name()=='WAITING'}">Cancel</a>
 				<a th:href="@{/orders/activate/{id}(id=${order.id})}"
-					class="btn btn-lg btn-primary" th:if="${order.status.name()=='WAITING'}">Make active</a>
+					class="btn btn-lg btn-primary" th:if="${order.orderStatus.name()=='WAITING'}">Make active</a>
 				<a th:href="@{/orders/finish/{id}(id=${order.id})}"
-					class="btn btn-lg btn-primary" th:if="${order.status.name()=='ACTIVE'}">Make ended</a>
+					class="btn btn-lg btn-primary" th:if="${order.orderStatus.name()=='ACTIVE'}">Make ended</a>
 			</div>
 		</div>
 	</th:block>

@@ -29,7 +29,7 @@
 				<th:block th:text="${acc.name+' ('+acc.price+' BYN)'}"/> <br>
 			</th:block>
 			<font size="5">
-			Status: <th:block th:text="${order.status.name()}"/> <br>
+			Status: <th:block th:text="${order.orderStatus.name()}"/> <br>
 			Price: <th:block th:text="${order.price}"/> BYN<br> </font>
 				<img alt=""
 					th:src="${'/files'+order.car.previewImageName}" width="500"
@@ -38,7 +38,7 @@
 			</div>
 			<div class="d-grid gap-2 col-6 mx-auto">
 				<a th:href="@{/orders/cancel/{id}(id=${order.id})}"
-					class="btn btn-lg btn-danger" th:if="${order.status.name()=='WAITING'}">Cancel</a>
+					class="btn btn-lg btn-danger" th:if="${order.orderStatus.name()=='WAITING'}">Cancel</a>
 			</div>
 		</div>
 	</th:block>

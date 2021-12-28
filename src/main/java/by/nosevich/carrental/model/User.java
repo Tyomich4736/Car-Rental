@@ -1,6 +1,6 @@
-package by.nosevich.carrental.entities;
+package by.nosevich.carrental.model;
 
-import by.nosevich.carrental.entities.userenums.Role;
+import by.nosevich.carrental.model.enums.UserRole;
 import com.sun.istack.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,7 +31,7 @@ public class User {
     private String activationCode;
 
     @Enumerated(EnumType.STRING)
-    private Role role;
+    private UserRole userRole;
     @Column(unique = true)
     @NotNull
     private String email;

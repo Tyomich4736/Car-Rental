@@ -1,9 +1,9 @@
 package by.nosevich.carrental.service.order;
 
-import by.nosevich.carrental.entities.Car;
-import by.nosevich.carrental.entities.Order;
-import by.nosevich.carrental.entities.User;
-import by.nosevich.carrental.entities.orderenums.Status;
+import by.nosevich.carrental.model.Car;
+import by.nosevich.carrental.model.Order;
+import by.nosevich.carrental.model.User;
+import by.nosevich.carrental.model.enums.OrderStatus;
 import by.nosevich.carrental.service.DaoService;
 
 import java.util.Date;
@@ -16,9 +16,9 @@ public interface OrderService extends DaoService<Order> {
 
     void calculateAndSetPrice(Order order);
 
-    List<Order> getAllByBeginDateAndStatus(Date beginDate, Status status);
+    List<Order> getAllByBeginDateAndStatus(Date beginDate, OrderStatus orderStatus);
 
-    List<Order> getAllByEndDateAndStatus(Date endDate, Status status);
+    List<Order> getAllByEndDateAndStatus(Date endDate, OrderStatus orderStatus);
 
-    Order getByStatusAndUser(Status status, User user);
+    Order getByStatusAndUser(OrderStatus orderStatus, User user);
 }

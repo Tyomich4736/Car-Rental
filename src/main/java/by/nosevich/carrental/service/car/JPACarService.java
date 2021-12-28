@@ -1,8 +1,8 @@
 package by.nosevich.carrental.service.car;
 
-import by.nosevich.carrental.entities.Car;
-import by.nosevich.carrental.entities.Category;
-import by.nosevich.carrental.entities.Order;
+import by.nosevich.carrental.model.Car;
+import by.nosevich.carrental.model.Category;
+import by.nosevich.carrental.model.Order;
 import by.nosevich.carrental.repository.CarRepository;
 import by.nosevich.carrental.service.order.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;

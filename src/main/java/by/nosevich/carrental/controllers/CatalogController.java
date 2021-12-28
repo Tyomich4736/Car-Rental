@@ -1,7 +1,7 @@
 package by.nosevich.carrental.controllers;
 
-import by.nosevich.carrental.entities.Car;
-import by.nosevich.carrental.entities.Category;
+import by.nosevich.carrental.model.Car;
+import by.nosevich.carrental.model.Category;
 import by.nosevich.carrental.service.imagestorage.ImageStoreService;
 import by.nosevich.carrental.service.car.CarService;
 import by.nosevich.carrental.service.category.CategoryService;

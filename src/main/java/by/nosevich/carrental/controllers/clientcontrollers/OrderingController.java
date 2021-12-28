@@ -1,10 +1,10 @@
 package by.nosevich.carrental.controllers.clientcontrollers;
 
-import by.nosevich.carrental.entities.Accessory;
-import by.nosevich.carrental.entities.Car;
-import by.nosevich.carrental.entities.Order;
-import by.nosevich.carrental.entities.User;
-import by.nosevich.carrental.entities.orderenums.Status;
+import by.nosevich.carrental.model.Accessory;
+import by.nosevich.carrental.model.Car;
+import by.nosevich.carrental.model.Order;
+import by.nosevich.carrental.model.User;
+import by.nosevich.carrental.model.enums.OrderStatus;
 import by.nosevich.carrental.exceptions.OrderIsCrossException;
 import by.nosevich.carrental.service.order.control.OrdersControlService;
 import by.nosevich.carrental.service.accessory.AccessoryService;
@@ -40,7 +40,7 @@ public class OrderingController {
     @GetMapping("/{carId}")
     public String getOrderingPage(Model model, @PathVariable("carId") Integer carId, Principal principal) {
         Order previousUnconfirmedOrder =
-                orderService.getByStatusAndUser(Status.UNCOMFIRMED, userService.getByEmail(principal.getName()));
+                orderService.getByStatusAndUser(OrderStatus.UNCOMFIRMED, userService.getByEmail(principal.getName()));
         if(previousUnconfirmedOrder != null) {
             orderService.delete(previousUnconfirmedOrder);
         }
@@ -75,7 +75,7 @@ public class OrderingController {
     @GetMapping("/saveOrder")
     public String saveOrder(Principal principal) {
         User currentUser = userService.getByEmail(principal.getName());
-        Order order = orderService.getByStatusAndUser(Status.UNCOMFIRMED, currentUser);
+        Order order = orderService.getByStatusAndUser(OrderStatus.UNCOMFIRMED, currentUser);
         if(order != null) {
             try {
                 ordersControlService.waitOrder(order);

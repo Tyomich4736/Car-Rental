@@ -1,4 +1,4 @@
-package by.nosevich.carrental.entities;
+package by.nosevich.carrental.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

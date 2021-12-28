@@ -1,8 +1,7 @@
 package by.nosevich.carrental.service.user;
 
-import by.nosevich.carrental.entities.User;
+import by.nosevich.carrental.model.User;
 import by.nosevich.carrental.repository.UserRepository;
-import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;

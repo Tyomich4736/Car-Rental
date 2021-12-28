@@ -1,14 +1,11 @@
 package by.nosevich.carrental.service.accessory;
 
-import by.nosevich.carrental.entities.Accessory;
+import by.nosevich.carrental.model.Accessory;
 import by.nosevich.carrental.repository.AccessoryRepository;
-import by.nosevich.carrental.service.accessory.AccessoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Service

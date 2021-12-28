@@ -1,6 +1,6 @@
 package by.nosevich.carrental.config.security;
 
-import by.nosevich.carrental.entities.User;
+import by.nosevich.carrental.model.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -24,7 +24,7 @@ public class RentalUserDetails implements UserDetails {
         email = user.getEmail();
         password = user.getPassword();
         isActive = user.isActive();
-        authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getRole().name()));
+        authorities = Collections.singletonList(new SimpleGrantedAuthority(user.getUserRole().name()));
     }
 
     @Override
