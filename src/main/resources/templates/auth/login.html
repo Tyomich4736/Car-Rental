@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Sign in</title>
+<title th:text="#{navbar.signin}"></title>
 
 <th:block th:insert="auth/head.html :: css"/>
 </head>
@@ -9,21 +9,20 @@
 	<div class="wrapper fadeInDown">
   <div id="formContent">
 
-    <!-- Login Form -->
     <form th:action="@{/login}" method="post">
       <input type="email" id="login" class="fadeIn second" name="username" placeholder="E-mail" required="required">
-      <input type="password" id="password" class="fadeIn third" name="password" placeholder="Password" required="required">
+      <input type="password" id="password" class="fadeIn third" name="password" th:placeholder="#{login.password}" required="required">
       <div th:if="${param.error}">
-            <font color="red">Invalid username and password.</font>
+            <font color="red" th:text="#{login.invalidUsernameOrPassword}"></font>
         </div>
-      <input type="submit" class="fadeIn fourth" value="Log In">
+      <input type="submit" class="fadeIn fourth" th:value="#{login.login}">
     </form>
 
-    <!-- Remind Passowrd -->
     <div id="formFooter">
-      <a class="underlineHover" th:href="@{/register}">Sign Up</a>
+      <a class="underlineHover" th:href="@{/register}" th:text="#{login.signUp}"></a>
     </div>
 
   </div>
 </div>
+</body>
 </html>

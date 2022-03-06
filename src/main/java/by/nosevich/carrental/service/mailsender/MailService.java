@@ -1,16 +1,16 @@
 package by.nosevich.carrental.service.mailsender;
 
-import by.nosevich.carrental.model.Order;
-import by.nosevich.carrental.model.User;
+import by.nosevich.carrental.dto.OrderDto;
+import by.nosevich.carrental.dto.UserDto;
 
 import javax.mail.MessagingException;
 
 public interface MailService {
-    void sendActivationMessage(User user) throws MessagingException;
+    void sendActivationMessage(UserDto user) throws MessagingException;
 
-    void sendSuccessfulOrderingMessage(User user, Order order) throws MessagingException;
+    void sendSuccessfulOrderingMessage(UserDto user, OrderDto order) throws MessagingException;
 
-    void sendPickUpOrderMessage(User user, Order order) throws MessagingException;
+    void sendPickUpOrderMessage(UserDto user, OrderDto order) throws MessagingException;
 
-    void sendCanselOrderMessage(User user, Order order) throws MessagingException;
+    void sendCancelOrderMessage(UserDto user, OrderDto order) throws MessagingException;
 }

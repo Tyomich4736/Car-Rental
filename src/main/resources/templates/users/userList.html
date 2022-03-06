@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<title>Accessories</title>
+<title th:text="#{user.users}"></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 
@@ -14,16 +14,15 @@
 <body>
 	<th:block th:insert="fragments/navBar.html" />
 	<div align="center">
-		<h1>
-			Users
+		<h1 th:text="#{user.users}">
 		</h1>
 	</div>
 
 	<form class="form-inline md-form mr-auto mb-4 justify-content-center" th:action="@{/users}">
-		<input class="form-control mr-sm-2" type="text" placeholder="Search"
+		<input class="form-control mr-sm-2" type="text" th:placeholder="#{searchbar.search}"
 			aria-label="Search" name="search" required="required" th:value="${search}">
 		<button class="btn btn-outline-primary"
-			type="submit">Search</button>
+			type="submit" th:text="#{searchbar.search}"></button>
 	</form>
 
 	<div>
@@ -31,12 +30,12 @@
 		<thead>
 			<tr>
 				<th scope="col">E-mail</th>
-				<th scope="col">First name</th>
-				<th scope="col">Last name</th>
-				<th scope="col">Phone number</th>
-				<th scope="col">Role</th>
-				<th scope="col">Is active</th>
-				<th scope="col">Actions</th>
+				<th scope="col" th:text="#{user.firstName}"></th>
+				<th scope="col" th:text="#{user.lastName}"></th>
+				<th scope="col" th:text="#{user.phone}"></th>
+				<th scope="col" th:text="#{user.role}"></th>
+				<th scope="col" th:text="#{user.isActive}"></th>
+				<th scope="col" th:text="#{actions.actions}"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -45,14 +44,14 @@
 				<td><th:block th:text="${user.firstName}"/></td>
 				<td><th:block th:text="${user.lastName}"/></td>
 				<td><th:block th:text="${user.phoneNumber}"/></td>
-				<td><th:block th:text="${user.getUserRole.name()}"/></td>
+				<td><th:block th:text="#{${user.getUserRole.getLocalizationKey()}}"/></td>
 				<td><th:block th:text="${user.isActive}"/></td>
 				<td>
 					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.getUserRole.name()=='CLIENT'}"
-					th:href="@{/users/set/employee?id={id}(id = ${user.id})}">Make an employee</a>
+					th:href="@{/users/set/employee?id={id}(id = ${user.id})}" th:text="#{user.makeEmployee}"></a>
 					<a class="btn btn-danger" sec:authorize="hasAuthority('ADMIN')" th:if="${user.getUserRole.name()=='EMPLOYEE'}"
-					th:href="@{/users/set/client?id={id}(id = ${user.id})}">Make a client</a>
-					<a class="btn btn-primary" th:href="@{/orders/user/{id}(id=${user.id})}" th:if="${user.getUserRole.name()=='CLIENT'}">Orders</a>
+					th:href="@{/users/set/client?id={id}(id = ${user.id})}" th:text="#{user.makeClient}"></a>
+					<a class="btn btn-primary" th:href="@{/orders/user/{id}(id=${user.id})}" th:if="${user.getUserRole.name()=='CLIENT'}" th:text="#{user.orders}"></a>
 				</td>
 			</tr>
 		</tbody>
@@ -61,27 +60,27 @@
 	
 	<nav th:if="${search==null}">
 		<ul class="pagination justify-content-center">
-		<th:block th:if="${currentPage!=0}">
-			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage-1})}">Previous</a></li>
-			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"></a></li>
+		<th:block th:if="${currentPage!=1}">
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage-1})}" th:text="#{pagination.previous}"></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"/></a></li>
 		</th:block>
-			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"/></a></li>
+			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage}"/></a></li>
 		<th:block th:if="${hasNextPage==true}">	
-			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage+1})}"><th:block th:text="${currentPage+2}"></a></li>
-			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage+1})}">Next</a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage+1})}"><th:block th:text="${currentPage+2}"/></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}(pageNum=${currentPage+1})}" th:text="#{pagination.next}"></a></li>
 		</th:block>	
 		</ul>
 	</nav>
 	
 	<nav th:if="${search!=null}">
 		<ul class="pagination justify-content-center">
-		<th:block th:if="${currentPage!=0}">
+		<th:block th:if="${currentPage!=1}">
 			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage-1}, search=${search})}">Previous</a></li>
-			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage-1}, search=${search})}"><th:block th:text="${currentPage}"></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage-1}, search=${search})}"><th:block th:text="${currentPage}"/></a></li>
 		</th:block>
-			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"/></a></li>
+			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage}"/></a></li>
 		<th:block th:if="${hasNextPage==true}">	
-			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage+1}, search=${search})}"><th:block th:text="${currentPage+2}"></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage+1}, search=${search})}"><th:block th:text="${currentPage+2}"/></a></li>
 			<li class="page-item"><a class="page-link" th:href="@{/users?page={pageNum}&search={search}(pageNum=${currentPage+1}, search=${search})}">Next</a></li>
 		</th:block>	
 		</ul>

@@ -1,11 +1,11 @@
 package by.nosevich.carrental.config.security;
 
+import by.nosevich.carrental.dto.UserDto;
 import by.nosevich.carrental.model.enums.UserRole;
 import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -15,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-@Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter implements InitializingBean {
 
@@ -28,7 +27,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
                 .antMatchers("/", "/home", "/register", "/activate/**", "/successfulreg", "/img/**", "/catalog",
-                        "/catalog/**", "/rentterms", "/files/**")
+                "/catalog/**", "/rentterms", "/files/**", "/changeLang")
                 .permitAll()
                 .antMatchers("/admin/**")
                 .hasAnyAuthority("ADMIN")
@@ -55,7 +54,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     protected PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder(12);
     }
-
     @Bean
     protected DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
@@ -65,22 +63,40 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements Init
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(daoAuthenticationProvider());
     }
 
     @Override
-    public void afterPropertiesSet() throws Exception {
-        if(userService.getAll().isEmpty()) {
-            userService.saveProtectedUser(
-                    new by.nosevich.carrental.model.User(null, "admin", "admin", null, true, null, UserRole.ADMIN,
-                            "admin@rental.com", "rentalpvt", null));
-            userService.saveProtectedUser(
-                    new by.nosevich.carrental.model.User(null, "client", "client", null, true, null, UserRole.CLIENT,
-                            "client@rental.com", "rentalpvt", null));
-            userService.saveProtectedUser(
-                    new by.nosevich.carrental.model.User(null, "employee", "employee", null, true, null,
-                            UserRole.EMPLOYEE, "employee@rental.com", "rentalpvt", null));
+    public void afterPropertiesSet() {
+        if (userService.getAll().isEmpty()) {
+            UserDto admin = UserDto.builder()
+                    .firstName("admin")
+                    .lastName("admin")
+                    .userRole(UserRole.ADMIN)
+                    .email("admin@rental.com")
+                    .password("rentalpvt")
+                    .active(true)
+                    .build();
+            UserDto client = UserDto.builder()
+                    .firstName("client")
+                    .lastName("client")
+                    .userRole(UserRole.CLIENT)
+                    .email("client@rental.com")
+                    .password("rentalpvt")
+                    .active(true)
+                    .build();
+            UserDto employee = UserDto.builder()
+                    .firstName("employee")
+                    .lastName("employee")
+                    .userRole(UserRole.EMPLOYEE)
+                    .email("employee@rental.com")
+                    .password("rentalpvt")
+                    .active(true)
+                    .build();
+            userService.saveProtectedUser(admin);
+            userService.saveProtectedUser(client);
+            userService.saveProtectedUser(employee);
         }
     }
 

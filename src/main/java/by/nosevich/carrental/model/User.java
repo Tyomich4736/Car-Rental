@@ -1,27 +1,34 @@
 package by.nosevich.carrental.model;
 
 import by.nosevich.carrental.model.enums.UserRole;
-import com.sun.istack.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 @Entity
 @Table(name = "user_table")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
-    @NotNull
+
+    @Column(nullable = false)
     private String firstName;
-    @NotNull
+
+    @Column(nullable = false)
     private String lastName;
 
     private String phoneNumber;
@@ -32,11 +39,13 @@ public class User {
 
     @Enumerated(EnumType.STRING)
     private UserRole userRole;
-    @Column(unique = true)
-    @NotNull
+
+    @Column(unique = true, nullable = false)
     private String email;
-    @NotNull
+
+    @Column(nullable = false)
     private String password;
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
-    private List<Order> orders = new ArrayList<Order>();
+    private List<Order> orders = new ArrayList<>();
 }

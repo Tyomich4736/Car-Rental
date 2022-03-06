@@ -1,12 +1,14 @@
 package by.nosevich.carrental.config.security;
 
-import by.nosevich.carrental.model.User;
+import by.nosevich.carrental.dto.UserDto;
 import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {
@@ -16,11 +18,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        User user = service.getByEmail(email);
-        if (user == null) {
+        Optional<UserDto> optionalUser = service.getByEmail(email);
+        if (!optionalUser.isPresent()) {
             throw new UsernameNotFoundException("User with given email not found");
         }
-        return new RentalUserDetails(user);
+        return new RentalUserDetails(optionalUser.get());
     }
 
 }

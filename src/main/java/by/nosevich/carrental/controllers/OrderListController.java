@@ -1,11 +1,7 @@
 package by.nosevich.carrental.controllers;
 
-import by.nosevich.carrental.model.Order;
-import by.nosevich.carrental.model.User;
-import by.nosevich.carrental.service.order.control.OrdersControlService;
-import by.nosevich.carrental.service.order.current.CurrentOrdersService;
+import by.nosevich.carrental.dto.OrderDto;
 import by.nosevich.carrental.service.order.OrderService;
-import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,48 +18,48 @@ import java.util.List;
 @Transactional
 public class OrderListController {
 
+    public static final String ORDER_LIST_PAGE = "orderList";
+    public static final String REDIRECT_FORMAT = "redirect:%s";
+    public static final String TODAYS_ORDERS_LIST_PAGE = "todaysOrdersList";
+    public static final String REFERER_HEADER_NAME = "Referer";
+    public static final String ORDERS_ATTRIBUTE = "orders";
+
+    private final OrderService orderService;
+
     @Autowired
-    private OrderService orderService;
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private OrdersControlService ordersControlService;
-    @Autowired
-    private CurrentOrdersService currentOrdersService;
+    public OrderListController(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     @GetMapping("/user/{id}")
     public String getOrdersForUser(Model model, @PathVariable("id") Integer userId) {
-        User user = userService.getById(userId);
-        List<Order> orders = orderService.getAllByUser(user);
-        model.addAttribute("orders", orders);
-        return "orderList";
+        List<OrderDto> orders = orderService.getAllByUser(userId);
+        model.addAttribute(ORDERS_ATTRIBUTE, orders);
+        return ORDER_LIST_PAGE;
     }
 
     @GetMapping("/cancel/{id}")
     public String cancelOrder(HttpServletRequest req, @PathVariable("id") Integer id) {
-        Order order = orderService.getById(id);
-        ordersControlService.cancelOrder(order);
-        return "redirect:" + req.getHeader("Referer");
+        orderService.cancelOrder(id);
+        return String.format(REDIRECT_FORMAT, req.getHeader(REFERER_HEADER_NAME));
     }
 
     @GetMapping("/todays")
     public String getTodaysOrders(Model model) {
-        List<Order> orders = currentOrdersService.getTodaysOrders();
-        model.addAttribute("orders", orders);
-        return "todaysOrdersList";
+        List<OrderDto> orders = orderService.getTodaysOrders();
+        model.addAttribute(ORDERS_ATTRIBUTE, orders);
+        return TODAYS_ORDERS_LIST_PAGE;
     }
 
     @GetMapping("/activate/{id}")
     public String activateOrder(HttpServletRequest req, @PathVariable("id") Integer id) {
-        Order order = orderService.getById(id);
-        ordersControlService.activateOrder(order);
-        return "redirect:" + req.getHeader("Referer");
+        orderService.activateOrder(id);
+        return String.format(REDIRECT_FORMAT, req.getHeader(REFERER_HEADER_NAME));
     }
 
     @GetMapping("/finish/{id}")
     public String finishOrder(HttpServletRequest req, @PathVariable("id") Integer id) {
-        Order order = orderService.getById(id);
-        ordersControlService.finishOrder(order);
-        return "redirect:" + req.getHeader("Referer");
+        orderService.finishOrder(id);
+        return String.format(REDIRECT_FORMAT, req.getHeader(REFERER_HEADER_NAME));
     }
 }

@@ -1,63 +1,44 @@
 package by.nosevich.carrental.controllers.admincontrollers;
 
-import by.nosevich.carrental.model.Car;
-import by.nosevich.carrental.model.Category;
-import by.nosevich.carrental.service.imagestorage.ImageStoreService;
-import by.nosevich.carrental.service.car.CarService;
 import by.nosevich.carrental.service.category.CategoryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminCategoryController {
 
+    public static final String REDIRECT_ON_CATALOG_PAGE = "redirect:/catalog";
+    public static final String ADD_CATEGORY_FORM_PAGE = "admin/addCategory";
+
+    private final CategoryService categoryService;
+
     @Autowired
-    private ImageStoreService imageStoreService;
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private CarService carService;
+    public AdminCategoryController(CategoryService categoryService) {
+        this.categoryService = categoryService;
+    }
 
     @GetMapping("/addCategory")
     public String addCategoryForm() {
-        return "forAdmin/addCategory";
+        return ADD_CATEGORY_FORM_PAGE;
     }
 
     @PostMapping("/addCategory")
-    public String addCategory(@RequestParam("name") String name, @RequestParam("file") MultipartFile file) {
-        try {
-            if(!hasCategoryWithSameName(name)) {
-                Category category = new Category();
-                imageStoreService.storeCategoryImage(file, category);
-                category.setName(name);
-                categoryService.save(category);
-            }
-        } catch(IOException e) {
-            return "redirect:/catalog";
-        }
-        return "redirect:/catalog";
+    public String addCategory(@RequestParam("name") String name,
+                              @RequestParam("previewFile") MultipartFile previewFile) {
+        categoryService.createAndSaveCategory(name, previewFile);
+        return REDIRECT_ON_CATALOG_PAGE;
     }
 
-    private boolean hasCategoryWithSameName(String name) {
-        for(Category category : categoryService.getAll())
-            if(category.getImageName().equals(name)) return true;
-        return false;
-    }
-
-    @GetMapping("/category/{category}/delete")
-    public String deleteCategory(@PathVariable("category") String categoryName) throws IOException {
-        Category category = categoryService.getByName(categoryName);
-        for(Car car : carService.getByCategory(category)) {
-            imageStoreService.deleteAllImagesForCar(car);
-            carService.delete(car);
-        }
-        imageStoreService.deleteCategoryImage(category);
-        categoryService.delete(category);
-        return "redirect:/catalog";
+    @GetMapping("/category/{categoryId}/delete")
+    public String deleteCategory(@PathVariable("categoryId") Integer categoryId) {
+        categoryService.deleteCategoryById(categoryId);
+        return REDIRECT_ON_CATALOG_PAGE;
     }
 }

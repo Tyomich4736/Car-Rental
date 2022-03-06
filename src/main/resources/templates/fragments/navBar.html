@@ -75,18 +75,18 @@ xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
 		class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
 		<p class="h5 my-0 me-md-auto fw-normal">Rental</p>
 		<nav class="my-2 my-md-0 me-md-3">
-			<a class="p-2 text-dark" th:href="@{/home}">Home</a>
-			<a class="p-2 text-dark" th:href="@{/catalog}">Catalor</a>
-			<a sec:authorize="hasAuthority('CLIENT')" class="p-2 text-dark" th:href="@{/order/myOrders}">My orders</a>
-			<a sec:authorize="hasAuthority('EMPLOYEE')" class="p-2 text-dark" th:href="@{/orders/todays}">Today's orders</a>
-			<a sec:authorize="hasAnyAuthority('ADMIN','EMPLOYEE')" class="p-2 text-dark" th:href="@{/users}">Users</a>
-			<a sec:authorize="hasAuthority('ADMIN')" class="p-2 text-dark" th:href="@{/admin/accessories}">Accessories</a>
-			<a class="p-2 text-dark" th:href="@{/rentterms}">Rent terms</a>
+			<a class="p-2 text-dark" th:href="@{/home}" th:text="#{navbar.home}">Title</a>
+			<a class="p-2 text-dark" th:href="@{/catalog}" th:text="#{navbar.catalog}"></a>
+			<a sec:authorize="hasAuthority('CLIENT')" class="p-2 text-dark" th:href="@{/order/myOrders}" th:text="#{navbar.myOrders}"></a>
+			<a sec:authorize="hasAuthority('EMPLOYEE')" class="p-2 text-dark" th:href="@{/orders/todays}" th:text="#{navbar.todaysOrders}"></a>
+			<a sec:authorize="hasAnyAuthority('ADMIN','EMPLOYEE')" class="p-2 text-dark" th:href="@{/users}" th:text="#{navbar.users}"></a>
+			<a sec:authorize="hasAuthority('ADMIN')" class="p-2 text-dark" th:href="@{/admin/accessories}" th:text="#{navbar.accessories}"></a>
+			<a class="p-2 text-dark" th:href="@{/rentterms}" th:text="#{navbar.rentTerms}"></a>
 		</nav> &nbsp; &nbsp; &nbsp;
-			<a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary" th:href="@{/login}">Sign in</a>
+			<a sec:authorize="!isAuthenticated()" class="btn btn-outline-primary" th:href="@{/login}" th:text="#{navbar.signin}"></a>
 			<form sec:authorize="isAuthenticated()" th:action="@{/logout}" method="post">
 				<span sec:authentication="principal.username"></span> &nbsp; &nbsp; &nbsp;
-				<input  class="btn btn-outline-primary" type="submit" value="Logout">
+				<input  class="btn btn-outline-primary" type="submit" th:value="#{navbar.logout}">
 			</form>
 	</header>
 </body>

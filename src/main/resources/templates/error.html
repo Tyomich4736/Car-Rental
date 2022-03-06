@@ -1,6 +1,5 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>Home</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -17,8 +16,11 @@
 	<br>
 	<br>
 	<br>
-	<h1 align="center">Error <th:block th:text="${orderStatus}"/></h1>
+	<h1 align="center"><th:block th:text="${orderStatus}"/></h1>
 	<h2 align="center"><th:block th:text="${error}"/></h2>
+	<br>
+	<br>
+	<br>
 </body>
 <th:block th:insert="fragments/footer.html" />
 </html>

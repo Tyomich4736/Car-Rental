@@ -6,14 +6,12 @@
 <meta name="viewport"
 	content="initial-scale=1.0,
             width=device-width" />
-<script src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
-	type="text/javascript" charset="utf-8"></script>
-<script src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
-	type="text/javascript" charset="utf-8"></script>
-<script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"
-	type="text/javascript" charset="utf-8"></script>
-<link rel="stylesheet" type="text/css"
-	href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+		  integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+		  crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+			integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+			crossorigin=""></script>
 
 </head>
 
@@ -29,21 +27,21 @@
 	<br>
 	<br>
 	<div align="center">
-	<div class="card mb-5 shadow-sm" th:if="${latestCar!=null}" style="width: 80%">
+	<div class="card mb-5" th:if="${latestCar!=null}" style="width: 100%">
 		<div class="container">
-			<table class="table-responsive-lg">
+			<table>
 				<tr>
-					<td align="justify">
-						<h1>
-							<font color="Light Slate Blue">Latest! <th:block
-									th:text="${latestCar.name}" /> &nbsp; &nbsp; &nbsp; &nbsp;
-								&nbsp;
+					<td>
+						<h1 align="center">
+							<font color="Light Slate Blue">
+								<th:block th:text="#{home.latest}"/>
+								<th:block th:text="${latestCar.name}"/> &nbsp; &nbsp;
 							</font>
-						</h1> <br> <a th:href="@{/catalog/car/{id}(id=${latestCar.id})}"><button
-								type="button" class="btn btn-primary">More details</button></a>
+						</h1> <a th:href="@{/catalog/car/{id}(id=${latestCar.id})}"><button
+								type="button" class="btn btn-primary" th:text="#{home.moreDetails}"></button></a>
 					</td>
-					<td align="right"><img alt=""
-						th:src="${'/files'+latestCar.previewImageName}" width="700"
+					<td><img align="center" alt=""
+						th:src="${'/files'+latestCar.getPreviewImagePath()}" width="700"
 						height="442"></td>
 				</tr>
 			</table>
@@ -52,53 +50,18 @@
 	</div>
 	<br>
 	<br>
-	<h1 align="center">We are here!</h1>
-	<div style="width: 100%; height: 480px" id="mapContainer"></div>
+	<h1 align="center" th:text="#{home.weAreHere}"></h1>
+	<div style="width: 70%; height: 480px; margin-left: auto; margin-right: auto" id="map"></div>
 	<script>
-		var platform = new H.service.Platform({
-			'apikey' : '86X5KfJqXC0z7KBB9VWB8o_UEjryg68GH9OC5ERh-Es'
-		});
-		var defaultLayers = platform.createDefaultLayers();
+		var map = L.map('map').setView([53.669349, 23.870931], 13);
 
-		// Instantiate the map:
-		var map = new H.Map(document.getElementById('mapContainer'),
-				defaultLayers.vector.normal.map, {
-					zoom : 13,
-					center : {
-						lng : 23.868371,
-						lat : 53.669538
-					}
-				});
+		L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+		}).addTo(map);
 
-		var svgMarkup = '<svg width="24" height="24" ' +
-    'xmlns="http://www.w3.org/2000/svg">'
-				+ '<rect stroke="white" fill="#1b468d" x="1" y="1" width="22" ' +
-    'height="22" /><text x="12" y="18" font-size="12pt" ' +
-    'font-family="Arial" font-weight="bold" text-anchor="middle" ' +
-    'fill="white">R</text></svg>';
-
-		// Create an icon, an object holding the latitude and longitude, and a marker:
-		var icon = new H.map.Icon(svgMarkup), coords = {
-			lat : 53.669538,
-			lng : 23.868371
-		}, marker = new H.map.Marker(coords, {
-			icon : icon
-		});
-
-		// Add the marker to the map and center the map at the location of the marker:
-		map.addObject(marker);
-		map.setCenter(coords);
-
-		// Create the default UI:
-		var ui = H.ui.UI.createDefault(map, defaultLayers, 'ru-RU');
-		var mapSettings = ui.getControl('mapsettings');
-		var zoom = ui.getControl('zoom');
-		var scalebar = ui.getControl('scalebar');
-
-		mapSettings.setAlignment('top-left');
-		zoom.setAlignment('top-left');
-		scalebar.setAlignment('top-left');
-		ui.getControl('zoom').setDisabled(false);
+		L.marker([53.669349, 23.870931]).addTo(map)
+				.bindPopup('Rental Service')
+				.openPopup();
 	</script>
 </body>
 <th:block th:insert="fragments/footer.html" />

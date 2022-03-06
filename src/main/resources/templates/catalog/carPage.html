@@ -15,7 +15,7 @@
 	<th:block th:insert="fragments/navBar.html" />
 	<div align="center">
 		<h1>
-			<th:block th:text="${car.name}">
+			<th:block th:text="${car.name}"/>
 		</h1>
 	</div>
 	<div class="card mb-4 shadow-sm" align="center">
@@ -25,12 +25,11 @@
 			<th:block th:each="imageName : ${images}">
 				<img alt="" th:src="${'/files'+imageName}" width="780"
 					height="500">
-				<div th:if="${car.previewImageName!=imageName}"
+				<div th:if="${car.getPreviewImagePath!=imageName}"
 					class="d-grid gap-2 col-6 mx-auto" align="center" style="margin-top: 10px">
 					<a sec:authorize="hasAuthority('ADMIN')"
 						th:href="@{${'/admin/deleteImage'+imageName}}">
-						<button type="button" class="btn btn-lg btn-danger">Delete
-							Image</button>
+						<button type="button" class="btn btn-lg btn-danger" th:text="#{image.deleteImage}"></button>
 					</a>
 				</div>
 				<br />
@@ -40,8 +39,7 @@
 			<div class="d-grid gap-2 col-6 mx-auto" align="center">
 				<a sec:authorize="hasAuthority('ADMIN')"
 					th:href="@{${'/admin/'+car.id+'/addImage'}}">
-					<button type="button" class="btn btn-lg btn-primary">Add
-						Image</button>
+					<button type="button" class="btn btn-lg btn-primary" th:text="#{image.addImage}"></button>
 				</a> <br />
 			</div>
 			</th>
@@ -50,52 +48,52 @@
 			</th>
 			<th valign="top">
 			<div align="center">
-			<font size="5"> Parameters:
+			<font size="5"> <th:block th:text="#{car.parameters} + ':'"/>
 				<table>
 					<tr th:if="${car.year!=null}">
-						<th>Year of issue:&nbsp;&nbsp;</th>
+						<th><th:block th:text="#{car.yearOfIssue} + ':'"/>&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.year}" /></th>
 					</tr>
 					<tr th:if="${car.numberOfSeats!=null}">
-						<th>Number of seats:&nbsp;&nbsp;</th>
+						<th><th:block th:text="#{car.numberOfSeats} + ':'"/>&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.numberOfSeats}" /></th>
 					</tr>
 					<tr th:if="${car.maxSpeed!=null}">
-						<th>Maximal speed:&nbsp;&nbsp;</th>
+						<th><th:block th:text="#{car.maximalSpeed} + ':'"/>&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.maxSpeed}" /></th>
 					</tr>
 					<tr th:if="${car.getTransmission!=null}">
-						<th>Transmission:&nbsp;&nbsp;</th>
-						<th><th:block th:text="${car.getTransmission.name()}" /></th>
+						<th><th:block th:text="#{car.transmission} + ':'"/>&nbsp;&nbsp;</th>
+						<th><th:block th:text="#{${car.getTransmission.getLocalizationKey()}}" /></th>
 					</tr>
 					<tr th:if="${car.fuelType!=null}">
-						<th>Fuel type:&nbsp;&nbsp;</th>
-						<th><th:block th:text="${car.fuelType.name()}" /></th>
+						<th><th:block th:text="#{car.fuelType} + ':'"/>&nbsp;&nbsp;</th>
+						<th><th:block th:text="#{${car.fuelType.getLocalizationKey()}}" /></th>
 					</tr>
 					<tr th:if="${car.fuelConsumption!=null}">
-						<th>Fuel consumption:&nbsp;&nbsp;</th>
+						<th><th:block th:text="#{car.fuelConsumption} + ':'"/>&nbsp;&nbsp;</th>
 						<th><th:block th:text="${car.fuelConsumption}" /></th>
 					</tr>
 				</table> <br />
 				<table>
 					<tr>
-						<th>Time&nbsp;&nbsp;</th>
-						<th>Price&nbsp;&nbsp;</th>
+						<th><th:block th:text="#{car.time} + ':'"/>&nbsp;&nbsp;</th>
+						<th><th:block th:text="#{car.price} + ':'"/>&nbsp;&nbsp;</th>
 					</tr>
 					<tr>
-						<td>1-3 days&nbsp;&nbsp;</td>
+						<td><th:block th:text="'1-3 ' + #{car.days}"/>&nbsp;&nbsp;</td>
 						<td><th:block th:text="${car.priceFrom1To3Days}+' BYN'"/></td>
 					</tr>
 					<tr>
-						<td>4-7 days&nbsp;&nbsp;</td>
+						<td><th:block th:text="'4-7 ' + #{car.days}"/>&nbsp;&nbsp;</td>
 						<td><th:block th:text="${car.priceFrom4To7Days}+' BYN'"/></td>
 					</tr>
 					<tr>
-						<td>8-15 days&nbsp;&nbsp;</td>
+						<td><th:block th:text="'8-15 ' + #{car.days}"/>&nbsp;&nbsp;</td>
 						<td><th:block th:text="${car.priceFrom8To15Days}+' BYN'"/></td>
 					</tr>
 					<tr>
-						<td>16-30 days&nbsp;&nbsp;</td>
+						<td><th:block th:text="'16-30 ' + #{car.days}"/>&nbsp;&nbsp;</td>
 						<td><th:block th:text="${car.priceFrom16To30Days}+' BYN'"/></td>
 					</tr>
 				</table>
@@ -105,13 +103,11 @@
 		<div class="d-grid gap-2 col-6 mx-auto" style="margin-top: 10px">
 			<a sec:authorize="hasAuthority('ADMIN')"
 				th:href="@{${'/admin/'+car.id+'/edit'}}">
-				<button type="button" class="btn btn-lg btn-primary">Edit</button>
+				<button type="button" class="btn btn-lg btn-primary" th:text="#{actions.edit}"></button>
 			</a>
-		</div>
-		<div class="d-grid gap-2 col-6 mx-auto" style="margin-top: 10px">
 			<a sec:authorize="hasAuthority('CLIENT')"
-				th:href="@{/order/{car}(car=${car.id})}">
-				<button type="button" class="btn btn-lg btn-success">To order</button>
+			   th:href="@{/order/{car}(car=${car.id})}">
+				<button type="button" class="btn btn-lg btn-success" th:text="#{car.toOrder}"></button>
 			</a>
 		</div>
 		<br>

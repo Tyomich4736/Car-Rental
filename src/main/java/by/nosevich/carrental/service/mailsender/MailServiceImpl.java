@@ -1,11 +1,17 @@
 package by.nosevich.carrental.service.mailsender;
 
-import by.nosevich.carrental.model.Order;
-import by.nosevich.carrental.model.User;
+import by.nosevich.carrental.dto.OrderDto;
+import by.nosevich.carrental.dto.UserDto;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.mail.*;
+import javax.mail.Authenticator;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
 import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
@@ -14,6 +20,14 @@ import java.util.Properties;
 
 @Service
 public class MailServiceImpl implements MailService {
+
+    public static final String HTTP_URL_PREFIX = "http://";
+    public static final String ACTIVATION_LINK_SUBJECT = "%s activation link!";
+    public static final String SUCCESSFUL_ORDERING_SUBJECT = "%s, successful ordering!";
+    public static final String PICK_UP_ORDER_SUBJECT = "Pick up %s";
+    public static final String CANCEL_ORDER_SUBJECT = "Order on %s has been canceled";
+    public static final String CAR_RENTAL_INTERNET_ADDRESS = "CarRental@service.com";
+    public static final String CONTENT_TYPE_TEXT_HTML = "text/html";
 
     @Value("${email.server.domainHost}")
     private String emailDomainHost;
@@ -27,118 +41,73 @@ public class MailServiceImpl implements MailService {
     private String emailPassword;
 
     @Override
-    public void sendActivationMessage(User user) throws MessagingException {
-        sendMessage(user, getActivationMessage(user), getActivasionSubject());
-    }
-
-    private String getActivationMessage(User user) {
-        return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\">Hello, " +
-                user.getFirstName() + "!</font></h1><br/>" +
-                "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >We are glad to welcome you to our rental service!" +
-                "<br/>" + "To activate your account follow this link:</div> <br/>" + "<h2 align=\"center\"><a href=" +
-                emailDomainHost + "/activate/" + user.getActivationCode() + ">Link</a></h2>";
-    }
-
-    private String getActivasionSubject() {
-        String siteName = emailDomainHost.replaceAll("http://", "");
-        return siteName + " activasion link";
+    public void sendActivationMessage(UserDto user) throws MessagingException {
+        String siteName = emailDomainHost.replaceAll(HTTP_URL_PREFIX, "");
+        String subject = String.format(ACTIVATION_LINK_SUBJECT, siteName);
+        String message = String.format(MessageTemplates.ACTIVATION_MESSAGE, user.getFirstName(), emailDomainHost,
+                                       user.getActivationCode());
+        sendMessage(user, message, subject);
     }
 
 
     @Override
-    public void sendSuccessfulOrderingMessage(User user, Order order) throws MessagingException {
-        sendMessage(user, getSuccessfulOrderingMessage(order), getSuccessfulOrderingSubject(order));
-
+    public void sendSuccessfulOrderingMessage(UserDto user, OrderDto order) throws MessagingException {
+        String subject = String.format(SUCCESSFUL_ORDERING_SUBJECT, order.getCar().getName());
+        String message =
+                String.format(MessageTemplates.SUCCESSFUL_ORDERING_MESSAGE, order.getId(), order.getCar().getName(),
+                              order.getBeginDate());
+        sendMessage(user, message, subject);
     }
-
-    private String getSuccessfulOrderingSubject(Order order) {
-        return order.getCar().getName() + ", successful ordering!";
-    }
-
-    private String getSuccessfulOrderingMessage(Order order) {
-        return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\"> Order " +
-                order.getId() + " successful ordering!</font></h1><br/>" +
-                "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >The order for car " +
-                order.getCar().getName() + " has been successfully placed!We are waiting for you " +
-                order.getBeginDate() + " in our service. If you do not show up, your order will be canceled.<br/>";
-    }
-
 
     @Override
-    public void sendPickUpOrderMessage(User user, Order order) throws MessagingException {
-        sendMessage(user, getPickUpOrderMessage(order), getPickUpOrderSubject(order));
+    public void sendPickUpOrderMessage(UserDto user, OrderDto order) throws MessagingException {
+        String orderCarName = order.getCar().getName();
+        String subject = String.format(PICK_UP_ORDER_SUBJECT, orderCarName);
+        String message = String.format(MessageTemplates.PICK_UP_ORDER_MESSAGE, orderCarName, orderCarName);
+        sendMessage(user, message, subject);
     }
-
-    private String getPickUpOrderSubject(Order order) {
-        return "Pick up " + order.getCar().getName();
-    }
-
-    private String getPickUpOrderMessage(Order order) {
-        return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\"> Pick up " +
-                order.getCar().getName() + " today!</font></h1><br/>" +
-                "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >Pick up the order for car " +
-                order.getCar().getName() + ".<br>" +
-                "If you do not show up until the end of the day, your order will be canceled.<br/>";
-    }
-
 
     @Override
-    public void sendCanselOrderMessage(User user, Order order) throws MessagingException {
-        sendMessage(user, getCanselOrderMessage(order), getCanselOrderSubject(order));
+    public void sendCancelOrderMessage(UserDto user, OrderDto order) throws MessagingException {
+        String orderCarName = order.getCar().getName();
+        String subject = String.format(CANCEL_ORDER_SUBJECT, orderCarName);
+        String message = String.format(MessageTemplates.CANCEL_ORDER_MESSAGE, orderCarName);
+        sendMessage(user, message, subject);
     }
 
-    private String getCanselOrderSubject(Order order) {
-        return "Car " + order.getCar().getName() + " order has been canceled";
-    }
-
-    private String getCanselOrderMessage(Order order) {
-        return "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\"> Car " +
-                order.getCar().getName() + " order has been canceled!</font></h1><br/>" +
-                "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >" +
-                "The reason is your failure to pick up the car on time.<br/>";
-    }
-
-
-    private void sendMessage(User user, String message, String subject) throws MessagingException {
-        // sets SMTP server properties
-        Properties properties = new Properties();
-        properties.put("mail.smtp.host", emailHost);
-        properties.put("mail.smtp.port", emailPort);
-        properties.put("mail.smtp.auth", "true");
-        properties.put("mail.debug", "false");
-        properties.put("mail.smtp.starttls.enable", "true");
-        properties.put("mail.user", emailUsername);
-        properties.put("mail.password", emailPassword);
-
-        // creates a new session with an authenticator
+    private void sendMessage(UserDto user, String message, String subject) throws MessagingException {
+        Properties properties = getMailProperties();
         Authenticator auth = new Authenticator() {
             public PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(emailUsername, emailPassword);
             }
         };
         Session session = Session.getInstance(properties, auth);
-
-        // creates a new e-mail message
         MimeMessage msg = new MimeMessage(session);
-
-        msg.setFrom(new InternetAddress("CarRental@service.com"));
+        msg.setFrom(new InternetAddress(CAR_RENTAL_INTERNET_ADDRESS));
         InternetAddress[] toAddresses = {new InternetAddress(user.getEmail())};
         msg.setRecipients(Message.RecipientType.TO, toAddresses);
         msg.setSubject(subject);
 
-        // creates message part
         MimeBodyPart messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setContent(message, "text/html");
-
-        // creates multi-part
+        messageBodyPart.setContent(message, CONTENT_TYPE_TEXT_HTML);
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);
-
-        // sets the multi-part as e-mail's content
         msg.setContent(multipart);
 
-        // sends the e-mail
         Transport.send(msg);
+    }
+
+    private Properties getMailProperties() {
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", emailHost);
+        properties.put("mail.smtp.port", emailPort);
+        properties.put("mail.smtp.auth", Boolean.TRUE.toString());
+        properties.put("mail.debug", Boolean.FALSE.toString());
+        properties.put("mail.smtp.starttls.enable", Boolean.TRUE.toString());
+        properties.put("mail.user", emailUsername);
+        properties.put("mail.password", emailPassword);
+        return properties;
     }
 
 }

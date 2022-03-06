@@ -1,24 +1,22 @@
 package by.nosevich.carrental.service.imagestorage;
 
-import by.nosevich.carrental.model.Car;
-import by.nosevich.carrental.model.Category;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
 
 public interface ImageStoreService {
-    void storeCarImage(Car car, MultipartFile file) throws IOException;
+    void storeCarImage(Integer carId, MultipartFile file) throws IOException;
 
-    void storeCategoryImage(MultipartFile file, Category category) throws IOException;
+    String storeCategoryImageAndReturnPath(MultipartFile file) throws IOException;
 
-    void storeCarPreview(Car car, MultipartFile file) throws IOException;
+    String storeCarPreviewAndReturnPath(Integer carId, MultipartFile file) throws IOException;
 
-    List<String> getCarImagePaths(Car car);
+    List<String> getCarImagePaths(Integer carId);
 
-    void deleteCarImageFile(String imageName) throws IOException;
+    void deleteCarImageFile(Integer carId, String fileName);
 
-    void deleteAllImagesForCar(Car car) throws IOException;
+    void deleteAllImagesForCar(Integer carId);
 
-    void deleteCategoryImage(Category category) throws IOException;
+    void deleteCategoryImage(String categoryImagePath);
 }

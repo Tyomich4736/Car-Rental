@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Registration</title>
+<title th:text="#{login.signUp}"></title>
 <th:block th:insert="auth/head.html :: css"/>
 </head>
 <body>
@@ -10,32 +10,32 @@
 
     <!-- Login Form -->
     <form th:action="@{/register}" method="post">
-    First name <br/>
-      <input type="text" id="login" class="fadeIn second" name="firstName" required="required" th:value="${firstName}"><br/>
-      Last name<br/>
-      <input type="text" id="login" class="fadeIn second" name="lastName" required="required" th:value="${lastName}"><br/>
-      Phone number<br/>
-      <input type="text" id="login" class="fadeIn second" name="phoneNumber" required="required" th:value="${phone}"><br/>
+      <th:block th:text="#{login.firstName}"/> <br/>
+      <input type="text" class="fadeIn second" name="firstName" required="required" th:value="${user == null ? '' : user.getFirstName()}"><br/>
+      <th:block th:text="#{login.lastName}"/><br/>
+      <input type="text" class="fadeIn second" name="lastName" required="required" th:value="${user == null ? '' : user.getLastName()}"><br/>
+      <th:block th:text="#{login.phone}"/><br/>
+      <input type="text" class="fadeIn second" name="phoneNumber" required="required" th:value="${user == null ? '' : user.getPhoneNumber()}"><br/>
     Email<br/>
-      <input type="email" id="login" class="fadeIn second" name="email" required="required" th:value="${email}"><br/>
-    Password  <br/>
-      <input type="password" id="password" class="fadeIn third" name="password" required="required"><br/>
-    Confirm password<br/>
-      <input type="password" id="password" class="fadeIn third" name="confirmPassword" required="required">
+      <input type="email" class="fadeIn second" name="email" required="required" th:value="${user == null ? '' : user.getEmail()}"><br/>
+      <th:block th:text="#{login.password}"/><br/>
+      <input type="password" class="fadeIn third" name="password" required="required"><br/>
+      <th:block th:text="#{login.confirmPassword}"/><br/>
+      <input type="password" class="fadeIn third" name="confirmPassword" required="required">
       <div th:if="${passwordError}">
-            <font color="red">Passwords do not match.</font>
+            <font color="red"><th:block th:text="#{login.passwordsDoNotMatch}"/></font>
         </div>
        <div th:if="${mailError}">
-            <font color="red">Mail entered incorrectly.</font>
+            <font color="red"><th:block th:text="#{login.incorrectMail}"/></font>
        </div>  
-      <input type="submit" class="fadeIn fourth" value="Register">
+      <input type="submit" class="fadeIn fourth" th:value="#{login.signUp.confirm}">
     </form>
 
-    <!-- Remind Passowrd -->
     <div id="formFooter">
-      <a class="underlineHover" th:href="@{/login}">Sign in</a>
+      <a class="underlineHover" th:href="@{/login}" th:text="#{navbar.signin}"></a>
     </div>
 
   </div>
 </div>
+</body>
 </html>

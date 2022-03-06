@@ -1,5 +1,6 @@
 package by.nosevich.carrental.config.security;
 
+import by.nosevich.carrental.dto.UserDto;
 import by.nosevich.carrental.model.User;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -19,7 +20,7 @@ public class RentalUserDetails implements UserDetails {
     private List<SimpleGrantedAuthority> authorities;
     private boolean isActive;
 
-    public RentalUserDetails(User user) {
+    public RentalUserDetails(UserDto user) {
         id = user.getId();
         email = user.getEmail();
         password = user.getPassword();

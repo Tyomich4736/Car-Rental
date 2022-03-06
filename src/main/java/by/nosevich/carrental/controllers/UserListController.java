@@ -1,5 +1,6 @@
 package by.nosevich.carrental.controllers;
 
+import by.nosevich.carrental.dto.UserDto;
 import by.nosevich.carrental.model.User;
 import by.nosevich.carrental.model.enums.UserRole;
 import by.nosevich.carrental.service.user.UserService;
@@ -21,24 +22,14 @@ public class UserListController {
     @Autowired
     private UserService userService;
 
-    private static final int PAGE_SIZE = 20;
-
-    @GetMapping("")
-    public String getList(Model model, @RequestParam(value = "page", required = false) Integer pageNum, @RequestParam(value = "search", required = false) String search) {
-
-        if(pageNum == null) pageNum = 0;
-        List<User> users, nextUsers;
-        Pageable pageable = PageRequest.of(pageNum, PAGE_SIZE);
-        if(search == null) {
-            users = userService.getAll(pageable);
-            nextUsers = userService.getAll(PageRequest.of(pageNum + 1, PAGE_SIZE));
-        } else {
-            users = userService.searchLike(search, pageable);
-            nextUsers = userService.searchLike(search, PageRequest.of(pageNum + 1, PAGE_SIZE));
-            model.addAttribute("search", search);
-        }
-
-        if(nextUsers.size() != 0) model.addAttribute("hasNextPage", true);
+    @GetMapping
+    public String getList(Model model,
+                          @RequestParam(value = "page", required = false, defaultValue = "1") Integer pageNum,
+                          @RequestParam(value = "search", required = false) String search) {
+        List<UserDto> users = userService.findBySubstring(search, pageNum);
+        boolean hasNextPage = userService.hasNextSearchPage(search, pageNum);
+        model.addAttribute("search", search);
+        model.addAttribute("hasNextPage", hasNextPage);
         model.addAttribute("currentPage", pageNum);
         model.addAttribute("users", users);
         return "users/userList";
@@ -46,28 +37,14 @@ public class UserListController {
 
     @GetMapping("/set/employee")
     public String makeAnEmployee(HttpServletRequest request, @RequestParam("id") Integer userId) {
-        try {
-            User user = userService.getById(userId);
-            user.setUserRole(UserRole.EMPLOYEE);
-            userService.save(user);
-        } catch(Exception e) {
-            return "redirect:/users";
-        }
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
+        userService.makeAnEmployee(userId);
+        return "redirect:" + request.getHeader("Referer");
     }
 
     @GetMapping("/set/client")
     public String makeAnClient(HttpServletRequest request, @RequestParam("id") Integer userId) {
-        try {
-            User user = userService.getById(userId);
-            user.setUserRole(UserRole.CLIENT);
-            userService.save(user);
-        } catch(Exception e) {
-            return "redirect:/users";
-        }
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
+        userService.makeAnClient(userId);
+        return "redirect:" + request.getHeader("Referer");
     }
 
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<title>Add category</title>
+<title th:text="#{category.addingCategory}"></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 </head>
@@ -15,21 +15,27 @@
 <body>
 	<th:block th:insert="fragments/navBar.html"/>
 
-	<h1 align="center">Add image</h1>
+	<h1 align="center" th:text="#{category.addingCategory}"></h1>
 
 	<div align="center">
-	<form class="form-horizontal" th:action="@{${'/admin/'+car.id+'/addImage'}}" method="post" enctype="multipart/form-data">
+	<form class="form-horizontal" th:action="@{/admin/addCategory}" method="post" enctype="multipart/form-data">
     <div class="form-group">
-      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Image:</font></label>
-      <div class="col-sm-10">          
-        <input type="file" name="file" required="required" accept="image/jpeg,image/png,image/gif" id="file" onchange="Filevalidation(this)">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{category.name} + ':'"></font></label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Category name" name="name" required="required">
       </div>
-       <label class="control-label col-sm-2" >The uploaded file must be in jpg or png format and have a size of no more than 1 mb</label>
     </div>
-    
+    <div class="form-group">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{category.preview} + ':'"></font></label>
+      <div class="col-sm-10">          
+        <input type="file" name="previewFile" required="required"
+        accept="image/jpeg,image/png,image/gif" id="file" onchange="Filevalidation(this)">
+      </div>
+       <label class="control-label col-sm-2" th:text="#{fileSizeMessage}"></label>
+    </div>
     <div class="form-group">        
       <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" th:text="#{actions.actions}"></button>
       </div>
     </div>
   </form>
@@ -55,4 +61,5 @@
         } 
     } 
 </script> 
+
 </html>

@@ -1,7 +1,7 @@
 <!DOCTYPE HTML>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Successful registration</title>
+<title th:text="#{login.successfulRegistration}"></title>
 <th:block th:insert="auth/head.html :: css"/>
 </head>
 <body>
@@ -11,12 +11,12 @@
     <!-- Login Form -->
     <form th:action="@{/login}" method="get">
     <p><img th:src="@{img/successful.png}" alt="" height="150" width="150"></p>
-      <div align="center">Successful registration!<br/>
-			We have sent you an email with instructions on how to activate your account. 
-			Thank you for choosing our service!</div>
+      <div align="center" th:text="#{login.successfulRegistration}"><br/>
+			<th:block th:text="#{login.activateAccountLabel}"/></div>
       <input type="submit" class="fadeIn fourth" value="OK">
     </form>
 
   </div>
 </div>
+</body>
 </html>

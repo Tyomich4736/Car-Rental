@@ -1,0 +1,124 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title th:text="#{car.addingCar}"></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<body>
+	<th:block th:insert="fragments/navBar.html"/>
+
+	<h1 align="center" th:text="#{car.addingCar}"></h1>
+
+	<div align="center">
+	<form class="form-horizontal" th:action="@{${'/admin/'+currentCategory.getId()+'/addCar'}}" method="post" enctype="multipart/form-data">
+	
+    <div class="form-group">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="'*' + #{car.name} + ':'"></font></label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" placeholder="Car name" name="name" required="required">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{car.yearOfIssue} + ':'"></font></label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" name="year" value="2010" required="required">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{car.transmission} + ':'"></font></label>
+      <div class="col-sm-10">
+        	<input type="radio" name="transmission" value="MECHANICAL" th:text="#{transmission.mechanical}"><br/>
+    		<input type="radio" name="transmission" value="HYDROMECHANICAL" th:text="#{transmission.hydromechanical}"><br/>
+    		<input type="radio" name="transmission" value="HYDRAULIC" th:text="#{transmission.hydraulic}"><br/>
+    		<input type="radio" name="transmission" value="ELECTROMECHANICAL" th:text="#{transmission.electromechanical}"><br/>
+    		<input type="radio" name="transmission" value="AUTOMATIC" th:text="#{transmission.automatic}"><br/>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{car.fuelConsumption} + ':'"></font></label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control"  step="0.01" name="fuelConsumption"> 
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{car.fuelType} + ':'"></font></label>
+      <div class="col-sm-10">
+        	<input type="radio" name="fuelType" value="PETROL" th:text="#{fuelType.petrol}"><br/>
+			<input type="radio" name="fuelType" value="DIESEL" th:text="#{fuelType.diesel}"><br/>
+			<input type="radio" name="fuelType" value="ELECTRIC" th:text="#{fuelType.electric}"><br/>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{car.numberOfSeats} + ':'"></font></label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" name="numberOfSeats" value=2> 
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{car.maximalSpeed} + ':'"></font></label>
+      <div class="col-sm-10">
+        <input type="number" class="form-control" step="0.01" name="maxSpeed"> 
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="'*' + #{car.price} + ':'"></font></label>
+      <div class="col-sm-10"> 
+        <th:block th:text="'1-3' + #{car.days} + ':'"/><input type="number" class="form-control" step="0.01" name="priceFrom1To3Days" required="required">
+        <th:block th:text="'4-7' + #{car.days} + ':'"/><input type="number" class="form-control" step="0.01" name="priceFrom4To7Days" required="required">
+        <th:block th:text="'8-15' + #{car.days} + ':'"/><input type="number" class="form-control" step="0.01" name="priceFrom8To15Days" required="required">
+        <th:block th:text="'16-30' + #{car.days} + ':'"/><input type="number" class="form-control" step="0.01" name="priceFrom16To30Days" required="required">
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{car.preview} + ':'"></font></label>
+      <div class="col-sm-10">          
+        <input type="file" name="file" required="required" accept="image/jpeg,image/png,image/gif" id="file" onchange="Filevalidation(this)">
+      </div>
+       <label class="control-label col-sm-2" th:text="#{fileSizeMessage}"></label>
+    </div>
+    
+    <div class="form-group">        
+      <div class="col-sm-offset-2 col-sm-10">
+        <button type="submit" class="btn btn-primary" th:text="#{actions.submit}"></button>
+      </div>
+    </div>
+  </form>
+  </div>
+</body>
+<th:block th:insert="fragments/footer.html" />
+<script> 
+    function Filevalidation(fi){ 
+        if (fi.files.length > 0) { 
+            for (let i = 0; i <= fi.files.length - 1; i++) {
+  
+                const fsize = fi.files.item(i).size; 
+                const file = Math.round((fsize / 1024)); 
+                if (file >= 1024) { 
+                    alert( 
+                      "File too Big, please select a file less than 1mb"); 
+                    fi.value = '';
+                } else { 
+                    document.getElementById('size').innerHTML = '<b>'
+                    + file + '</b> KB'; 
+                } 
+            } 
+        } 
+    } 
+</script> 
+</html>

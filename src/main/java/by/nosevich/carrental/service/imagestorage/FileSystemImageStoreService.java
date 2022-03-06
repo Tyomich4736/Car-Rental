@@ -1,7 +1,5 @@
 package by.nosevich.carrental.service.imagestorage;
 
-import by.nosevich.carrental.model.Car;
-import by.nosevich.carrental.model.Category;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -16,76 +14,84 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 
 @Service
 @Transactional
 public class FileSystemImageStoreService implements ImageStoreService {
 
+    public static final String FILE_SEPARATOR = "/";
+    public static final String CARS_FOLDER_PATH = "/cars/";
+    public static final String CATEGORIES_PATH = "/categories";
+    public static final String CATEGORIES_FOLDER_PATH = CATEGORIES_PATH + FILE_SEPARATOR;
+
     @Value("${image.storage.path}")
     private String imageStoragePath;
 
     @Override
-    public void storeCarImage(Car car, MultipartFile fileToUpload) throws IOException {
-        String folderPath = imageStoragePath + "/cars/" + car.getId();
+    public void storeCarImage(Integer carId, MultipartFile fileToUpload) throws IOException {
+        String folderPath = imageStoragePath + CARS_FOLDER_PATH + carId;
         uploadFile(fileToUpload, folderPath);
     }
 
     @Override
-    public void storeCarPreview(Car car, MultipartFile fileToUpload) throws IOException {
-        String folderPath = imageStoragePath + "/cars/" + car.getId();
-        car.setPreviewImageName("/cars/" + car.getId() + "/" + fileToUpload.getOriginalFilename());
+    public String storeCategoryImageAndReturnPath(MultipartFile fileToUpload) throws IOException {
+        String folderPath = imageStoragePath + CATEGORIES_PATH;
         uploadFile(fileToUpload, folderPath);
+        return CATEGORIES_FOLDER_PATH + fileToUpload.getOriginalFilename();
     }
 
     @Override
-    public void storeCategoryImage(MultipartFile fileToUpload, Category category) throws IOException {
-        String folderPath = imageStoragePath + "/categories";
-        category.setImageName("/categories" + "/" + fileToUpload.getOriginalFilename());
+    public String storeCarPreviewAndReturnPath(Integer carId, MultipartFile fileToUpload) throws IOException {
+        String folderPath = imageStoragePath + CARS_FOLDER_PATH + carId;
         uploadFile(fileToUpload, folderPath);
+        return CARS_FOLDER_PATH + carId + FILE_SEPARATOR + fileToUpload.getOriginalFilename();
     }
+
+    @Override
+    public List<String> getCarImagePaths(Integer carId) {
+        String folderWithImagesPath = imageStoragePath + CARS_FOLDER_PATH + carId;
+        File file = new File(folderWithImagesPath);
+        if (file.list() != null) {
+            return Arrays.stream(file.list())
+                    .map(fileName -> CARS_FOLDER_PATH + carId + FILE_SEPARATOR + fileName)
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
+
+    @Override
+    public void deleteCarImageFile(Integer carId, String fileName) {
+        String imageName = String.format("/cars/%d/%s", carId, fileName);
+        String filePath = imageStoragePath + imageName;
+        new File(filePath).delete();
+    }
+
+    @Override
+    public void deleteAllImagesForCar(Integer carId) {
+        String folderPath = imageStoragePath + CARS_FOLDER_PATH + carId;
+        File folder = new File(folderPath);
+        Arrays.stream(folder.list()).forEach(fileName -> {
+            new File(folderPath + FILE_SEPARATOR + fileName).delete();
+        });
+        folder.delete();
+    }
+
+    public void deleteCategoryImage(String categoryImagePath) {
+        String imagePath = imageStoragePath + categoryImagePath;
+        new File(imagePath).delete();
+    }
+
 
     private void uploadFile(MultipartFile fileToUpload, String folderPath) throws IOException {
         File file2 = new File(folderPath);
         file2.mkdirs();
-        file2 = new File(folderPath + "/" + fileToUpload.getOriginalFilename());
+        file2 = new File(folderPath + FILE_SEPARATOR + fileToUpload.getOriginalFilename());
 
         try(InputStream in = fileToUpload.getInputStream();
             OutputStream out = new FileOutputStream(file2)) {
             IOUtils.copy(in, out);
         }
     }
-
-    @Override
-    public void deleteCarImageFile(String imageName) throws IOException {
-        String filePath = imageStoragePath + imageName;
-        new File(filePath).delete();
-    }
-
-    @Override
-    public void deleteAllImagesForCar(Car car) throws IOException {
-        String folderPath = imageStoragePath + "/cars/" + car.getId();
-        File folder = new File(folderPath);
-        Arrays.stream(folder.list()).forEach(fileName -> {
-            new File(folderPath + "/" + fileName).delete();
-        });
-        folder.delete();
-    }
-
-    public void deleteCategoryImage(Category category) throws IOException {
-        String imagePath = imageStoragePath + category.getImageName();
-        new File(imagePath).delete();
-    }
-
-    @Override
-    public List<String> getCarImagePaths(Car car) {
-        String folderWithImagesPath = imageStoragePath + "/cars/" + car.getId();
-        File file = new File(folderWithImagesPath);
-        List<String> result = new ArrayList<String>();
-        for(String fileName : file.list()) {
-            result.add("/cars/" + car.getId() + "/" + fileName);
-        }
-        return result;
-    }
-
 }

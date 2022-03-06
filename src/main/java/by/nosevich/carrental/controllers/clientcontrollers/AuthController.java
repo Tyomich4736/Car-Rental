@@ -1,8 +1,7 @@
 package by.nosevich.carrental.controllers.clientcontrollers;
 
-import by.nosevich.carrental.model.User;
-import by.nosevich.carrental.model.enums.UserRole;
-import by.nosevich.carrental.service.mailsender.MailService;
+import by.nosevich.carrental.dto.UserDto;
+import by.nosevich.carrental.exception.IncorrectUserDataException;
 import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
@@ -13,69 +12,50 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import javax.mail.MessagingException;
-import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
-import java.util.UUID;
 
 @Controller
 public class AuthController {
 
-    @Autowired
-    private MailService emailService;
-    @Autowired
-    private UserService userService;
+    public static final String REGISTRATION_PAGE = "auth/register";
+    public static final String REDIRECT_ON_SUCCESSFUL_REGISTRATION_PAGE = "redirect:/successfulreg";
+    public static final String REDIRECT_ON_LOGIN_PAGE = "redirect:/login";
+    public static final String USER_ATTRIBUTE = "user";
+    public static final String MAIL_ERROR_ATTRIBUTE = "mailError";
+    public static final String PASSWORD_ERROR_ATTRIBUTE = "passwordError";
 
-    @PostMapping("/register")
-    public String createNewUser(User user, @Param("confirmPassword") String confirmPassword, HttpServletRequest request, Model model)
-    throws IOException {
-        try {
-            if(userDataIsCorrect(user, confirmPassword)) {
-                user.setActivationCode(UUID.randomUUID().toString());
-                user.setUserRole(UserRole.CLIENT);
-                user.setActive(false);
-                emailService.sendActivationMessage(user);
-                userService.saveProtectedUser(user);
-            } else {
-                putUserDataInAttributes(user, model);
-                model.addAttribute("passwordError", true);
-                return "auth/register";
-            }
-        } catch(MessagingException e) {
-            e.printStackTrace();
-            putUserDataInAttributes(user, model);
-            model.addAttribute("mailError", true);
-            return "auth/register";
-        }
-        return "redirect:/successfulreg";
+    private final UserService userService;
+
+    @Autowired
+    public AuthController(UserService userService) {
+        this.userService = userService;
     }
 
-    private void putUserDataInAttributes(User user, Model model) {
-        model.addAttribute("firstName", user.getFirstName());
-        model.addAttribute("lastName", user.getLastName());
-        model.addAttribute("phone", user.getPhoneNumber());
-        model.addAttribute("email", user.getEmail());
+    @PostMapping("/register")
+    public String createNewUser(UserDto user, @Param("confirmPassword") String passwordConfirmation, Model model) {
+        try {
+            userService.createNewUser(user, passwordConfirmation);
+        } catch(MessagingException e) {
+            e.printStackTrace();
+            model.addAttribute(USER_ATTRIBUTE, user);
+            model.addAttribute(MAIL_ERROR_ATTRIBUTE, true);
+            return REGISTRATION_PAGE;
+        } catch(IncorrectUserDataException e) {
+            model.addAttribute(USER_ATTRIBUTE, user);
+            model.addAttribute(PASSWORD_ERROR_ATTRIBUTE, true);
+            return REGISTRATION_PAGE;
+        }
+        return REDIRECT_ON_SUCCESSFUL_REGISTRATION_PAGE;
     }
 
     @GetMapping("/register")
-    public String getRegistrationPage() throws IOException {
-        return "auth/register";
+    public String getRegistrationPage() {
+        return REGISTRATION_PAGE;
     }
 
     @GetMapping("/activate/{code}")
     public String activateUser(@PathVariable("code") String activationCode) {
-        User user = userService.getByActivationCode(activationCode);
-        user.setActive(true);
-        userService.save(user);
-        return "redirect:/login";
-    }
-
-    private boolean userDataIsCorrect(User user, String confirmPassword) {
-        if(!user.getEmail().trim().equals("") && !user.getFirstName().trim().equals("") &&
-                !user.getLastName().trim().equals("") && !user.getPhoneNumber().trim().equals("") &&
-                user.getPassword().equals(confirmPassword)) return true;
-        else {
-            return false;
-        }
+        userService.activateUser(activationCode);
+        return REDIRECT_ON_LOGIN_PAGE;
     }
 
 }

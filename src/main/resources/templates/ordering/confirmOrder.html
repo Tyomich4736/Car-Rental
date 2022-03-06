@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<title>Confirm order</title>
+<title th:text="#{ordering.orderConfirmation}"></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 </head>
@@ -16,15 +16,15 @@
 <body>
 	<th:block th:insert="fragments/navBar.html"/>
 	<div align="center">
-	<h1 >Total</h1>
+	<h1 th:text="#{ordering.total}"></h1>
 	<h1 ><font color="Light Slate Blue" size="7"><th:block th:text="${order.price}"/> BYN</font></h1>
 	<br>
-	<font size="5">Is that correct?</font>
+	<font size="5" th:text="#{ordering.isThatCorrect}"></font>
 	<br>
 	<a th:href="@{/order/saveOrder}">
-		<button type="button" class="btn btn-primary">Yes</button>
+		<button type="button" class="btn btn-primary" th:text="#{ordering.yes}"></button>
 	</a>
-	<button type="button" class="btn btn-danger" onclick="history.back();">No</button>
+	<button type="button" class="btn btn-danger" onclick="history.back();" th:text="#{ordering.no}"></button>
 	</div>
 </body>
 </html>

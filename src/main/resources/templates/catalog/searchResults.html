@@ -16,7 +16,8 @@
 	<th:block th:insert="fragments/searchBar.html" />
 	<div align="center">
 		<h1>
-			<th:block th:text="${'Results for ['+search+']'}">
+			<th:block th:text="#{searchResults.resultsFor}"/>
+			<th:block th:text="${' ' + searchString}"/>
 		</h1>
 	</div>
 
@@ -29,8 +30,8 @@
 			</div>
 			<div class="card-body">
 				<a th:href="@{${'/catalog/car/'+car.id}}"> <img alt=""
-					th:src="${'/files'+car.previewImageName}" width="500"
-					height="320">
+																th:src="${'/files'+car.getPreviewImagePath()}" width="500"
+																height="320">
 				</a> <br /> <font size="5"><th:block th:text="${car.year}" /></font>
 			</div>
 			<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto">
@@ -42,21 +43,20 @@
 
 	<nav th:if="${cars.size()!=0}">
 		<ul class="pagination justify-content-center">
-		<th:block th:if="${currentPage!=0}">
-			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage-1})}">Previous</a></li>
-			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"></a></li>
+		<th:block th:if="${currentPage!=1}">
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage-1})}" th:text="#{pagination.previous}"></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"/></a></li>
 		</th:block>
-			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage+1}"></a></li>
+			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage}"/></a></li>
 		<th:block th:if="${hasNextPage==true}">	
-			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage+1})}"><th:block th:text="${currentPage+2}"></a></li>
-			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage+1})}">Next</a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage+1})}"><th:block th:text="${currentPage+1}"/></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage+1})}" th:text="#{pagination.next}">Next</a></li>
 		</th:block>	
 		</ul>
 	</nav>
 	
 	<div align="center" th:if="${cars.size()==0}">
-		<h1>
-			No results found
+		<h1 th:text="#{searchResults.noResults}">
 		</h1>
 	</div>
 </body>

@@ -1,107 +1,113 @@
 package by.nosevich.carrental.controllers.admincontrollers;
 
-import by.nosevich.carrental.model.Car;
-import by.nosevich.carrental.service.imagestorage.ImageStoreService;
+import by.nosevich.carrental.dto.CarDto;
+import by.nosevich.carrental.dto.CategoryDto;
 import by.nosevich.carrental.service.car.CarService;
 import by.nosevich.carrental.service.category.CategoryService;
+import by.nosevich.carrental.service.imagestorage.ImageStoreService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/admin")
 public class AdminCarController {
 
+    public static final String REDIRECT_ON_CATALOG_PAGE = "redirect:/catalog";
+    public static final String ADD_CAR_FORM_PAGE = "admin/addCar";
+    public static final String EDIT_CAR_FORM_PAGE = "admin/editCar";
+    public static final String REDIRECT_ON_CATALOG_CATEGORY_PAGE = "redirect:/catalog/%d";
+    public static final String REDIRECT_ON_CATALOG_CAR_PAGE = "redirect:/catalog/car/%d";
+    public static final String ADD_IMAGE_FORM_PAGE = "admin/addImage";
+    public static final String REDIRECT_ON_ADD_IMAGE_FORM_PAGE = "redirect:/admin/%d/addImage";
+    public static final String CAR_ATTRIBUTE = "car";
+    public static final String CURRENT_CATEGORY_ATTRIBUTE = "currentCategory";
+
+    private final ImageStoreService imageStoreService;
+    private final CategoryService categoryService;
+    private final CarService carService;
+
     @Autowired
-    private ImageStoreService imageStoreService;
-    @Autowired
-    private CategoryService categoryService;
-    @Autowired
-    private CarService carService;
+    public AdminCarController(ImageStoreService imageStoreService,
+                              CategoryService categoryService,
+                              CarService carService) {
+        this.imageStoreService = imageStoreService;
+        this.categoryService = categoryService;
+        this.carService = carService;
+    }
 
     @GetMapping("/{category}/addCar")
-    public String addCarForm(@PathVariable("category") String category, Model model) {
-        model.addAttribute("currentCategory", category);
-        return "forAdmin/addCar";
+    public String addCarForm(@PathVariable("category") Integer categoryId, Model model) {
+        Optional<CategoryDto> optionalCategory = categoryService.getById(categoryId);
+        if (!optionalCategory.isPresent()) {
+            return REDIRECT_ON_CATALOG_PAGE;
+        }
+        model.addAttribute(CURRENT_CATEGORY_ATTRIBUTE, optionalCategory.get());
+        return ADD_CAR_FORM_PAGE;
     }
 
     @PostMapping("/{currentCategory}/addCar")
-    public String addCar(@PathVariable("currentCategory") String currentCategory, Car car, @RequestParam("file") MultipartFile preview) {
-        try {
-            carService.save(car);
-            imageStoreService.storeCarPreview(car, preview);
-            car.setCategory(categoryService.getByName(currentCategory));
-            carService.save(car);
-        } catch(Exception e) {
-            carService.delete(car);
-            return "redirect:/admin/" + currentCategory + "/addCar";
-        }
-        return "redirect:/catalog/" + currentCategory;
+    public String addCar(@PathVariable("currentCategory") Integer currentCategoryId,
+                         CarDto car,
+                         @RequestParam("file") MultipartFile preview) {
+        carService.createNewCar(currentCategoryId, car, preview);
+        return String.format(REDIRECT_ON_CATALOG_CATEGORY_PAGE, currentCategoryId);
     }
 
     @GetMapping("/{carId}/edit")
-    public String editCarForm(@PathVariable("carId") String id, Model model) {
-        model.addAttribute("car", carService.getById(Integer.parseInt(id)));
-        return "forAdmin/editCar";
+    public String editCarForm(@PathVariable("carId") Integer id, Model model) {
+        Optional<CarDto> car = carService.getById(id);
+        if (car.isPresent()) {
+            model.addAttribute(CAR_ATTRIBUTE, car.get());
+            return EDIT_CAR_FORM_PAGE;
+        } else {
+            return REDIRECT_ON_CATALOG_PAGE;
+        }
     }
 
     @PostMapping("/{carId}/edit")
-    public String editCar(@PathVariable("carId") String id, Model model, Car editedCar) {
-        Car car = carService.getById(Integer.parseInt(id));
-        setNotNullFieldsFromCarToCar(editedCar, car);
-        carService.save(car);
-        return "redirect:/catalog";
+    public String editCar(@PathVariable("carId") Integer carId, CarDto editedCar) {
+        carService.editCar(carId, editedCar);
+        return REDIRECT_ON_CATALOG_PAGE;
     }
 
-    private void setNotNullFieldsFromCarToCar(Car from, Car to) {
-        if(from.getName() != "") to.setName(from.getName());
-        to.setYear(from.getYear());
-        if(from.getTransmission() != null) to.setTransmission(from.getTransmission());
-        to.setFuelConsumption(from.getFuelConsumption());
-        if(from.getFuelType() != null) to.setFuelType(from.getFuelType());
-        to.setNumberOfSeats(from.getNumberOfSeats());
-        to.setMaxSpeed(from.getMaxSpeed());
-        if(from.getPriceFrom1To3Days() != null) to.setPriceFrom1To3Days(from.getPriceFrom1To3Days());
-        if(from.getPriceFrom4To7Days() != null) to.setPriceFrom4To7Days(from.getPriceFrom4To7Days());
-        if(from.getPriceFrom8To15Days() != null) to.setPriceFrom8To15Days(from.getPriceFrom8To15Days());
-        if(from.getPriceFrom16To30Days() != null) to.setPriceFrom16To30Days(from.getPriceFrom16To30Days());
-    }
-
-    @GetMapping("/deleteImage/cars/{id}/{fileName}")
-    public String deleteCarImage(@PathVariable("id") String id, Model model, @PathVariable("fileName") String fileName)
-    throws NumberFormatException, IOException {
-        String imageName = "/cars/" + id + "/" + fileName;
-        imageStoreService.deleteCarImageFile(imageName);
-        return "redirect:/catalog/car/" + id;
+    @GetMapping("/deleteImage/cars/{carId}/{fileName}")
+    public String deleteCarImage(@PathVariable("carId") Integer carId, @PathVariable("fileName") String fileName) {
+        imageStoreService.deleteCarImageFile(carId, fileName);
+        return String.format(REDIRECT_ON_CATALOG_CAR_PAGE, carId);
     }
 
     @GetMapping("/{carId}/addImage")
-    public String addCarImageForm(@PathVariable("carId") String id, Model model) {
-        model.addAttribute("car", carService.getById(Integer.parseInt(id)));
-        return "forAdmin/addImage";
+    public String addCarImageForm(@PathVariable("carId") Integer carId, Model model) {
+        Optional<CarDto> car = carService.getById(carId);
+        if (car.isPresent()) {
+            model.addAttribute(CAR_ATTRIBUTE, car.get());
+            return ADD_IMAGE_FORM_PAGE;
+        } else {
+            return REDIRECT_ON_CATALOG_PAGE;
+        }
     }
 
     @PostMapping("/{carId}/addImage")
-    public String addCarImage(@PathVariable("carId") String id, Model model, @RequestParam("file") MultipartFile image) {
-        Car car = carService.getById(Integer.parseInt(id));
-        try {
-            imageStoreService.storeCarImage(car, image);
-        } catch(IOException e) {
-            e.printStackTrace();
-            return "redirect:/admin/" + id + "/addImage";
+    public String addCarImage(@PathVariable("carId") Integer carId, @RequestParam("file") MultipartFile image) {
+        boolean isSuccessful = carService.addCarImage(carId, image);
+        if (!isSuccessful) {
+            return String.format(REDIRECT_ON_ADD_IMAGE_FORM_PAGE, carId);
         }
-        return "redirect:/catalog/car/" + id;
+        return String.format(REDIRECT_ON_CATALOG_CAR_PAGE, carId);
     }
 
     @GetMapping("/{carId}/delete")
-    public String deleteCar(@PathVariable("carId") String id) throws IOException {
-        Car car = carService.getById(Integer.parseInt(id));
-        imageStoreService.deleteAllImagesForCar(car);
-        carService.delete(car);
-        return "redirect:/catalog";
+    public String deleteCar(@PathVariable("carId") Integer carId) {
+        carService.deleteCarById(carId);
+        return REDIRECT_ON_CATALOG_PAGE;
     }
 }

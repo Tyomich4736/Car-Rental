@@ -14,32 +14,32 @@
 <body>
 	<th:block th:insert="fragments/navBar.html" />
 	<th:block th:insert="fragments/searchBar.html" />
-	
-	
+
+
 	<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto" style="margin-bottom: 20px" align="center">
 		<a th:href="@{/admin/addCategory}"
-			class="btn btn-lg btn-primary">Add category</a>
+			class="btn btn-lg btn-primary" th:text="#{category.addCategory}"></a>
 	</div>
 
 	<th:block th:each="category : ${categories}">
 		<div class="card mb-4 shadow-sm" align="center">
+            <a th:href="@{/catalog/{categoryId}(categoryId=${category.id})}">
 			<div class="card-header">
 				<h4 class="my-0 fw-normal">
 					<span th:text="${category.name}" />
 				</h4>
 			</div>
 			<div class="card-body">
-				<a th:href="@{/catalog/{category}(category=${category.name})}">
-						<img alt="" th:src="${'/files'+category.imageName}"
+						<img alt="" th:src="${'/files'+category.imagePath}"
 					width="500" height="320">
-				</a>
 			</div>
+            </a>
 			<br /> <br />
 			<div sec:authorize="hasAuthority('ADMIN')" class="d-grid gap-2 col-6 mx-auto" style="margin-bottom: 10px">
-				<a th:href="@{/admin/category/{category}/delete(category=${category.name})}"
-					class="btn btn-lg btn-danger">Delete category</a> <br /> <br />
+				<a th:href="@{/admin/category/{categoryId}/delete(categoryId=${category.id})}"
+					class="btn btn-lg btn-danger" th:text="#{category.deleteCategory}"></a> <br /> <br />
 			</div>
-			</div>	
+			</div>
 	</th:block>
 </body>
 <th:block th:insert="fragments/footer.html" />

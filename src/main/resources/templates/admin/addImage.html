@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<title>Add category</title>
+<title th:text="#{image.addingImage}"></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 </head>
@@ -15,27 +15,21 @@
 <body>
 	<th:block th:insert="fragments/navBar.html"/>
 
-	<h1 align="center">Add new category</h1>
+	<h1 align="center" th:text="#{image.addingImage}"></h1>
 
 	<div align="center">
-	<form class="form-horizontal" th:action="@{/admin/addCategory}" method="post" enctype="multipart/form-data">
+	<form class="form-horizontal" th:action="@{${'/admin/'+car.getId()+'/addImage'}}" method="post" enctype="multipart/form-data">
     <div class="form-group">
-      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Name:</font></label>
-      <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="Category name" name="name" required="required">
-      </div>
-    </div>
-    <div class="form-group">
-      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Preview image:</font></label>
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{image.image} + ':'"></font></label>
       <div class="col-sm-10">          
-        <input type="file" name="file" required="required" 
-        accept="image/jpeg,image/png,image/gif" id="file" onchange="Filevalidation(this)">
+        <input type="file" name="file" required="required" accept="image/jpeg,image/png,image/gif" id="file" onchange="Filevalidation(this)">
       </div>
-       <label class="control-label col-sm-2" >The uploaded file must be in jpg, gif or png format and have a size of no more than 1 mb</label>
+       <label class="control-label col-sm-2" th:text="#{fileSizeMessage}"></label>
     </div>
+    
     <div class="form-group">        
       <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" th:text="#{actions.submit}"></button>
       </div>
     </div>
   </form>
@@ -45,7 +39,7 @@
 <script> 
     function Filevalidation(fi){ 
         if (fi.files.length > 0) { 
-            for (const i = 0; i <= fi.files.length - 1; i++) { 
+            for (let i = 0; i <= fi.files.length - 1; i++) {
   
                 const fsize = fi.files.item(i).size; 
                 const file = Math.round((fsize / 1024)); 
@@ -61,5 +55,4 @@
         } 
     } 
 </script> 
-
 </html>

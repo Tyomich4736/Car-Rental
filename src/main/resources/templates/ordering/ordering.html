@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org"
 	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
-<title><th:block th:text="${currentCar.name}"/> ordering</title>
+<title th:text="${currentCar.name} + ' ' + #{ordering.orderingInTitle}"></title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 
 </head>
@@ -16,22 +16,21 @@
 <body>
 	<th:block th:insert="fragments/navBar.html"/>
 
-	<h1 align="center">Ordering</h1>
+	<h1 align="center" th:text="#{ordering.ordering}"></h1>
 
 	<div align="center">
 	<form class="form-horizontal" th:action="@{/order/confirmOrder/{car}(car=${currentCar.id})}" method="post" enctype="multipart/form-data">
 	
 	<div th:if="${busyOrders.size()!=0}">
-    <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">This car is busy on:</font></label>
+    <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{ordering.thisCarIsBusyOn}"></font></label>
     <div class="col-sm-10" th:each="order : ${busyOrders}">
-    	[<th:block th:text="${order.beginDate}"/>] - [<th:block th:text="${order.endDate}"/>]
+    	<th:block th:text="${order.beginDate}"/> - <th:block th:text="${order.endDate}"/>
     </div>
     <br>
     </div>
     
     
-      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Select order date
-      (Should not overlap with existing orders)</font></label>
+      <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{ordering.selectOrderPeriod}"></font></label>
 				<div class="col-sm-3 my-1">
 					<input type="date" class="form-control" name="beginDate"
 						id="from" required="required">
@@ -41,15 +40,15 @@
 					id="to" required="required">
 				</div>
 			<div th:if="${param.cross}">
-            <font color="red">The order overlaps with other orders for this car</font>
-       </div> 
+            	<font color="red" th:text="#{ordering.orderOverlaps}"></font>
+       		</div>
 
-			<label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4">Select optional accessories:</font></label>
+			<label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{ordering.selectAccessories} + ':'"></font></label>
 			<table>
     <div class="form-group" th:each="accessory : ${accessories}">
     <tr>
     	<th>
-        	<input type="checkbox" name="accessories" th:value="${accessory.name}">
+        	<input type="checkbox" name="accessories" th:value="${accessory.id}">
     	</th>
     	<th>
     		<th:block th:text="${' ' +accessory.name}"/>
@@ -63,9 +62,9 @@
     <br>
     
     <div class="form-group">
-    <label class="control-label col-sm-2" >By clicking on this button you confirm that you have read our <a th:href="@{/rentterms}">rental terms</a></label>        
+    <label class="control-label col-sm-2" th:text="#{ordering.rentalTermsConfirmation} + ' '"><a th:href="@{/rentterms}" th:text="#{ordering.rentalTerms}"></a></label>
       <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary">Submit</button>
+        <button type="submit" class="btn btn-primary" th:text="#{actions.submit}"></button>
       </div>
     </div>
     
