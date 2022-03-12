@@ -1,7 +1,7 @@
 package by.nosevich.carrental.service.user;
 
 import by.nosevich.carrental.dto.UserDto;
-import by.nosevich.carrental.exception.IncorrectUserDataException;
+import by.nosevich.carrental.exceptions.IncorrectUserDataException;
 import by.nosevich.carrental.service.DaoService;
 
 import javax.mail.MessagingException;

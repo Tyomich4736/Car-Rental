@@ -1,7 +1,7 @@
 package by.nosevich.carrental.controllers.clientcontrollers;
 
 import by.nosevich.carrental.dto.UserDto;
-import by.nosevich.carrental.exception.IncorrectUserDataException;
+import by.nosevich.carrental.exceptions.IncorrectUserDataException;
 import by.nosevich.carrental.service.user.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.repository.query.Param;
