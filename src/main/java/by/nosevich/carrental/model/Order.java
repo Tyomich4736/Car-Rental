@@ -1,7 +1,9 @@
 package by.nosevich.carrental.model;
 
 import by.nosevich.carrental.model.enums.OrderStatus;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -22,7 +24,9 @@ import javax.persistence.TemporalType;
 import java.util.Date;
 import java.util.Set;
 
-@Data
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "order_table")
 public class Order {

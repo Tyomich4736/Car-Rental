@@ -26,11 +26,11 @@
 			Date: [<th:block th:text="${order.beginDate}"/>] - [<th:block th:text="${order.endDate}"/>] <br>
 			Accessories:<br> </font>
 			<th:block th:each="acc : ${order.accessories}">
-				<th:block th:text="${acc.name+' ('+acc.price+' BYN)'}"/> <br>
+				<th:block th:text="${acc.name+' ('+acc.getPrice()+' BYN)'}"/> <br>
 			</th:block>
 			<font size="5">
 			Status: <th:block th:text="${order.orderStatus.name()}"/> <br>
-			Price: <th:block th:text="${order.price}"/> BYN<br> </font>
+			Price: <th:block th:text="${order.getPrice()}"/> BYN<br> </font>
 				<img alt=""
 					th:src="${'/files'+order.car.previewImageName}" width="500"
 					height="320">

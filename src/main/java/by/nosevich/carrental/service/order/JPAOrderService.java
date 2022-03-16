@@ -17,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
@@ -35,7 +36,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
-@Transactional
+@Transactional(rollbackFor = Throwable.class, propagation = Propagation.REQUIRES_NEW)
 public class JPAOrderService implements OrderService {
 
     public static final DateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
@@ -107,8 +108,8 @@ public class JPAOrderService implements OrderService {
         order.setOrderStatus(OrderStatus.UNCONFIRMED);
         order.setUser(optionalUser.get());
         order.setAccessories(accessories);
-        orderRepository.save(order);
         calculateAndSetPrice(order);
+        orderRepository.save(order);
         return Optional.of(new OrderDto(order));
     }
 
@@ -231,9 +232,9 @@ public class JPAOrderService implements OrderService {
     private boolean isOrderCross(Date beginDate, Date endDate, Integer carId) {
         List<Order> orders = orderRepository.findByCarAndStatuses(carId, OrderStatus.ACTIVE, OrderStatus.WAITING);
         for (Order order : orders) {
-            if ((beginDate.compareTo(order.getBeginDate()) > 0 && beginDate.compareTo(order.getEndDate()) < 0) ||
-                    ((endDate.compareTo(order.getBeginDate()) > 0 && endDate.compareTo(order.getEndDate()) < 0)) ||
-                    (beginDate.compareTo(order.getBeginDate()) < 0 && endDate.compareTo(order.getEndDate()) > 0))
+            if ((beginDate.compareTo(order.getBeginDate()) >= 0 && beginDate.compareTo(order.getEndDate()) <= 0) ||
+                    ((endDate.compareTo(order.getBeginDate()) >= 0 && endDate.compareTo(order.getEndDate()) <= 0)) ||
+                    (beginDate.compareTo(order.getBeginDate()) <= 0 && endDate.compareTo(order.getEndDate()) >= 0))
                 return true;
         }
         return false;

@@ -1,6 +1,8 @@
 package by.nosevich.carrental.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -15,7 +17,9 @@ import java.math.BigDecimal;
 import java.util.Set;
 
 @Entity
-@Data
+@NoArgsConstructor
+@Getter
+@Setter
 @Table(name = "accessory_table")
 public class Accessory {
     @Id

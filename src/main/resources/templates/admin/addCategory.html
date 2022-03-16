@@ -22,7 +22,7 @@
     <div class="form-group">
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{category.name} + ':'"></font></label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="Category name" name="name" required="required">
+        <input type="text" class="form-control" th:placeholder="#{category.name}" name="name" required="required">
       </div>
     </div>
     <div class="form-group">
@@ -35,7 +35,7 @@
     </div>
     <div class="form-group">        
       <div class="col-sm-offset-2 col-sm-10">
-        <button type="submit" class="btn btn-primary" th:text="#{actions.actions}"></button>
+        <button type="submit" class="btn btn-primary" th:text="#{actions.submit}"></button>
       </div>
     </div>
   </form>

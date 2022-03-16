@@ -2,7 +2,9 @@ package by.nosevich.carrental.model;
 
 import by.nosevich.carrental.model.enums.FuelType;
 import by.nosevich.carrental.model.enums.Transmission;
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -21,7 +23,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-@Data
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "car_table")
 public class Car {

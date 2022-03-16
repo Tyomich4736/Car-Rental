@@ -1,6 +1,8 @@
 package by.nosevich.carrental.model;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
@@ -12,7 +14,9 @@ import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@NoArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "category_table")
 public class Category {
