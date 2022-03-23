@@ -2,6 +2,7 @@ package by.nosevich.carrental.service.user;
 
 import by.nosevich.carrental.dto.UserDto;
 import by.nosevich.carrental.exceptions.IncorrectUserDataException;
+import by.nosevich.carrental.exceptions.UserWithSameEmailAlreadyExistsException;
 import by.nosevich.carrental.model.User;
 import by.nosevich.carrental.model.enums.UserRole;
 import by.nosevich.carrental.repository.UserRepository;
@@ -61,9 +62,12 @@ public class JPAUserService implements UserService {
 
     @Override
     public void createNewUser(UserDto user, String passwordConfirmation)
-    throws IncorrectUserDataException, MessagingException {
+    throws IncorrectUserDataException, MessagingException, UserWithSameEmailAlreadyExistsException {
         if (!userDataIsCorrect(user, passwordConfirmation)) {
             throw new IncorrectUserDataException();
+        }
+        if (userRepository.findByEmail(user.getEmail().trim()).isPresent()) {
+            throw new UserWithSameEmailAlreadyExistsException();
         }
         user.setActivationCode(UUID.randomUUID().toString());
         user.setUserRole(UserRole.CLIENT);
@@ -91,6 +95,7 @@ public class JPAUserService implements UserService {
     @Override
     public void saveProtectedUser(UserDto user) {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
+        user.setEmail(user.getEmail().trim());
         save(user);
     }
 
@@ -137,7 +142,7 @@ public class JPAUserService implements UserService {
     }
 
     @Override
-    public void makeAnClient(Integer userId) {
+    public void makeAClient(Integer userId) {
         Optional<User> optionalUser = userRepository.findById(userId);
         if (optionalUser.isPresent()) {
             User user = optionalUser.get();

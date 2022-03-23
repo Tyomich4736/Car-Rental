@@ -12,7 +12,7 @@ public class MessageTemplates {
             "<h1 align=\"center\"><font color=\"DeepSkyBlue\" face=\"Helvetica\" size=\"5\"> Order " +
                     "%d was successfully placed!</font></h1><br/>" +
                     "<div align=\"center\"><font face=\"Helvetica\" size=\"3\" >The order for car " +
-                    "%s has been successfully placed!We are waiting for you " +
+                    "%s has been successfully placed! We are waiting for you " +
                     "%s in our service. If you do not show up, your order will be canceled.<br/>";
 
     public static final String PICK_UP_ORDER_MESSAGE =

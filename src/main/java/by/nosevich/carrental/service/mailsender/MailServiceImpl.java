@@ -16,6 +16,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
+import java.nio.charset.StandardCharsets;
 import java.util.Properties;
 
 @Service
@@ -27,7 +28,7 @@ public class MailServiceImpl implements MailService {
     public static final String PICK_UP_ORDER_SUBJECT = "Pick up %s";
     public static final String CANCEL_ORDER_SUBJECT = "Order on %s has been canceled";
     public static final String CAR_RENTAL_INTERNET_ADDRESS = "CarRental@service.com";
-    public static final String CONTENT_TYPE_TEXT_HTML = "text/html";
+    public static final String CONTENT_TYPE_UTF_8_VALUE = "text/html; charset=UTF-8";
 
     @Value("${email.server.domainHost}")
     private String emailDomainHost;
@@ -87,10 +88,10 @@ public class MailServiceImpl implements MailService {
         msg.setFrom(new InternetAddress(CAR_RENTAL_INTERNET_ADDRESS));
         InternetAddress[] toAddresses = {new InternetAddress(user.getEmail())};
         msg.setRecipients(Message.RecipientType.TO, toAddresses);
-        msg.setSubject(subject);
+        msg.setSubject(subject, StandardCharsets.UTF_8.toString());
 
         MimeBodyPart messageBodyPart = new MimeBodyPart();
-        messageBodyPart.setContent(message, CONTENT_TYPE_TEXT_HTML);
+        messageBodyPart.setContent(message, CONTENT_TYPE_UTF_8_VALUE);
         Multipart multipart = new MimeMultipart();
         multipart.addBodyPart(messageBodyPart);
         msg.setContent(multipart);

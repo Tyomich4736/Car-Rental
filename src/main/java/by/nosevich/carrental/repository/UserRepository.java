@@ -37,8 +37,8 @@ public class UserRepository extends AbstractJpaRepository<User> {
         CriteriaQuery<User> query = criteriaBuilder.createQuery(User.class);
         Root<User> root = query.from(User.class);
         CriteriaQuery<User> select = query.select(root).where(criteriaBuilder.equal(root.get(User_.email), email));
-        User result = entityManager.createQuery(select).getSingleResult();
-        return Optional.ofNullable(result);
+        List<User> result = entityManager.createQuery(select).getResultList();
+        return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
     }
 
     public Optional<User> findByActivationCode(String activationCode) {
@@ -47,8 +47,8 @@ public class UserRepository extends AbstractJpaRepository<User> {
         Root<User> root = query.from(User.class);
         CriteriaQuery<User> select =
                 query.select(root).where(criteriaBuilder.equal(root.get(User_.activationCode), activationCode));
-        User result = entityManager.createQuery(select).getSingleResult();
-        return Optional.ofNullable(result);
+        List<User> result = entityManager.createQuery(select).getResultList();
+        return result.isEmpty() ? Optional.empty() : Optional.of(result.get(0));
     }
 
     public List<User> findBySubstring(String searchQuery, Page page) {

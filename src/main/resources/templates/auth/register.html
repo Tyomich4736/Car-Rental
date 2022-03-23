@@ -15,19 +15,22 @@
       <th:block th:text="#{login.lastName}"/><br/>
       <input type="text" class="fadeIn second" name="lastName" required="required" th:value="${user == null ? '' : user.getLastName()}"><br/>
       <th:block th:text="#{login.phone}"/><br/>
-      <input type="text" class="fadeIn second" name="phoneNumber" required="required" th:value="${user == null ? '' : user.getPhoneNumber()}"><br/>
+      <input type="tel" minlength="12" maxlength="13" onkeypress="return isValidPhoneKey(event)" class="fadeIn second" name="phoneNumber" required="required" th:value="${user == null ? '' : user.getPhoneNumber()}"><br/>
     Email<br/>
       <input type="email" class="fadeIn second" name="email" required="required" th:value="${user == null ? '' : user.getEmail()}"><br/>
       <th:block th:text="#{login.password}"/><br/>
       <input type="password" class="fadeIn third" name="password" required="required"><br/>
       <th:block th:text="#{login.confirmPassword}"/><br/>
-      <input type="password" class="fadeIn third" name="confirmPassword" required="required">
+      <input type="password" minlength="8" class="fadeIn third" name="confirmPassword" required="required">
       <div th:if="${passwordError}">
             <font color="red"><th:block th:text="#{login.passwordsDoNotMatch}"/></font>
         </div>
        <div th:if="${mailError}">
             <font color="red"><th:block th:text="#{login.incorrectMail}"/></font>
-       </div>  
+       </div>
+      <div th:if="${mailIsBusy}">
+        <font color="red"><th:block th:text="#{login.mailIsBusy}"/></font>
+      </div>
       <input type="submit" class="fadeIn fourth" th:value="#{login.signUp.confirm}">
     </form>
 
@@ -38,4 +41,17 @@
   </div>
 </div>
 </body>
+<script>
+  function isValidPhoneKey(e) {
+    var charCode = e.keyCode || e.which;
+    console.log(charCode)
+    return charIsNumber(charCode) || charIsPlus(charCode);
+  }
+  function charIsNumber(charCode) {
+    return charCode > 47 && charCode < 58;
+  }
+  function charIsPlus(charCode) {
+    return charCode === 43;
+  }
+</script>
 </html>

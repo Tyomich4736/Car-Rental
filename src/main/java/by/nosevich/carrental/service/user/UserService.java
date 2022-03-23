@@ -2,6 +2,7 @@ package by.nosevich.carrental.service.user;
 
 import by.nosevich.carrental.dto.UserDto;
 import by.nosevich.carrental.exceptions.IncorrectUserDataException;
+import by.nosevich.carrental.exceptions.UserWithSameEmailAlreadyExistsException;
 import by.nosevich.carrental.service.DaoService;
 
 import javax.mail.MessagingException;
@@ -10,7 +11,8 @@ import java.util.Optional;
 
 public interface UserService extends DaoService<UserDto> {
 
-    void createNewUser(UserDto user, String passwordConfirmation) throws IncorrectUserDataException, MessagingException;
+    void createNewUser(UserDto user, String passwordConfirmation)
+    throws IncorrectUserDataException, MessagingException, UserWithSameEmailAlreadyExistsException;
 
     Optional<UserDto> getByEmail(String email);
 
@@ -26,5 +28,5 @@ public interface UserService extends DaoService<UserDto> {
 
     void makeAnEmployee(Integer userId);
 
-    void makeAnClient(Integer userId);
+    void makeAClient(Integer userId);
 }

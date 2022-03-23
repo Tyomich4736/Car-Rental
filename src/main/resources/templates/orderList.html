@@ -23,16 +23,16 @@
 			</div>
 			<div class="card-body">
 			<font size = "5">
-			Date: [<th:block th:text="${order.beginDate}"/>] - [<th:block th:text="${order.endDate}"/>] <br>
-			Accessories:<br> </font>
+			<th:block th:text="#{order.period}"/>: [<th:block th:text="${order.beginDate}"/>] - [<th:block th:text="${order.endDate}"/>] <br>
+			<th:block th:text="#{order.accessories}"/>:<br> </font>
 			<th:block th:each="acc : ${order.accessories}">
 				<th:block th:text="${acc.name+' ('+acc.getPrice()+' BYN)'}"/> <br>
 			</th:block>
 			<font size="5">
-			Status: <th:block th:text="${order.orderStatus.name()}"/> <br>
-			Price: <th:block th:text="${order.getPrice()}"/> BYN<br> </font>
+			<th:block th:text="#{order.status}"/>: <th:block th:text="#{${order.orderStatus.getLocalizationKey()}}"/> <br>
+			<th:block th:text="#{order.price}"/>: <th:block th:text="${order.getPrice()}"/> BYN<br> </font>
 				<img alt=""
-					th:src="${'/files'+order.car.previewImageName}" width="500"
+					th:src="${'/files'+order.car.getPreviewImagePath()}" width="500"
 					height="320">
 				<br>
 			</div>
