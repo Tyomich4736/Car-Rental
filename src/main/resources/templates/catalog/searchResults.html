@@ -45,7 +45,7 @@
 		<ul class="pagination justify-content-center">
 		<th:block th:if="${currentPage!=1}">
 			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage-1})}" th:text="#{pagination.previous}"></a></li>
-			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage-1})}"><th:block th:text="${currentPage}"/></a></li>
+			<li class="page-item"><a class="page-link" th:href="@{/catalog/search?page={pageNum}&search={search}(search=${search}, pageNum=${currentPage-1})}"><th:block th:text="${currentPage - 1}"/></a></li>
 		</th:block>
 			<li class="page-item active"><a class="page-link"><th:block th:text="${currentPage}"/></a></li>
 		<th:block th:if="${hasNextPage==true}">	

@@ -8,13 +8,15 @@
 	<div class="wrapper fadeInDown">
   <div id="formContent">
 
-    <!-- Login Form -->
-    <form th:action="@{/login}" method="get">
-    <p><img th:src="@{img/successful.png}" alt="" height="150" width="150"></p>
-      <div align="center" th:text="#{login.successfulRegistration}"><br/>
-			<th:block th:text="#{login.activateAccountLabel}"/></div>
-      <input type="submit" class="fadeIn fourth" value="OK">
-    </form>
+      <form th:action="@{/login}" method="get">
+          <p><img th:src="@{img/successful.png}" alt="" height="150" width="150"></p>
+          <div align="center">
+              <th:block th:text="#{login.successfulRegistration}"/>
+              <br/>
+              <th:block th:text="#{login.activateAccountLabel}"/>
+          </div>
+          <input type="submit" class="fadeIn fourth" value="OK">
+      </form>
 
   </div>
 </div>

@@ -27,7 +27,6 @@ public class WebMVCConfig implements WebMvcConfigurer {
         registry.addViewController("/login").setViewName("auth/login");
         registry.addViewController("/register").setViewName("auth/register");
         registry.addViewController("/successfulreg").setViewName("auth/successfulReg");
-        registry.addViewController("/rentterms").setViewName("rentTerms");
     }
 
     @Override
@@ -38,7 +37,7 @@ public class WebMVCConfig implements WebMvcConfigurer {
     @Bean
     public LocaleResolver localeResolver() {
         CookieLocaleResolver resolver = new CookieLocaleResolver();
-        resolver.setDefaultLocale(Locale.ENGLISH);
+        resolver.setDefaultLocale(new Locale("ru", "ru"));
         return resolver;
     }
 

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.Optional;
 
 @Controller
@@ -28,6 +29,8 @@ public class AdminCarController {
     public static final String REDIRECT_ON_CATALOG_CAR_PAGE = "redirect:/catalog/car/%d";
     public static final String ADD_IMAGE_FORM_PAGE = "admin/addImage";
     public static final String REDIRECT_ON_ADD_IMAGE_FORM_PAGE = "redirect:/admin/%d/addImage";
+    public static final String REFERER_HEADER = "Referer";
+    public static final String REDIRECT_FORMAT = "redirect:%s";
     public static final String CAR_ATTRIBUTE = "car";
     public static final String CURRENT_CATEGORY_ATTRIBUTE = "currentCategory";
 
@@ -76,7 +79,7 @@ public class AdminCarController {
     @PostMapping("/{carId}/edit")
     public String editCar(@PathVariable("carId") Integer carId, CarDto editedCar) {
         carService.editCar(carId, editedCar);
-        return REDIRECT_ON_CATALOG_PAGE;
+        return String.format(REDIRECT_ON_CATALOG_CAR_PAGE, carId);
     }
 
     @GetMapping("/deleteImage/cars/{carId}/{fileName}")
@@ -106,8 +109,8 @@ public class AdminCarController {
     }
 
     @GetMapping("/{carId}/delete")
-    public String deleteCar(@PathVariable("carId") Integer carId) {
+    public String deleteCar(@PathVariable("carId") Integer carId, HttpServletRequest request) {
         carService.deleteCarById(carId);
-        return REDIRECT_ON_CATALOG_PAGE;
+        return String.format(REDIRECT_FORMAT, request.getHeader(REFERER_HEADER));
     }
 }

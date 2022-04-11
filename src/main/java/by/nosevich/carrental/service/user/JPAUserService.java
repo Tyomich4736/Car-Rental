@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.mail.MessagingException;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -61,7 +62,7 @@ public class JPAUserService implements UserService {
     }
 
     @Override
-    public void createNewUser(UserDto user, String passwordConfirmation)
+    public void createNewUser(UserDto user, String passwordConfirmation, Locale locale)
     throws IncorrectUserDataException, MessagingException, UserWithSameEmailAlreadyExistsException {
         if (!userDataIsCorrect(user, passwordConfirmation)) {
             throw new IncorrectUserDataException();
@@ -72,7 +73,7 @@ public class JPAUserService implements UserService {
         user.setActivationCode(UUID.randomUUID().toString());
         user.setUserRole(UserRole.CLIENT);
         user.setActive(false);
-        mailService.sendActivationMessage(user);
+        mailService.sendActivationMessage(user, locale);
         saveProtectedUser(user);
     }
 

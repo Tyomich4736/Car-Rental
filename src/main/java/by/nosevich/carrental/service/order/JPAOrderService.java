@@ -32,6 +32,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -114,7 +115,7 @@ public class JPAOrderService implements OrderService {
     }
 
     @Override
-    public void confirmUnconfirmedOrder(String userEmail) {
+    public void confirmUnconfirmedOrder(String userEmail, Locale locale) {
         Optional<Order> optionalOrder = orderRepository.findByUserAndStatus(userEmail, OrderStatus.UNCONFIRMED);
         if (!optionalOrder.isPresent()) {
             return;
@@ -123,7 +124,7 @@ public class JPAOrderService implements OrderService {
         order.setOrderStatus(OrderStatus.WAITING);
         orderRepository.save(order);
         try {
-            mailService.sendSuccessfulOrderingMessage(new UserDto(order.getUser()), new OrderDto(order));
+            mailService.sendSuccessfulOrderingMessage(new UserDto(order.getUser()), new OrderDto(order), locale);
             if (getDateWithoutTime(new Date()).compareTo(getDateWithoutTime(order.getBeginDate())) > 0)
                 mailService.sendPickUpOrderMessage(new UserDto(order.getUser()), new OrderDto(order));
         } catch(MessagingException e) {
@@ -150,14 +151,14 @@ public class JPAOrderService implements OrderService {
     }
 
     @Override
-    public void cancelOrder(Integer orderId) {
+    public void cancelOrder(Integer orderId, Locale locale) {
         Optional<Order> optionalOrder = orderRepository.findById(orderId);
         if (optionalOrder.isPresent()) {
             Order order = optionalOrder.get();
             order.setOrderStatus(OrderStatus.CANCELED);
             orderRepository.save(order);
             try {
-                mailService.sendCancelOrderMessage(new UserDto(order.getUser()), new OrderDto(order));
+                mailService.sendCancelOrderMessage(new UserDto(order.getUser()), new OrderDto(order), locale);
             } catch(MessagingException e) {
                 e.printStackTrace();
             }

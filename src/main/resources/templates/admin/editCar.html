@@ -23,7 +23,7 @@
     <div class="form-group"> 
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{car.name} + ':'"></font></label>
       <div class="col-sm-10">
-        <input type="text" class="form-control" placeholder="Car name" name="name" th:value="${car.name}"> 
+        <input type="text" class="form-control" name="name" th:value="${car.name}">
       </div>
     </div>
     
@@ -37,11 +37,11 @@
     <div class="form-group">
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{car.transmission} + ':'"></font></label>
       <div class="col-sm-10">
-          <input type="radio" name="transmission" value="MECHANICAL" th:text="#{transmission.mechanical}"><br/>
-          <input type="radio" name="transmission" value="HYDROMECHANICAL" th:text="#{transmission.hydromechanical}"><br/>
-          <input type="radio" name="transmission" value="HYDRAULIC" th:text="#{transmission.hydraulic}"><br/>
-          <input type="radio" name="transmission" value="ELECTROMECHANICAL" th:text="#{transmission.electromechanical}"><br/>
-          <input type="radio" name="transmission" value="AUTOMATIC" th:text="#{transmission.automatic}"><br/>
+          <input type="radio" name="transmission" value="MECHANICAL" th:text="#{transmission.mechanical}" th:checked="${car.transmission != null && car.transmission.name == 'MECHANICAL'}"><br/>
+          <input type="radio" name="transmission" value="HYDROMECHANICAL" th:text="#{transmission.hydromechanical}" th:checked="${car.transmission != null && car.transmission.name == 'HYDROMECHANICAL'}"><br/>
+          <input type="radio" name="transmission" value="HYDRAULIC" th:text="#{transmission.hydraulic}" th:checked="${car.transmission != null && car.transmission.name == 'HYDRAULIC'}"><br/>
+          <input type="radio" name="transmission" value="ELECTROMECHANICAL" th:text="#{transmission.electromechanical}" th:checked="${car.transmission != null && car.transmission.name == 'ELECTROMECHANICAL'}"><br/>
+          <input type="radio" name="transmission" value="AUTOMATIC" th:text="#{transmission.automatic}" th:checked="${car.transmission != null && car.transmission.name == 'AUTOMATIC'}"><br/>
       </div>
     </div>
     
@@ -55,9 +55,9 @@
     <div class="form-group">
       <label class="control-label col-sm-2" ><font color="Light Slate Blue" size="4" th:text="#{car.fuelType} + ':'"></font></label>
       <div class="col-sm-10">
-          <input type="radio" name="fuelType" value="PETROL" th:text="#{fuelType.petrol}"><br/>
-          <input type="radio" name="fuelType" value="DIESEL" th:text="#{fuelType.diesel}"><br/>
-          <input type="radio" name="fuelType" value="ELECTRIC" th:text="#{fuelType.electric}"><br/>
+          <input type="radio" name="fuelType" value="PETROL" th:text="#{fuelType.petrol}" th:checked="${car.fuelType != null && car.fuelType.name == 'PETROL'}"><br/>
+          <input type="radio" name="fuelType" value="DIESEL" th:text="#{fuelType.diesel}" th:checked="${car.fuelType != null && car.fuelType.name == 'DIESEL'}"><br/>
+          <input type="radio" name="fuelType" value="ELECTRIC" th:text="#{fuelType.electric}" th:checked="${car.fuelType != null && car.fuelType.name == 'ELECTRIC'}"><br/>
       </div>
     </div>
     

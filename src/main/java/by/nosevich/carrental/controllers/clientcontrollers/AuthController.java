@@ -11,8 +11,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.LocaleResolver;
 
 import javax.mail.MessagingException;
+import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class AuthController {
@@ -26,16 +28,21 @@ public class AuthController {
     public static final String MAIL_IS_BUSY_ERROR_ATTRIBUTE = "mailIsBusy";
 
     private final UserService userService;
+    private final LocaleResolver localeResolver;
 
     @Autowired
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService, LocaleResolver localeResolver) {
         this.userService = userService;
+        this.localeResolver = localeResolver;
     }
 
     @PostMapping("/register")
-    public String createNewUser(UserDto user, @RequestParam("confirmPassword") String passwordConfirmation, Model model) {
+    public String createNewUser(UserDto user,
+                                @RequestParam("confirmPassword") String passwordConfirmation,
+                                Model model,
+                                HttpServletRequest request) {
         try {
-            userService.createNewUser(user, passwordConfirmation);
+            userService.createNewUser(user, passwordConfirmation, localeResolver.resolveLocale(request));
         } catch(MessagingException e) {
             e.printStackTrace();
             model.addAttribute(USER_ATTRIBUTE, user);

@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,8 +55,9 @@ public class FileSystemImageStoreService implements ImageStoreService {
         String folderWithImagesPath = imageStoragePath + CARS_FOLDER_PATH + carId;
         File file = new File(folderWithImagesPath);
         if (file.list() != null) {
-            return Arrays.stream(file.list())
-                    .map(fileName -> CARS_FOLDER_PATH + carId + FILE_SEPARATOR + fileName)
+            return Arrays.stream(file.listFiles())
+                    .sorted(Comparator.comparing(File::lastModified))
+                    .map(image -> CARS_FOLDER_PATH + carId + FILE_SEPARATOR + image.getName())
                     .collect(Collectors.toList());
         }
         return new ArrayList<>();
@@ -72,9 +74,6 @@ public class FileSystemImageStoreService implements ImageStoreService {
     public void deleteAllImagesForCar(Integer carId) {
         String folderPath = imageStoragePath + CARS_FOLDER_PATH + carId;
         File folder = new File(folderPath);
-        Arrays.stream(folder.list()).forEach(fileName -> {
-            new File(folderPath + FILE_SEPARATOR + fileName).delete();
-        });
         folder.delete();
     }
 

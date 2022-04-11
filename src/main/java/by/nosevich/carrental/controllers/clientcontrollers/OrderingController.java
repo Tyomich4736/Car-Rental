@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.LocaleResolver;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 import java.util.List;
 import java.util.Optional;
@@ -42,12 +44,17 @@ public class OrderingController {
     private final CarService carService;
     private final OrderService orderService;
     private final AccessoryService accessoryService;
+    private final LocaleResolver localeResolver;
 
     @Autowired
-    public OrderingController(CarService carService, OrderService orderService, AccessoryService accessoryService) {
+    public OrderingController(CarService carService,
+                              OrderService orderService,
+                              AccessoryService accessoryService,
+                              LocaleResolver localeResolver) {
         this.carService = carService;
         this.orderService = orderService;
         this.accessoryService = accessoryService;
+        this.localeResolver = localeResolver;
     }
 
     @GetMapping("/{carId}")
@@ -92,8 +99,8 @@ public class OrderingController {
     }
 
     @GetMapping("/saveOrder")
-    public String saveOrder(Principal principal) {
-        orderService.confirmUnconfirmedOrder(principal.getName());
+    public String saveOrder(Principal principal, HttpServletRequest request) {
+        orderService.confirmUnconfirmedOrder(principal.getName(), localeResolver.resolveLocale(request));
         return REDIRECT_ON_MY_ORDERS_PAGE;
     }
 

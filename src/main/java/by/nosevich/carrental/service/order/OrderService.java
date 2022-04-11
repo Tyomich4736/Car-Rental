@@ -11,6 +11,7 @@ import javax.mail.MessagingException;
 import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 
 public interface OrderService extends DaoService<OrderDto> {
@@ -22,13 +23,13 @@ public interface OrderService extends DaoService<OrderDto> {
                                             Integer carId,
                                             String username) throws ParseException;
 
-    void confirmUnconfirmedOrder(String userEmail);
+    void confirmUnconfirmedOrder(String userEmail, Locale locale);
 
     List<OrderDto> getAllByUser(String userEmail);
 
     List<OrderDto> getAllByUser(Integer userId);
 
-    void cancelOrder(Integer orderId);
+    void cancelOrder(Integer orderId, Locale locale);
 
     void activateOrder(Integer orderId);
 

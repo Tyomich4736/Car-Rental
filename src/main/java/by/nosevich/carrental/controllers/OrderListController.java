@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.LocaleResolver;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -25,10 +26,12 @@ public class OrderListController {
     public static final String ORDERS_ATTRIBUTE = "orders";
 
     private final OrderService orderService;
+    private final LocaleResolver localeResolver;
 
     @Autowired
-    public OrderListController(OrderService orderService) {
+    public OrderListController(OrderService orderService, LocaleResolver localeResolver) {
         this.orderService = orderService;
+        this.localeResolver = localeResolver;
     }
 
     @GetMapping("/user/{id}")
@@ -39,9 +42,9 @@ public class OrderListController {
     }
 
     @GetMapping("/cancel/{id}")
-    public String cancelOrder(HttpServletRequest req, @PathVariable("id") Integer id) {
-        orderService.cancelOrder(id);
-        return String.format(REDIRECT_FORMAT, req.getHeader(REFERER_HEADER_NAME));
+    public String cancelOrder(HttpServletRequest request, @PathVariable("id") Integer id) {
+        orderService.cancelOrder(id, localeResolver.resolveLocale(request));
+        return String.format(REDIRECT_FORMAT, request.getHeader(REFERER_HEADER_NAME));
     }
 
     @GetMapping("/todays")

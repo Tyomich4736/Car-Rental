@@ -17,6 +17,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
 import java.util.Properties;
 
 @Service
@@ -42,21 +43,21 @@ public class MailServiceImpl implements MailService {
     private String emailPassword;
 
     @Override
-    public void sendActivationMessage(UserDto user) throws MessagingException {
+    public void sendActivationMessage(UserDto user, Locale locale) throws MessagingException {
         String siteName = emailDomainHost.replaceAll(HTTP_URL_PREFIX, "");
         String subject = String.format(ACTIVATION_LINK_SUBJECT, siteName);
-        String message = String.format(MessageTemplates.ACTIVATION_MESSAGE, user.getFirstName(), emailDomainHost,
-                                       user.getActivationCode());
+        String message =
+                String.format(MessageTemplates.getActivationMessage(locale), user.getFirstName(), emailDomainHost,
+                              user.getActivationCode());
         sendMessage(user, message, subject);
     }
 
 
     @Override
-    public void sendSuccessfulOrderingMessage(UserDto user, OrderDto order) throws MessagingException {
+    public void sendSuccessfulOrderingMessage(UserDto user, OrderDto order, Locale locale) throws MessagingException {
         String subject = String.format(SUCCESSFUL_ORDERING_SUBJECT, order.getCar().getName());
-        String message =
-                String.format(MessageTemplates.SUCCESSFUL_ORDERING_MESSAGE, order.getId(), order.getCar().getName(),
-                              order.getBeginDate());
+        String message = String.format(MessageTemplates.getSuccessfulOrderingMessage(locale), order.getId(),
+                                       order.getCar().getName(), order.getBeginDate());
         sendMessage(user, message, subject);
     }
 
@@ -69,10 +70,10 @@ public class MailServiceImpl implements MailService {
     }
 
     @Override
-    public void sendCancelOrderMessage(UserDto user, OrderDto order) throws MessagingException {
+    public void sendCancelOrderMessage(UserDto user, OrderDto order, Locale locale) throws MessagingException {
         String orderCarName = order.getCar().getName();
         String subject = String.format(CANCEL_ORDER_SUBJECT, orderCarName);
-        String message = String.format(MessageTemplates.CANCEL_ORDER_MESSAGE, orderCarName);
+        String message = String.format(MessageTemplates.getCancelOrderMessage(locale), orderCarName);
         sendMessage(user, message, subject);
     }
 

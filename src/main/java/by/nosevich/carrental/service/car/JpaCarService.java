@@ -15,7 +15,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -133,12 +132,10 @@ public class JpaCarService implements CarService {
         Optional<Car> optionalCar = carRepository.findById(carId);
         if (optionalCar.isPresent()) {
             Car car = optionalCar.get();
-            try {
-                nullAwareBeanUtils.copyProperties(changedCar, car);
-                carRepository.save(car);
-            } catch(IllegalAccessException | InvocationTargetException e) {
-                e.printStackTrace();
-            }
+            changedCar.setId(carId);
+            changedCar.setPreviewImagePath(car.getPreviewImagePath());
+            BeanUtils.copyProperties(changedCar, car);
+            carRepository.save(car);
         }
     }
 

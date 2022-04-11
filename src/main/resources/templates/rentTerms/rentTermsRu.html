@@ -1,0 +1,60 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+<head>
+<title><th:block th:text="${currentCategory}" /></title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<link rel="stylesheet"
+	href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+	integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+	crossorigin="anonymous">
+
+<body>
+	<th:block th:insert="fragments/navBar.html" />
+	<h1 align="center">Правила аренды</h1>
+	<div class="container">
+	
+	
+		<font size="4">Мы предлагаем арендовать автомобиль на самых выгодных условиях. Аренда автомобиля в нашей компании осуществляется на срок не менее 1 суток.
+			Отсчет начинается с момента подписания акта приема-передачи автомобиля.
+			Для автомобилей эконом-класса достаточно минимального стажа вождения, для автомобилей стоимостью свыше 70 долларов (по курсу НБ РБ) требуется стаж вождения не менее 2-х лет
+			Все автомобили застрахованы по полису КАСКО, в случае ДТП вы должны немедленно уведомить нас и позвонить в ГИБДД.
+</font>
+<br/>
+	<b><font size="5">Стоимость аренды автомобиля включает:</font></b>
+	<br/>
+	<ul>
+		<li><font size="4">стоимость аренды</font></li>
+		<li><font size="4">страхование от угона, дорожно-транспортного происшествия и ущерба третьими лицами</font></li>
+	</ul>
+	<b><font size="5">Стоимость аренды автомобиля не включает:</font></b>
+	<ul>
+		<li><font size="4">стоимость топлива и стеклоомывателя</font></li>
+		<li><font size="4">оплата парковки</font></li>
+		<li><font size="4">оплата штрафов за нарушение ПДД</font></li>
+		<li><font size="4">автомойка и чистка</font></li>
+		<li><font size="4">проколы и повреждения шин и дисков</font></li>
+		<li><font size="4">повреждение салона автомобиля</font></li>
+	</ul>
+	<b><font size="5">Условия оплаты аренды:</font></b>
+	<br/>
+	<font size="4">Аренда автомобиля оплачивается полностью наличными при подписании договора.</font>
+	<br/>
+	<b><font size="5">Арендный депозит</font></b>
+	<br/>
+	<ul>
+		<li><font size="4">за аренду автомобиля эконом и среднего класса (стоимостью до 70$), залог 50$ (по курсу НБ РБ)</font></li>
+		<li><font size="4">для автомобилей бизнес-класса, стаж от 5 лет и возраст не менее 25 лет</font></li>
+		<li><font size="4">p.s. для граждан РБ со стажем вождения до 2-х лет минимальный депозит 100$ (по курсу НБ РБ)</font></li>
+		<li><font size="4">за аренду автомобиля премиум класса залог от 100$ до 300$ (по курсу НБ РБ)</font></li>
+		<li><font size="4">за аренду автомобиля, выезжающего за пределы РБ от 200$ (по курсу НБ.РБ.)</font></li>
+		<li><font size="4">для нерезидентов РБ залог составляет от 100$ до 300$ (по курсу НБ.РБ.) в зависимости от выбранного автомобиля и вашего опыта вождения.</font></li>
+	</ul>
+	
+	</div>
+</body>
+<th:block th:insert="fragments/footer.html" />
+</html>
+	
